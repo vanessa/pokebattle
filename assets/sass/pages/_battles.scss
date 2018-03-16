@@ -1,0 +1,63 @@
+.pokebattle-container {
+    background: #fff;
+}
+
+.create-battle {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    padding: $default-vt-padding;
+
+    h2 {
+        font-size: 2.3rem;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    .battle-fields {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 20px;
+        align-items: center;
+        margin-top: 20px;
+
+        @media (max-width: $md-screen-size) {
+            grid-template-columns: 1fr;
+        }
+
+        .pokemon-fields {
+            counter-reset: pokemon-input;
+
+            input {
+                font-size: 1.2rem;
+                margin: 5px 0;
+                position: relative;
+                display: block;
+            }
+        }
+
+        .opponent-submit {
+            text-align: center;
+
+            em {
+                display: block;
+                font-weight: bold;
+                margin: 15px 0;
+                font-style: normal;
+            }
+        }
+    }
+
+    input[type="submit"] {
+        display: block;
+        background: $default-color;
+        font-size: 1.2rem;
+        color: $bright-font-color;
+        padding: 4px 12px;
+        border: 0;
+        border-radius: 5px;
+        margin: 15px auto;
+        cursor: pointer;
+    }
+}

@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}PokeBattle &middot; Battle with someone{% endblock %}
+
+{% block body %}
+    <div class="pokebattle-container create-battle">
+        <h2>Pick your Pokemons!</h2>
+        <form method="POST">
+            {% csrf_token %}
+            
+            <section class="battle-fields">
+                <div class="pokemon-fields">
+                    {% render_field form.first_pokemon placeholder=form.first_pokemon.label %}
+                    {% render_field form.second_pokemon placeholder=form.second_pokemon.label %}
+                    {% render_field form.third_pokemon placeholder=form.third_pokemon.label %}
+                </div>
+                <div class="opponent-submit">
+                    <em>Choose your opponent:</em>
+                    {% render_field form.opponent %}
+                    <input type="submit" value="Battle!">
+                </div>
+            </section>
+        </form>
+    </div>
+{% endblock %}

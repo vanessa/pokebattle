@@ -1,0 +1,32 @@
+.navbar {
+    background: $navbar-color;
+    padding: 0 $default-hr-padding;
+    height: $navbar-height;
+    color: $bright-font-color;
+
+    .header {
+        font-weight: bold;
+        color: $bright-font-color;
+    }
+
+    .menu {
+        .name {
+            display: inline-block;
+            padding-right: 10px;
+        }
+    }
+    
+    a {
+        height: $navbar-height;
+        color: $bright-font-color;
+        display: inline-block;
+        line-height: $navbar-height;
+        padding: 0 15px;
+
+        &:hover {
+            background: darken($navbar-color, 10%);
+            color: $bright-font-color;
+            text-decoration: none;
+        }
+    }
+}
