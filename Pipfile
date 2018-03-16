@@ -32,11 +32,11 @@ gunicorn = "*"
 opbeat = "*"
 whitenoise = "*"
 bandit = "*"
-coverage = "*"
+coverage = {version = "*", sys_platform="!='fake'"}
 astroid = "<1.6"
 pylint = "<1.8"
-prospector = {extras = ["with-vulture"]}
-isort = "*"
+prospector = {git = "https://github.com/vintasoftware/prospector.git", ref="f81e290", extras = ["with-vulture"]}
+isort = {version = "*", sys_platform="!='fake'"}
 safety = "*"
 ipython = "*"
 
