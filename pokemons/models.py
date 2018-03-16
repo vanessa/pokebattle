@@ -9,3 +9,6 @@ class Pokemon(models.Model):
     attack = models.SmallIntegerField('Attack')
     defense = models.SmallIntegerField('Defense')
     hp = models.SmallIntegerField('HP')
+
+    def __str__(self):
+        return self.name
