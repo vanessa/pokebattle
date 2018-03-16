@@ -8,7 +8,9 @@
         <h2>Pick your Pokemons!</h2>
         <form method="POST">
             {% csrf_token %}
-            
+            <div class="message">
+                {{ form.errors }}
+            </div>
             <section class="battle-fields">
                 <div class="pokemon-fields">
                     {% render_field form.first_pokemon placeholder=form.first_pokemon.label %}

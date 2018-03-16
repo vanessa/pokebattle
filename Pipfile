@@ -41,6 +41,7 @@ safety = "*"
 ipython = "*"
 requests = "*"
 django-widget-tweaks = "*"
+pokebase = "*"
 
 
 [requires]
