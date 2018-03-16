@@ -1,16 +1,20 @@
 {% extends 'base.html' %}
 {% load widget_tweaks %}
 
-{% block title %}PokeBattle &middot; Battle with someone{% endblock %}
+{% block title %}PokeBattle &middot; {{ battle.creator.get_short_name }} vs. {{ battle.opponent.get_short_name }}{% endblock %}
 
 {% block body %}
     <div class="pokebattle-container battle">
-        {% if battle.creator == request.user %}
-        <div class="status waiting">
-            Waiting for opponent
-        </div>
+        {% if not user_is_opponent %}
+            <div class="status waiting">
+                Waiting for opponent
+            </div>
+        {% else %}
+            <div class="status waiting">
+                Waiting for you to choose
+            </div>
         {% endif %}
-        <h2>{{ battle.creator.get_short_name }} x {{ battle.opponent.get_short_name }}</h2>
+        <h2>{{ battle.creator.get_short_name }} vs. {{ battle.opponent.get_short_name }}</h2>
             <section class="battle-pokemons">
                 <div class="pokemon-creator">
                     {% for pokemon in your_chosen_pokemons %}
@@ -22,9 +26,13 @@
                 </div>
                 <div class="pokemon-trainer">
                     {% if not opponent_chosen_pokemons %}
-                        <div class="empty-card">
-                            Waiting for opponent to choose their Pokemons...
-                        </div>
+                        {% if user_is_opponent %}
+                            Choose your pokemons!
+                        {% else %}
+                            <div class="empty-card">
+                                Waiting for opponent to choose their Pokemons...
+                            </div>
+                        {% endif %}
                     {% else %}
                         {% for pokemon in opponent_chosen_pokemons %}
                             <div class="pokemon-card">

@@ -1,16 +1,13 @@
-from django.views import generic
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
+from django.views import generic
 
 import pokebase as pb
 
 from pokemons.models import Pokemon
-from .models import (
-    Battle,
-    ChosenPokemon
-)
 
 from .forms import CreateBattleForm
+from .models import Battle, ChosenPokemon
 
 
 class BattlesListView(generic.TemplateView):
@@ -48,6 +45,7 @@ class CreateBattleView(generic.CreateView):
                 )
                 new_pokemon.save()
             chosen_pokemon = ChosenPokemon(
+                # TO-DO: Change
                 order = 1,
                 battle_related = self.object,
                 pokemon = Pokemon.objects.get(id=pokemon_id),
@@ -70,4 +68,5 @@ class BattleView(generic.DetailView):
             battle_related=self.object,
             trainer=self.object.opponent
             )
+        context['user_is_opponent'] = True if self.object.opponent == self.request.user else False
         return context

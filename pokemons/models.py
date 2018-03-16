@@ -1,5 +1,7 @@
 from django.db import models
+
 import pokebase as pb
+
 
 class Pokemon(models.Model):
     id = models.SmallIntegerField('Pokemon\'s ID', primary_key=True)

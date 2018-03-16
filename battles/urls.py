@@ -1,10 +1,6 @@
 from django.conf.urls import url
 
-from .views import (
-    BattlesListView,
-    CreateBattleView,
-    BattleView
-)
+from .views import BattlesListView, BattleView, CreateBattleView
 
 
 urlpatterns = [
