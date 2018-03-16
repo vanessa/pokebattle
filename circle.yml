@@ -22,6 +22,7 @@ test:
     - npm run build
     - npm run lint
     # pipenv
+    - pyenv install 3.6.4
     - pyenv global 3.6.4
     # style check
     - pipenv run prospector
