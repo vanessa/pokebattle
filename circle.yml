@@ -1,9 +1,4 @@
 machine:  # remember to update those!
-  pre:
-    cd /opt/circleci/.pyenv/plugins/python-build/../.. && git pull && cd -
-  post:
-    - pyenv install 3.6.4
-    - pyenv global 3.6.4
   python:
     version: 3.6.4
   node:
