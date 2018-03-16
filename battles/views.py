@@ -40,12 +40,20 @@ class CreateBattleView(generic.CreateView):
                 pkn = pb.pokemon(pokemon_id)
                 new_pokemon = Pokemon(
                     id = pokemon_id,
-                    name = pkn.name,
-                    # TO-DO: Change
-                    attack = '1',
-                    defense = '2',
-                    hp = '3'
+                    name = pkn.name
                 )
+                stats = [(stats.stat.name, stats.base_stat) for stats in pkn.stats]
+                stats_list = {}
+                for stat in stats:
+                    stat_name = stat[0]
+                    stat_value = stat[1]
+                    if (stat_name == 'defense' or
+                        stat_name == 'attack' or
+                        stat_name == 'hp'):
+                        stats_list[stat_name] = stat_value
+                new_pokemon.defense = stats_list['defense']
+                new_pokemon.attack = stats_list['attack']
+                new_pokemon.hp = stats_list['hp']
                 new_pokemon.save()
             chosen_pokemon = ChosenPokemon(
                 # TO-DO: Change

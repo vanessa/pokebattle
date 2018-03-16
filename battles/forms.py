@@ -17,7 +17,7 @@ class CreateBattleForm(forms.ModelForm):
     third_pokemon = forms.CharField(required=True, label='Insert third Pokemon ID')
 
     def clean(self, **kwargs):
-        print(self)
+        print(kwargs)
         return super().clean()
 
 class ReplyBattleForm(forms.ModelForm):
