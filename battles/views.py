@@ -6,7 +6,10 @@ import pokebase as pb
 
 from pokemons.models import Pokemon
 
-from .forms import CreateBattleForm
+from .forms import (
+    CreateBattleForm,
+    ReplyBattleForm
+)
 from .models import Battle, ChosenPokemon
 
 
@@ -14,6 +17,7 @@ class BattlesListView(generic.TemplateView):
     template_name = 'battles/battles_list.html'
 
 class CreateBattleView(generic.CreateView):
+    model = Battle
     template_name = 'battles/create_battle.html'
     form_class = CreateBattleForm
 
@@ -29,7 +33,6 @@ class CreateBattleView(generic.CreateView):
             form.cleaned_data['second_pokemon'],
             form.cleaned_data['third_pokemon']
         ])
-
         for pokemon_id in pokemons:
             try:
                 query = Pokemon.objects.get(id=pokemon_id)
@@ -49,20 +52,21 @@ class CreateBattleView(generic.CreateView):
                 order = 1,
                 battle_related = self.object,
                 pokemon = Pokemon.objects.get(id=pokemon_id),
-                trainer = form.instance.creator
+                trainer = self.request.user
             ).save()
         return super().form_valid(form)
 
-class BattleView(generic.DetailView):
+class BattleView(generic.DetailView, generic.FormView):
     model = Battle
     template_name = 'battles/battle.html'
     context_object_name = 'battle'
+    form_class = ReplyBattleForm
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['your_chosen_pokemons'] = ChosenPokemon.objects.filter(
+        context['creator_chosen_pokemons'] = ChosenPokemon.objects.filter(
             battle_related=self.object,
-            trainer=self.request.user
+            trainer=self.object.creator
             )
         context['opponent_chosen_pokemons'] = ChosenPokemon.objects.filter(
             battle_related=self.object,
@@ -70,3 +74,41 @@ class BattleView(generic.DetailView):
             )
         context['user_is_opponent'] = True if self.object.opponent == self.request.user else False
         return context
+
+    def get_success_url(self):
+        self.object = self.get_object()
+        return reverse('battles:details', kwargs={'pk': self.object.pk})
+
+    def form_valid(self, form):
+        self.object = self.get_object()
+        form.instance.pk = self.object.pk
+        form.instance.creator = self.object.creator
+        form.instance.opponent = self.object.opponent
+        pokemons = []
+        pokemons.extend([
+            form.cleaned_data['first_pokemon'],
+            form.cleaned_data['second_pokemon'],
+            form.cleaned_data['third_pokemon']
+        ])
+        for pokemon_id in pokemons:
+            try:
+                query = Pokemon.objects.get(id=pokemon_id)
+            except Pokemon.DoesNotExist:
+                pkn = pb.pokemon(pokemon_id)
+                new_pokemon = Pokemon(
+                    id = pokemon_id,
+                    name = pkn.name,
+                    # TO-DO: Change
+                    attack = '1',
+                    defense = '2',
+                    hp = '3'
+                )
+                new_pokemon.save()
+            chosen_pokemon = ChosenPokemon(
+                # TO-DO: Change
+                order = 1,
+                battle_related = self.object,
+                pokemon = Pokemon.objects.get(id=pokemon_id),
+                trainer = self.request.user
+            ).save()
+        return super().form_valid(form)

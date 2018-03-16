@@ -1,7 +1,11 @@
 from django import forms
 from django.core.exceptions import ValidationError
-from .models import Battle
-
+from .models import (
+    Battle,
+    ChosenPokemon
+)
+from pokemons.models import Pokemon
+import pokebase as pb
 
 class CreateBattleForm(forms.ModelForm):
     class Meta:
@@ -13,5 +17,18 @@ class CreateBattleForm(forms.ModelForm):
     third_pokemon = forms.CharField(required=True, label='Insert third Pokemon ID')
 
     def clean(self, **kwargs):
-        cd = super().clean() # cd = short for cleaned data
-        return cd
+        print(self)
+        return super().clean()
+
+class ReplyBattleForm(forms.ModelForm):
+    class Meta:
+        model = ChosenPokemon
+        fields = []
+
+    first_pokemon = forms.CharField(required=True, label='Insert first Pokemon ID')
+    second_pokemon = forms.CharField(required=True, label='Insert second Pokemon ID')
+    third_pokemon = forms.CharField(required=True, label='Insert third Pokemon ID')
+
+    def clean(self, **kwargs):
+        print(self)
+        return super().clean()

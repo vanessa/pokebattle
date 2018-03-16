@@ -5,41 +5,73 @@
 
 {% block body %}
     <div class="pokebattle-container battle">
-        {% if not user_is_opponent %}
+        {% if not opponent_chosen_pokemons %}
             <div class="status waiting">
-                Waiting for opponent
-            </div>
-        {% else %}
-            <div class="status waiting">
-                Waiting for you to choose
+                {% if user_is_opponent %}
+                    Waiting for you to choose
+                {% else %}
+                    Waiting for opponent
+                {% endif %}
             </div>
         {% endif %}
         <h2>{{ battle.creator.get_short_name }} vs. {{ battle.opponent.get_short_name }}</h2>
             <section class="battle-pokemons">
                 <div class="pokemon-creator">
-                    {% for pokemon in your_chosen_pokemons %}
-                        <div class="pokemon-card">
-                            <img src="{{ pokemon.pokemon.get_picture }}">
-                            <i>{{ pokemon.pokemon.name }}</i>
-                        </div>
-                    {% endfor %}
+                    {% if not user_is_opponent %}
+                        {% if creator_chosen_pokemons %}
+                            {% for pokemon in creator_chosen_pokemons %}
+                                <div class="pokemon-card">
+                                    <img src="{{ pokemon.pokemon.get_picture }}">
+                                    <i>{{ pokemon.pokemon.name }}</i>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% else %}
+                        {% if not opponent_chosen_pokemons %}
+                            <div class="empty-card">
+                                Waiting for you to pick your Pokemons!
+                            </div>
+                        {% else %}
+                            {% for pokemon in creator_chosen_pokemons %}
+                                <div class="pokemon-card">
+                                    <img src="{{ pokemon.pokemon.get_picture }}">
+                                    <i>{{ pokemon.pokemon.name }}</i>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endif %}
                 </div>
                 <div class="pokemon-trainer">
-                    {% if not opponent_chosen_pokemons %}
-                        {% if user_is_opponent %}
-                            Choose your pokemons!
+                    {% if user_is_opponent %}
+                        {% if not opponent_chosen_pokemons %}
+                            <form method="POST">
+                                {% csrf_token %}
+                                {% render_field form.first_pokemon placeholder=form.first_pokemon.label %}
+                                {% render_field form.second_pokemon placeholder=form.second_pokemon.label %}
+                                {% render_field form.third_pokemon placeholder=form.third_pokemon.label %}
+                                <input type="submit" value="Battle!">
+                            </form>
                         {% else %}
+                            {% for pokemon in opponent_chosen_pokemons %}
+                                <div class="pokemon-card">
+                                    <img src="{{ pokemon.pokemon.get_picture }}">
+                                    <i>{{ pokemon.pokemon.name }}</i>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% else %}
+                        {% if not opponent_chosen_pokemons %}
                             <div class="empty-card">
                                 Waiting for opponent to choose their Pokemons...
                             </div>
+                        {% else %}
+                            {% for pokemon in opponent_chosen_pokemons %}
+                                <div class="pokemon-card">
+                                    <img src="{{ pokemon.pokemon.get_picture }}">
+                                    <i>{{ pokemon.pokemon.name }}</i>
+                                </div>
+                            {% endfor %}
                         {% endif %}
-                    {% else %}
-                        {% for pokemon in opponent_chosen_pokemons %}
-                            <div class="pokemon-card">
-                                <img src="{{ pokemon.pokemon.get_picture }}">
-                                <i>{{ pokemon.pokemon.name }}</i>
-                            </div>
-                        {% endfor %}
                     {% endif %}
                 </div>
             </section>

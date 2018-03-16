@@ -42,6 +42,7 @@ ipython = "*"
 requests = "*"
 django-widget-tweaks = "*"
 pokebase = "*"
+"autopep8" = "*"
 
 
 [requires]

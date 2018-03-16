@@ -26,17 +26,6 @@
             grid-template-columns: 1fr;
         }
 
-        .pokemon-fields {
-            counter-reset: pokemon-input;
-
-            input {
-                font-size: 1.2rem;
-                margin: 5px 0;
-                position: relative;
-                display: block;
-            }
-        }
-
         .opponent-submit {
             text-align: center;
 
@@ -47,6 +36,13 @@
                 font-style: normal;
             }
         }
+    }
+    
+    input {
+        font-size: 1.2rem;
+        margin: 5px 0;
+        position: relative;
+        display: block;
     }
 
     input[type="submit"] {
