@@ -37,6 +37,7 @@ class CreateBattleView(generic.CreateView):
                 new_pokemon = Pokemon(
                     id = pokemon_id,
                     name = pkn.name,
+                    # TO-DO: Change
                     attack = '1',
                     defense = '2',
                     hp = '3'
