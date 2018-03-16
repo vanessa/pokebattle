@@ -2,7 +2,7 @@
     background: #fff;
 }
 
-.create-battle {
+.battle {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -56,8 +56,58 @@
         color: $bright-font-color;
         padding: 4px 12px;
         border: 0;
-        border-radius: 5px;
+        border-radius: $default-border-radius;
         margin: 15px auto;
         cursor: pointer;
+    }
+
+    .status {
+        margin: 10px 0;
+        text-align: center;
+
+        &.waiting {
+            background: $orange;
+            color: #fff;
+            font-weight: bold;
+            padding: 5px 12px;
+            border-radius: 5px;
+            animation: opacityPulse ease-in-out infinite 1.5s;
+        }
+    }
+}
+
+.battle-pokemons {
+    display: grid;
+    align-items: center;
+
+    @media (min-width: $md-screen-size) {
+        grid-template-columns: 280px 280px;
+        grid-gap: 30px;
+    }
+}
+
+.empty-card {
+    background: #f0f0f0;
+    padding: 15px;
+    font-size: 1.2rem;
+    border-radius: $default-border-radius;
+    text-align: center;
+}
+
+.pokemon-card {
+    padding-right: 15px;
+    box-shadow: $default-box-shadow;
+    border-radius: $default-border-radius;
+    margin: 10px 0;
+    cursor: pointer;
+    position: relative;
+    transition: transform .15s ease-in-out;
+
+    i {
+        font-style: normal;
+    }
+
+    &:hover {
+        transform: translateY(-2px);
     }
 }

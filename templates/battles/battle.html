@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}PokeBattle &middot; Battle with someone{% endblock %}
+
+{% block body %}
+    <div class="pokebattle-container battle">
+        {% if battle.creator == request.user %}
+        <div class="status waiting">
+            Waiting for opponent
+        </div>
+        {% endif %}
+        <h2>{{ battle.creator.get_short_name }} x {{ battle.opponent.get_short_name }}</h2>
+            <section class="battle-pokemons">
+                <div class="pokemon-creator">
+                    {% for pokemon in your_chosen_pokemons %}
+                        <div class="pokemon-card">
+                            <img src="{{ pokemon.pokemon.get_picture }}">
+                            <i>{{ pokemon.pokemon.name }}</i>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="pokemon-trainer">
+                    {% if not opponent_chosen_pokemons %}
+                        <div class="empty-card">
+                            Waiting for opponent to choose their Pokemons...
+                        </div>
+                    {% else %}
+                        {% for pokemon in opponent_chosen_pokemons %}
+                            <div class="pokemon-card">
+                                <img src="{{ pokemon.pokemon.get_picture }}">
+                                <i>{{ pokemon.pokemon.name }}</i>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+            </section>
+        </form>
+    </div>
+{% endblock %}

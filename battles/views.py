@@ -5,7 +5,10 @@ from django.http import HttpResponseRedirect
 import pokebase as pb
 
 from pokemons.models import Pokemon
-from .models import ChosenPokemons
+from .models import (
+    Battle,
+    ChosenPokemon
+)
 
 from .forms import CreateBattleForm
 
@@ -18,17 +21,18 @@ class CreateBattleView(generic.CreateView):
     form_class = CreateBattleForm
 
     def get_success_url(self):
-        return reverse('battles:create-battle')
+        return reverse('battles:details', kwargs={'pk': self.object.pk})
 
     def form_valid(self, form):
-        data = form.instance
-        data.creator = self.request.user
+        form.instance.creator = self.request.user
+        self.object = form.save()
         pokemons = []
         pokemons.extend([
             form.cleaned_data['first_pokemon'],
             form.cleaned_data['second_pokemon'],
             form.cleaned_data['third_pokemon']
         ])
+
         for pokemon_id in pokemons:
             try:
                 query = Pokemon.objects.get(id=pokemon_id)
@@ -43,11 +47,27 @@ class CreateBattleView(generic.CreateView):
                     hp = '3'
                 )
                 new_pokemon.save()
-        chosen_pokemons = ChosenPokemons(
-            battle_related = self.object,
-            first = Pokemon.objects.get(id=pokemons[0]),
-            second = Pokemon.objects.get(id=pokemons[1]),
-            third = Pokemon.objects.get(id=pokemons[2]),
-            trainer = data.creator
-        )
+            chosen_pokemon = ChosenPokemon(
+                order = 1,
+                battle_related = self.object,
+                pokemon = Pokemon.objects.get(id=pokemon_id),
+                trainer = form.instance.creator
+            ).save()
         return super().form_valid(form)
+
+class BattleView(generic.DetailView):
+    model = Battle
+    template_name = 'battles/battle.html'
+    context_object_name = 'battle'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['your_chosen_pokemons'] = ChosenPokemon.objects.filter(
+            battle_related=self.object,
+            trainer=self.request.user
+            )
+        context['opponent_chosen_pokemons'] = ChosenPokemon.objects.filter(
+            battle_related=self.object,
+            trainer=self.object.opponent
+            )
+        return context
