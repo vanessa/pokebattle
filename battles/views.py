@@ -1,6 +1,6 @@
-from django.views import generic
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
+from django.views import generic
 
 from .forms import CreateBattleForm
 

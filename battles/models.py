@@ -1,6 +1,8 @@
 from django.db import models
+
 from pokemons.models import Pokemon
 from users.models import User
+
 
 class Battle(models.Model):
     creator = models.ForeignKey(User, related_name='battle_creator')
