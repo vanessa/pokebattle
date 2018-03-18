@@ -2,7 +2,11 @@ from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.views import generic
 
-import pokebase as pb
+# import pokebase as pb
+import requests as r
+import json
+
+from .variables import POKEAPI_URL, POKEMON_URL
 
 from pokemons.models import Pokemon
 
@@ -33,16 +37,20 @@ class CreateBattleView(generic.CreateView):
             form.cleaned_data['second_pokemon'],
             form.cleaned_data['third_pokemon']
         ])
+
         for pokemon_id in pokemons:
             try:
                 query = Pokemon.objects.get(id=pokemon_id)
             except Pokemon.DoesNotExist:
-                pkn = pb.pokemon(pokemon_id)
+                pkn = r.get(
+                    POKEMON_URL + str(pokemon_id)
+                    )
+                pkn = json.loads(pkn.text)
                 new_pokemon = Pokemon(
                     id = pokemon_id,
-                    name = pkn.name
+                    name = pkn['name']
                 )
-                stats = [(stats.stat.name, stats.base_stat) for stats in pkn.stats]
+                stats = [(stats['stat']['name'], stats['base_stat']) for stats in pkn['stats']]
                 stats_list = {}
                 for stat in stats:
                     stat_name = stat[0]
@@ -56,8 +64,7 @@ class CreateBattleView(generic.CreateView):
                 new_pokemon.hp = stats_list['hp']
                 new_pokemon.save()
             chosen_pokemon = ChosenPokemon(
-                # TO-DO: Change
-                order = 1,
+                order = int(pokemons.index(pokemon_id) + 1),
                 battle_related = self.object,
                 pokemon = Pokemon.objects.get(id=pokemon_id),
                 trainer = self.request.user
@@ -102,15 +109,30 @@ class BattleView(generic.DetailView, generic.FormView):
             try:
                 query = Pokemon.objects.get(id=pokemon_id)
             except Pokemon.DoesNotExist:
-                pkn = pb.pokemon(pokemon_id)
+                pkn = r.get(
+                    POKEMON_URL + str(pokemon_id)
+                )
+                pkn = json.loads(pkn.text)
                 new_pokemon = Pokemon(
                     id = pokemon_id,
-                    name = pkn.name,
+                    name = pkn['name'],
                     # TO-DO: Change
                     attack = '1',
                     defense = '2',
                     hp = '3'
                 )
+                stats = [(stats['stat']['name'], stats['base_stat']) for stats in pkn['stats']]
+                stats_list = {}
+                for stat in stats:
+                    stat_name = stat[0]
+                    stat_value = stat[1]
+                    if (stat_name == 'defense' or
+                        stat_name == 'attack' or
+                        stat_name == 'hp'):
+                        stats_list[stat_name] = stat_value
+                new_pokemon.defense = stats_list['defense']
+                new_pokemon.attack = stats_list['attack']
+                new_pokemon.hp = stats_list['hp']
                 new_pokemon.save()
             chosen_pokemon = ChosenPokemon(
                 # TO-DO: Change
