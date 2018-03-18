@@ -8,19 +8,12 @@ import json
 class Pokemon(models.Model):
     id = models.SmallIntegerField('Pokemon\'s ID', primary_key=True)
     name = models.CharField('Pokemon\'s name', max_length=60)
+    sprite = models.URLField('Pokemon\'s picture', blank=True)
 
     """ Attributes """
     attack = models.SmallIntegerField('Attack')
     defense = models.SmallIntegerField('Defense')
     hp = models.SmallIntegerField('HP')
-
-    # TO-DO: Remove this as soon as possible, not reliable
-    def get_picture(self):
-        pokemon = r.get(
-            POKEMON_URL + str(self.id)
-            )
-        pokemon = json.loads(pokemon.text)
-        return pokemon['sprites']['front_default']
 
     def __str__(self):
         return self.name

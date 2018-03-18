@@ -21,7 +21,7 @@
                         {% if creator_chosen_pokemons %}
                             {% for pokemon in creator_chosen_pokemons %}
                                 <div class="pokemon-card">
-                                    <img src="{{ pokemon.pokemon.get_picture }}">
+                                    <img src="{{ pokemon.pokemon.sprite }}">
                                     <i>{{ pokemon.pokemon.name }}</i>
                                 </div>
                             {% endfor %}
@@ -34,7 +34,7 @@
                         {% else %}
                             {% for pokemon in creator_chosen_pokemons %}
                                 <div class="pokemon-card">
-                                    <img src="{{ pokemon.pokemon.get_picture }}">
+                                    <img src="{{ pokemon.pokemon.sprite }}">
                                     <i>{{ pokemon.pokemon.name }}</i>
                                 </div>
                             {% endfor %}
@@ -54,7 +54,7 @@
                         {% else %}
                             {% for pokemon in opponent_chosen_pokemons %}
                                 <div class="pokemon-card">
-                                    <img src="{{ pokemon.pokemon.get_picture }}">
+                                    <img src="{{ pokemon.pokemon.sprite }}">
                                     <i>{{ pokemon.pokemon.name }}</i>
                                 </div>
                             {% endfor %}
@@ -67,7 +67,7 @@
                         {% else %}
                             {% for pokemon in opponent_chosen_pokemons %}
                                 <div class="pokemon-card">
-                                    <img src="{{ pokemon.pokemon.get_picture }}">
+                                    <img src="{{ pokemon.pokemon.sprite }}">
                                     <i>{{ pokemon.pokemon.name }}</i>
                                 </div>
                             {% endfor %}

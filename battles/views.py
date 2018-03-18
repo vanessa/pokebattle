@@ -48,7 +48,8 @@ class CreateBattleView(generic.CreateView):
                 pkn = json.loads(pkn.text)
                 new_pokemon = Pokemon(
                     id = pokemon_id,
-                    name = pkn['name']
+                    name = pkn['name'],
+                    sprite = pkn['sprites']['front_default']
                 )
                 stats = [(stats['stat']['name'], stats['base_stat']) for stats in pkn['stats']]
                 stats_list = {}
@@ -116,10 +117,7 @@ class BattleView(generic.DetailView, generic.FormView):
                 new_pokemon = Pokemon(
                     id = pokemon_id,
                     name = pkn['name'],
-                    # TO-DO: Change
-                    attack = '1',
-                    defense = '2',
-                    hp = '3'
+                    sprite = pkn['sprites']['front_default']
                 )
                 stats = [(stats['stat']['name'], stats['base_stat']) for stats in pkn['stats']]
                 stats_list = {}
@@ -135,8 +133,7 @@ class BattleView(generic.DetailView, generic.FormView):
                 new_pokemon.hp = stats_list['hp']
                 new_pokemon.save()
             chosen_pokemon = ChosenPokemon(
-                # TO-DO: Change
-                order = 1,
+                order = int(pokemons.index(pokemon_id) + 1),
                 battle_related = self.object,
                 pokemon = Pokemon.objects.get(id=pokemon_id),
                 trainer = self.request.user
