@@ -2,16 +2,16 @@
 <header>
     <nav class="navbar">
         <div class="header">
-            PokeBattle
+            <a href="{% url 'home' %}">PokeBattle</a>
         </div>
         <div class="menu">
-            <span class="name">
-                Hello, <strong>{{ user.get_short_name }}</strong>!
-            </span>
-            {% if not user.is_authenticated %}
-                <a href="#">Login</a>
-            {% else %}
+            {% if user.is_authenticated %}
+                <span class="name">
+                    Hello, <strong>{{ user.get_short_name }}</strong>!
+                </span>
                 <a href="#">Logout</a>
+            {% else %}
+                <a href="#">Login</a>
             {% endif %}
         </div>
     </nav>

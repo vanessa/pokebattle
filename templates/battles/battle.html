@@ -15,15 +15,17 @@
             </div>
         {% endif %}
         <h2>{{ battle.creator.get_short_name }} vs. {{ battle.opponent.get_short_name }}</h2>
+        {% comment %}    
+        <div class="battle-result-label">
+            <strong>amanda</strong> won!
+        </div>
+        {% endcomment %}
             <section class="battle-pokemons">
                 <div class="pokemon-creator">
                     {% if not user_is_opponent %}
                         {% if creator_chosen_pokemons %}
                             {% for pokemon in creator_chosen_pokemons %}
-                                <div class="pokemon-card">
-                                    <img src="{{ pokemon.pokemon.sprite }}">
-                                    <i>{{ pokemon.pokemon.name }}</i>
-                                </div>
+                                {% include 'battles/includes/pokemon_card.html' with chosen_pokemon=pokemon %}
                             {% endfor %}
                         {% endif %}
                     {% else %}
@@ -33,10 +35,7 @@
                             </div>
                         {% else %}
                             {% for pokemon in creator_chosen_pokemons %}
-                                <div class="pokemon-card">
-                                    <img src="{{ pokemon.pokemon.sprite }}">
-                                    <i>{{ pokemon.pokemon.name }}</i>
-                                </div>
+                                {% include 'battles/includes/pokemon_card.html' with chosen_pokemon=pokemon %}
                             {% endfor %}
                         {% endif %}
                     {% endif %}
@@ -53,10 +52,7 @@
                             </form>
                         {% else %}
                             {% for pokemon in opponent_chosen_pokemons %}
-                                <div class="pokemon-card">
-                                    <img src="{{ pokemon.pokemon.sprite }}">
-                                    <i>{{ pokemon.pokemon.name }}</i>
-                                </div>
+                                {% include 'battles/includes/pokemon_card.html' with chosen_pokemon=pokemon %}
                             {% endfor %}
                         {% endif %}
                     {% else %}
@@ -66,10 +62,7 @@
                             </div>
                         {% else %}
                             {% for pokemon in opponent_chosen_pokemons %}
-                                <div class="pokemon-card">
-                                    <img src="{{ pokemon.pokemon.sprite }}">
-                                    <i>{{ pokemon.pokemon.name }}</i>
-                                </div>
+                                {% include 'battles/includes/pokemon_card.html' with chosen_pokemon=pokemon %}
                             {% endfor %}
                         {% endif %}
                     {% endif %}

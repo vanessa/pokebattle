@@ -14,10 +14,10 @@ class Battle(models.Model):
     def __str__(self):
         return '{0} x {1}'.format(self.creator, self.opponent)
 
-class ChosenPokemon(models.Model):
+class ChosenPokemon(models.Model): # change
     battle_related = models.ForeignKey(Battle, related_name='chosen_pokemons')
     order = models.CharField(choices=POKEMON_ORDER_CHOICES, max_length=1)
-    pokemon = models.ForeignKey(Pokemon, related_name='pokemon')
+    pokemons = models.ManyToManyField(Pokemon, related_name='pokemons')
     trainer = models.ForeignKey(User, related_name='trainer')
 
     class Meta:
@@ -25,7 +25,7 @@ class ChosenPokemon(models.Model):
 
     def __str__(self):
         return '#{0} / {1} / {2}'.format(
-            self.battle_related.pk,
-            self.pokemon.name,
-            self.trainer.get_short_name()
+            self.battle_related.id,
+            self.pokemons.name,
+            self.trainer
         )

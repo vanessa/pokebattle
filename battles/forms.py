@@ -4,20 +4,23 @@ from .models import (
     Battle,
     ChosenPokemon
 )
+from users.models import User
 from pokemons.models import Pokemon
 import pokebase as pb
 
 class CreateBattleForm(forms.ModelForm):
     class Meta:
         model = Battle
-        fields = ['opponent']
+        fields = ['creator', 'opponent'] 
 
-    first_pokemon = forms.CharField(required=True, label='Insert first Pokemon ID')
-    second_pokemon = forms.CharField(required=True, label='Insert second Pokemon ID')
-    third_pokemon = forms.CharField(required=True, label='Insert third Pokemon ID')
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        users = User.objects.exclude(id=self.initial['creator'].id)
+        self.fields['opponent'] = forms.ModelChoiceField(
+            queryset = users
+        )
 
     def clean(self, **kwargs):
-        print(kwargs)
         return super().clean()
 
 class ReplyBattleForm(forms.ModelForm):
