@@ -10,6 +10,7 @@ class Battle(models.Model):
     creator = models.ForeignKey(User, related_name='battle_creator')
     opponent = models.ForeignKey(User, related_name='battle_opponent')
     date_created = models.DateTimeField(auto_now_add=True)
+    winner = models.ForeignKey(User, related_name='battle_winner', null=True)
 
     def __str__(self):
         return '{0} vs. {1}'.format(
