@@ -21,7 +21,9 @@
         </div>
         {% endcomment %}
         <section class="battle-pokemons">
-            
+            {% if not creators_pokemons or not opponents_pokemons %}
+                <a href="{% url 'battles:team' battle.pk %}">Pick my team</a>
+            {% endif %}
         </section>
     </div>
 {% endblock %}

@@ -4,8 +4,15 @@
 
 {% block body %}
     <div class="pokebattle-container battle">
+        <a href="{% url 'battles:details' battle.pk %}">&laquo; Back to battle</a>
         <h3>{{ battle }}</h3>
         <h2>Choose your Pokemons!</h2>
-        {% lorem 3 p random %}
+        <form method="POST">
+            {% csrf_token %}
+            {% render_field form.first_pokemon placeholder=form.first_pokemon.label %}
+            {% render_field form.second_pokemon placeholder=form.second_pokemon.label %}
+            {% render_field form.third_pokemon placeholder=form.third_pokemon.label %}
+            <input type="submit" value="Gotta catch 'em all!">
+        </form>
     </div>
 {% endblock %}

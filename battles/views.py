@@ -8,7 +8,7 @@ import requests as r
 
 from pokemons.models import Pokemon
 
-from .forms import CreateBattleForm, ChooseTeamForm
+from .forms import ChooseTeamForm, CreateBattleForm
 from .models import Battle, BattleTeam
 
 
@@ -53,6 +53,7 @@ class BattleView(generic.DetailView):
             )
         context['user_is_opponent'] = True if self.object.opponent == self.request.user else False
         return context
+
 
 class ChoosePokemonTeamView(generic.CreateView):
     model = BattleTeam

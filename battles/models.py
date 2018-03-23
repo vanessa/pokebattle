@@ -17,6 +17,7 @@ class Battle(models.Model):
             self.opponent.get_short_name()
             )
 
+
 class BattleTeam(models.Model):
     battle_related = models.ForeignKey(Battle, related_name='chosen_pokemons')
     order = models.CharField(choices=POKEMON_ORDER_CHOICES, max_length=1)
