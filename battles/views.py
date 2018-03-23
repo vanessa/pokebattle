@@ -43,11 +43,11 @@ class BattleView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['creator_chosen_pokemons'] = BattleTeam.objects.filter(
+        context['creators_pokemons'] = BattleTeam.objects.filter(
             battle_related=self.object,
             trainer=self.object.creator
             )
-        context['opponent_chosen_pokemons'] = BattleTeam.objects.filter(
+        context['opponents_pokemons'] = BattleTeam.objects.filter(
             battle_related=self.object,
             trainer=self.object.opponent
             )
@@ -65,6 +65,7 @@ class ChoosePokemonTeamView(generic.CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['battle'] = Battle.objects.get(pk=self.kwargs['pk'])
+        return context
 
     def get_success_url(self):
         return reverse('battles:details', kwargs={'pk': self.kwargs['pk']})

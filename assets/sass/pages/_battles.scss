@@ -76,16 +76,6 @@
     margin-bottom: 10px;
 }
 
-.battle-pokemons {
-    display: grid;
-    align-items: center;
-
-    @media (min-width: $md-screen-size) {
-        grid-template-columns: 280px 280px;
-        grid-gap: 30px;
-    }
-}
-
 .empty-card {
     background: #f0f0f0;
     padding: 15px;

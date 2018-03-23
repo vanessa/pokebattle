@@ -5,7 +5,7 @@
 
 {% block body %}
     <div class="pokebattle-container battle">
-        {% if not opponent_chosen_pokemons %}
+        {% if not opponents_pokemons %}
             <div class="status waiting">
                 {% if user_is_opponent %}
                     Waiting for you to choose
@@ -20,54 +20,8 @@
             <strong>amanda</strong> won!
         </div>
         {% endcomment %}
-            <section class="battle-pokemons">
-                <div class="pokemon-creator">
-                    {% if not user_is_opponent %}
-                        {% if creator_chosen_pokemons %}
-                            {% for pokemon in creator_chosen_pokemons %}
-                                {% include 'battles/includes/pokemon_card.html' with chosen_pokemon=pokemon %}
-                            {% endfor %}
-                        {% endif %}
-                    {% else %}
-                        {% if not opponent_chosen_pokemons %}
-                            <div class="empty-card">
-                                Waiting for you to pick your Pokemons!
-                            </div>
-                        {% else %}
-                            {% for pokemon in creator_chosen_pokemons %}
-                                {% include 'battles/includes/pokemon_card.html' with chosen_pokemon=pokemon %}
-                            {% endfor %}
-                        {% endif %}
-                    {% endif %}
-                </div>
-                <div class="pokemon-trainer">
-                    {% if user_is_opponent %}
-                        {% if not opponent_chosen_pokemons %}
-                            <form method="POST">
-                                {% csrf_token %}
-                                {% render_field form.first_pokemon placeholder=form.first_pokemon.label %}
-                                {% render_field form.second_pokemon placeholder=form.second_pokemon.label %}
-                                {% render_field form.third_pokemon placeholder=form.third_pokemon.label %}
-                                <input type="submit" value="Battle!">
-                            </form>
-                        {% else %}
-                            {% for pokemon in opponent_chosen_pokemons %}
-                                {% include 'battles/includes/pokemon_card.html' with chosen_pokemon=pokemon %}
-                            {% endfor %}
-                        {% endif %}
-                    {% else %}
-                        {% if not opponent_chosen_pokemons %}
-                            <div class="empty-card">
-                                Waiting for opponent to choose their Pokemons...
-                            </div>
-                        {% else %}
-                            {% for pokemon in opponent_chosen_pokemons %}
-                                {% include 'battles/includes/pokemon_card.html' with chosen_pokemon=pokemon %}
-                            {% endfor %}
-                        {% endif %}
-                    {% endif %}
-                </div>
-            </section>
-        </form>
+        <section class="battle-pokemons">
+            
+        </section>
     </div>
 {% endblock %}

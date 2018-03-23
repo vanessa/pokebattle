@@ -12,7 +12,10 @@ class Battle(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return '{0} x {1}'.format(self.creator, self.opponent)
+        return '{0} vs. {1}'.format(
+            self.creator.get_short_name(),
+            self.opponent.get_short_name()
+            )
 
 class BattleTeam(models.Model):
     battle_related = models.ForeignKey(Battle, related_name='chosen_pokemons')

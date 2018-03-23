@@ -3,8 +3,9 @@
 {% block title %}PokeBattle &middot; Choose your team{% endblock %}
 
 {% block body %}
-<h3>{{ battle.creator.get_short_name }} vs. {{ battle.opponent.get_short_name }}</h3>
-<h2>Choose your Pokemons!</h2>
-    {% lorem 3 p random %}
-    {{ trainer }}
+    <div class="pokebattle-container battle">
+        <h3>{{ battle }}</h3>
+        <h2>Choose your Pokemons!</h2>
+        {% lorem 3 p random %}
+    </div>
 {% endblock %}

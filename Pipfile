@@ -7,17 +7,23 @@ name = "pypi"
 
 [dev-packages]
 
+bandit = "*"
+coverage = "*"
 django-debug-toolbar = "*"
 django-debug-toolbar-request-history = "*"
 django-naomi = "*"
 fixmydjango = "*"
 model-mommy = "*"
 pre-commit = "*"
+isort = "*"
+prospector = {git = "https://github.com/vintasoftware/prospector.git", ref="f81e290", extras = ["with-vulture"]}
+pylint = "*"
+safety = "*"
 
 
 [packages]
 
-django = ">=1,<2"
+django = ">=1.11,<2"
 celery = {extras = ["redis"]}
 django-model-utils = "*"
 django-webpack-loader = "*"
@@ -31,13 +37,6 @@ dj-database-url = "*"
 gunicorn = "*"
 opbeat = "*"
 whitenoise = "*"
-bandit = "*"
-coverage = "*"
-astroid = "<1.6"
-pylint = "<1.8"
-prospector = {extras = ["with-vulture"]}
-isort = "*"
-safety = "*"
 ipython = "*"
 requests = "*"
 django-widget-tweaks = "*"
