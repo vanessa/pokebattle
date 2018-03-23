@@ -1,10 +1,10 @@
 from django.test import Client, TestCase
 from django.urls import resolve, reverse_lazy
+
 from model_mommy import mommy
 
-from battles.views import (
-    CreateBattleView
-)
+from battles.views import CreateBattleView
+
 
 class TestCreateBattleView(TestCase):
 

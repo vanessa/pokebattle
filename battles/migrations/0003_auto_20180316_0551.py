@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterField(
-            model_name='chosenpokemons',
+            model_name='BattleTeams',
             name='battle_related',
             field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='chosen_pokemons', to='battles.Battle'),
         ),

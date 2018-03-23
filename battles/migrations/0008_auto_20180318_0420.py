@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterField(
-            model_name='chosenpokemon',
+            model_name='BattleTeam',
             name='order',
             field=models.CharField(choices=[('1', '1'), ('2', '2'), ('3', '3')], max_length=1),
         ),

@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='ChosenPokemons',
+            name='BattleTeams',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('battle_related', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='battle', to='battles.Battle')),

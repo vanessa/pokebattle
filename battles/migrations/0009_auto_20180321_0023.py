@@ -14,11 +14,11 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RemoveField(
-            model_name='chosenpokemon',
+            model_name='BattleTeam',
             name='pokemon',
         ),
         migrations.AddField(
-            model_name='chosenpokemon',
+            model_name='BattleTeam',
             name='pokemons',
             field=models.ManyToManyField(related_name='pokemons', to='pokemons.Pokemon'),
         ),

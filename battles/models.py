@@ -14,7 +14,7 @@ class Battle(models.Model):
     def __str__(self):
         return '{0} x {1}'.format(self.creator, self.opponent)
 
-class ChosenPokemon(models.Model): # change
+class BattleTeam(models.Model):
     battle_related = models.ForeignKey(Battle, related_name='chosen_pokemons')
     order = models.CharField(choices=POKEMON_ORDER_CHOICES, max_length=1)
     pokemons = models.ManyToManyField(Pokemon, related_name='pokemons')

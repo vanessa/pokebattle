@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='ChosenPokemon',
+            name='BattleTeam',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('order', models.CharField(choices=[(1, 1), (2, 2), (3, 3)], max_length=1)),
@@ -27,26 +27,26 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.RemoveField(
-            model_name='chosenpokemons',
+            model_name='BattleTeams',
             name='battle_related',
         ),
         migrations.RemoveField(
-            model_name='chosenpokemons',
+            model_name='BattleTeams',
             name='first',
         ),
         migrations.RemoveField(
-            model_name='chosenpokemons',
+            model_name='BattleTeams',
             name='second',
         ),
         migrations.RemoveField(
-            model_name='chosenpokemons',
+            model_name='BattleTeams',
             name='third',
         ),
         migrations.RemoveField(
-            model_name='chosenpokemons',
+            model_name='BattleTeams',
             name='trainer',
         ),
         migrations.DeleteModel(
-            name='ChosenPokemons',
+            name='BattleTeams',
         ),
     ]

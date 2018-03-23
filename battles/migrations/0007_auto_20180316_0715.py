@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterModelOptions(
-            name='chosenpokemon',
+            name='BattleTeam',
             options={'ordering': ['order']},
         ),
     ]

@@ -1,18 +1,15 @@
+import json
+
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.views import generic
 
-# import pokebase as pb
 import requests as r
-import json
 
 from pokemons.models import Pokemon
 
-from .forms import (
-    CreateBattleForm,
-    ReplyBattleForm
-)
-from .models import Battle, ChosenPokemon
+from .forms import CreateBattleForm, ChooseTeamForm
+from .models import Battle, BattleTeam
 
 
 class BattlesListView(generic.TemplateView):
@@ -46,11 +43,11 @@ class BattleView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['creator_chosen_pokemons'] = ChosenPokemon.objects.filter(
+        context['creator_chosen_pokemons'] = BattleTeam.objects.filter(
             battle_related=self.object,
             trainer=self.object.creator
             )
-        context['opponent_chosen_pokemons'] = ChosenPokemon.objects.filter(
+        context['opponent_chosen_pokemons'] = BattleTeam.objects.filter(
             battle_related=self.object,
             trainer=self.object.opponent
             )

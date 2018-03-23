@@ -1,6 +1,9 @@
-from pokemons.models import Pokemon
-from .variables import POKEMON_URL
 import json
+
+from pokemons.models import Pokemon
+
+from .variables import POKEMON_URL
+
 
 def get_or_create_pokemon(self, pid):
     try:
