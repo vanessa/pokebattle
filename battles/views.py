@@ -53,3 +53,18 @@ class BattleView(generic.DetailView):
             )
         context['user_is_opponent'] = True if self.object.opponent == self.request.user else False
         return context
+
+class ChoosePokemonTeamView(generic.CreateView):
+    model = BattleTeam
+    template_name = 'battles/choose_team.html'
+    form_class = ChooseTeamForm
+
+    def get_initial(self):
+        return {'trainer': self.request.user}
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['battle'] = Battle.objects.get(pk=self.kwargs['pk'])
+
+    def get_success_url(self):
+        return reverse('battles:details', kwargs={'pk': self.kwargs['pk']})

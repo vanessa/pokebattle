@@ -27,9 +27,9 @@ class ChooseTeamForm(forms.ModelForm):
         model = BattleTeam
         fields = []
 
-    first_pokemon = forms.CharField(required=True, label='Insert first Pokemon ID')
-    second_pokemon = forms.CharField(required=True, label='Insert second Pokemon ID')
-    third_pokemon = forms.CharField(required=True, label='Insert third Pokemon ID')
+    first_pokemon = forms.CharField(required=True, label='First pokemon')
+    second_pokemon = forms.CharField(required=True, label='Second pokemon')
+    third_pokemon = forms.CharField(required=True, label='Third pokemon')
 
     def clean(self, **kwargs):
         print(self)
