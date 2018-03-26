@@ -11,3 +11,7 @@ input {
 .inputs-hidden {
     display: none;
 }
+
+.form-error {
+    color: darken(red, 10%);
+}

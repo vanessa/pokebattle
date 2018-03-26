@@ -1,5 +1,4 @@
 from django import forms
-from django.core.exceptions import ValidationError
 
 from pokemons.models import Pokemon
 from users.models import User
@@ -32,5 +31,11 @@ class ChooseTeamForm(forms.ModelForm):
     third_pokemon = forms.CharField(required=True, label='Third pokemon')
 
     def clean(self, **kwargs):
-        print(self)
-        return super().clean()
+        cleaned_data = super().clean()
+        if (not cleaned_data['first_pokemon'].isdigit() or 
+            not cleaned_data['second_pokemon'].isdigit() or 
+            not cleaned_data['third_pokemon'].isdigit()):
+            raise forms.ValidationError(
+                'Sorry, we only accept Pokemons ids!'
+            )
+        return cleaned_data

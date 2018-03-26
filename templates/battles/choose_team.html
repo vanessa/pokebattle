@@ -10,7 +10,9 @@
         <div class="team-form-instruction">
             Remember to use only their ids
         </div>
-        {{ form.errors }}
+        {% if form.errors %}
+            <div class="form-error">{{ form.errors }}</div>
+        {% endif %}
         <form method="POST">
             {% csrf_token %}
             {% render_field form.first_pokemon placeholder=form.first_pokemon.label %}
