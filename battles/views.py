@@ -61,7 +61,10 @@ class ChoosePokemonTeamView(generic.CreateView):
     form_class = ChooseTeamForm
 
     def get_initial(self):
-        return {'trainer': self.request.user}
+        return {
+            'trainer': self.request.user,
+            'battle_related': Battle.objects.get(pk=self.kwargs['pk'])
+            }
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

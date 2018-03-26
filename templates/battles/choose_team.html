@@ -10,11 +10,17 @@
         <div class="team-form-instruction">
             Remember to use only their ids
         </div>
+        {{ form.errors }}
         <form method="POST">
             {% csrf_token %}
             {% render_field form.first_pokemon placeholder=form.first_pokemon.label %}
             {% render_field form.second_pokemon placeholder=form.second_pokemon.label %}
             {% render_field form.third_pokemon placeholder=form.third_pokemon.label %}
+            
+            <div class="inputs-hidden">
+                {% render_field form.battle_related %}
+                {% render_field form.trainer %}
+            </div>
             <input type="submit" value="Pick my team">
         </form>
     </div>

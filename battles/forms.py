@@ -25,7 +25,7 @@ class CreateBattleForm(forms.ModelForm):
 class ChooseTeamForm(forms.ModelForm):
     class Meta:
         model = BattleTeam
-        fields = []
+        fields = ['battle_related', 'trainer']
 
     first_pokemon = forms.CharField(required=True, label='First pokemon')
     second_pokemon = forms.CharField(required=True, label='Second pokemon')
