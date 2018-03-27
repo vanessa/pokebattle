@@ -24,7 +24,12 @@ class CreateBattleForm(forms.ModelForm):
         )
 
     def clean(self, **kwargs):
-        return super().clean()
+        cleaned_data = super().clean()
+        if cleaned_data['creator'] == cleaned_data['opponent']:
+            raise forms.ValidationError(
+                'You can\'t battle with yourself.'
+            )
+        return cleaned_data
 
 
 class ChooseTeamForm(forms.ModelForm):
@@ -39,12 +44,21 @@ class ChooseTeamForm(forms.ModelForm):
     def clean(self, **kwargs):
         cleaned_data = super().clean()
 
-        if (not cleaned_data['first_pokemon'].isdigit() or
-            not cleaned_data['second_pokemon'].isdigit() or
-            not cleaned_data['third_pokemon'].isdigit()):
+        if not cleaned_data['first_pokemon'].isdigit():
             raise forms.ValidationError(
-                'Sorry, we only accept Pokemons ids!'
+                'Invalid input. Please, use numbers only.'
             )
+
+        if not cleaned_data['second_pokemon'].isdigit():
+            raise forms.ValidationError(
+                'Invalid input. Please, use numbers only.'
+            )
+
+        if not cleaned_data['third_pokemon'].isdigit():
+            raise forms.ValidationError(
+                'Invalid input. Please, use numbers only.'
+            )
+            
         pokemon_list = []
         pokemon_list.extend([
             cleaned_data['first_pokemon'],
@@ -56,7 +70,7 @@ class ChooseTeamForm(forms.ModelForm):
             try:
                 pokemon = Pokemon.objects.get(id=pokemon)
             except Pokemon.DoesNotExist:
-                result = r.get('{}/{}'.format(POKEMON_URL, str(pokemon)))
+                result = r.get('{}{}'.format(POKEMON_URL, str(pokemon)))
                 result = json.loads(result.text)
                 new_pokemon = Pokemon(
                     id=pokemon,

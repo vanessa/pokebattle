@@ -47,12 +47,10 @@ class BattleView(generic.DetailView):
             battle_related=self.object,
             trainer=self.object.creator
             ).pokemons.all()
-        """
-        context['opponents_pokemons'] = BattleTeam.objects.filter(
+        context['opponents_pokemons'] = BattleTeam.objects.get(
             battle_related=self.object,
             trainer=self.object.opponent
-            )
-        """
+            ).pokemons.all()
         context['user_is_opponent'] = True if self.object.opponent == self.request.user else False
         return context
 
