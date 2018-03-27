@@ -77,7 +77,6 @@ class ChooseTeamForm(forms.ModelForm):
                 new_pokemon.attack = stats_obj['attack']
                 new_pokemon.hp = stats_obj['hp']
                 new_pokemon.save()
-        import ipdb; ipdb.set_trace()
         new_team = BattleTeam.objects.create(
             battle_related=cleaned_data['battle_related'],
             trainer=cleaned_data['trainer'],

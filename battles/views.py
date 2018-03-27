@@ -43,10 +43,10 @@ class BattleView(generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['creators_pokemons'] = BattleTeam.objects.filter(
+        context['creators_pokemons'] = BattleTeam.objects.get(
             battle_related=self.object,
             trainer=self.object.creator
-            )
+            ).pokemons.all()
         """
         context['opponents_pokemons'] = BattleTeam.objects.filter(
             battle_related=self.object,
@@ -57,8 +57,7 @@ class BattleView(generic.DetailView):
         return context
 
 
-class ChoosePokemonTeamView(generic.CreateView):
-    model = BattleTeam
+class ChoosePokemonTeamView(generic.FormView):
     template_name = 'battles/choose_team.html'
     form_class = ChooseTeamForm
 

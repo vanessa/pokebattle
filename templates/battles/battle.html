@@ -41,6 +41,21 @@
                 {% endfor %}
             </div>
             {% endif %}
+            {% if opponents_pokemons %}
+            <div class="column">
+                {% for pokemon in opponents_pokemons %}
+                <div class="pokemon-card">
+                    <img src="{{ pokemon.sprite }}">
+                    <i>{{ pokemon.name }}</i>
+                    <div class="attributes">
+                        <span>A: {{ pokemon.attack }}</span>
+                        <span>D: {{ pokemon.defense }}</span>
+                        <span>HP: {{ pokemon.hp }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
         </section>
     </div>
 {% endblock %}
