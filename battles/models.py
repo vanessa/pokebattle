@@ -21,16 +21,16 @@ class Battle(models.Model):
 
 class BattleTeam(models.Model):
     battle_related = models.ForeignKey(Battle, related_name='chosen_pokemons')
-    order = models.CharField(choices=POKEMON_ORDER_CHOICES, max_length=1)
+    #order = models.CharField(choices=POKEMON_ORDER_CHOICES, max_length=1)
     pokemons = models.ManyToManyField(Pokemon, related_name='pokemons')
     trainer = models.ForeignKey(User, related_name='trainer')
 
     class Meta:
-        ordering = ['order']
+        ordering = ['battle_related']
 
     def __str__(self):
         return '#{0} / {1} / {2}'.format(
             self.battle_related.id,
-            self.pokemons.name,
+            list(self.pokemons.all()),
             self.trainer
         )

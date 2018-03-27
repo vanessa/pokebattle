@@ -34,7 +34,7 @@ class CreateBattleView(generic.CreateView):
             'creator': user
         })
         return context
-        
+
 
 class BattleView(generic.DetailView):
     model = Battle
@@ -47,10 +47,12 @@ class BattleView(generic.DetailView):
             battle_related=self.object,
             trainer=self.object.creator
             )
+        """
         context['opponents_pokemons'] = BattleTeam.objects.filter(
             battle_related=self.object,
             trainer=self.object.opponent
             )
+        """
         context['user_is_opponent'] = True if self.object.opponent == self.request.user else False
         return context
 

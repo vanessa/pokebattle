@@ -20,9 +20,26 @@
             <strong>amanda</strong> won!
         </div>
         {% endcomment %}
-        <section class="battle-pokemons">
+        <section class="pick-team">
             {% if not creators_pokemons or not opponents_pokemons %}
                 <a href="{% url 'battles:team' battle.pk %}">Pick my team</a>
+            {% endif %}
+        </section>
+        <section class="battle-pokemons">
+            {% if creators_pokemons %}
+            <div class="column">
+                {% for pokemon in creators_pokemons %}
+                <div class="pokemon-card">
+                    <img src="{{ pokemon.sprite }}">
+                    <i>{{ pokemon.name }}</i>
+                    <div class="attributes">
+                        <span>A: {{ pokemon.attack }}</span>
+                        <span>D: {{ pokemon.defense }}</span>
+                        <span>HP: {{ pokemon.hp }}</span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
             {% endif %}
         </section>
     </div>
