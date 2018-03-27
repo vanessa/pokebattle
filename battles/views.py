@@ -1,5 +1,6 @@
 import json
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.views import generic
@@ -12,11 +13,11 @@ from .forms import ChooseTeamForm, CreateBattleForm
 from .models import Battle, BattleTeam
 
 
-class BattlesListView(generic.TemplateView):
+class BattlesListView(LoginRequiredMixin, generic.TemplateView):
     template_name = 'battles/battles_list.html'
 
 
-class CreateBattleView(generic.CreateView):
+class CreateBattleView(LoginRequiredMixin, generic.CreateView):
     model = Battle
     template_name = 'battles/create_battle.html'
     form_class = CreateBattleForm
@@ -36,7 +37,7 @@ class CreateBattleView(generic.CreateView):
         return context
 
 
-class BattleView(generic.DetailView):
+class BattleView(LoginRequiredMixin, generic.DetailView):
     model = Battle
     template_name = 'battles/battle.html'
     context_object_name = 'battle'
@@ -55,7 +56,7 @@ class BattleView(generic.DetailView):
         return context
 
 
-class ChoosePokemonTeamView(generic.FormView):
+class ChoosePokemonTeamView(LoginRequiredMixin, generic.FormView):
     template_name = 'battles/choose_team.html'
     form_class = ChooseTeamForm
 

@@ -58,7 +58,7 @@ class ChooseTeamForm(forms.ModelForm):
             raise forms.ValidationError(
                 'Invalid input. Please, use numbers only.'
             )
-            
+
         pokemon_list = []
         pokemon_list.extend([
             cleaned_data['first_pokemon'],
