@@ -26,4 +26,4 @@ class TestCreateBattleForm(TestCaseUtils, TestCase):
         self.battle_params['opponent'] = ''
         form = CreateBattleForm(self.battle_params)
         self.assertFalse(form.is_valid())
-        self.assertIn('opponent', forms.errors)
+        self.assertIn('opponent', form.errors)
