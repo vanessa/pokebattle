@@ -4,7 +4,10 @@ from django.urls import resolve, reverse_lazy
 from model_mommy import mommy
 
 from battles.models import Battle, BattleTeam
-from battles.views import CreateBattleView
+from battles.views import (
+    CreateBattleView,
+    BattleView
+)
 from common.utils.tests import TestCaseUtils
 from pokemons.models import Pokemon
 from users.models import User
@@ -65,3 +68,13 @@ class TestBattleDetailView(TestCaseUtils, TestCase):
     def test_response_status_200(self):
         response = self.auth_client.get(self.view_url)
         self.assertEqual(response.status_code, 200)
+
+    def test_battle_details_url_is_linked_to_view(self):
+        self.assertEqual(
+            resolve(self.view_url).func.__name__,
+            BattleView.as_view().__name__
+        )
+
+    def test_if_redirects_non_logged(self):
+        response = self.client.get(self.view_url)
+        self.assertEqual(response.status_code, 302)
