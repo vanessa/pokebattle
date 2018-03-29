@@ -3,32 +3,24 @@ from django.urls import resolve, reverse_lazy
 
 from model_mommy import mommy
 
-from battles.models import Battle
+from battles.models import Battle, BattleTeam
 from battles.views import CreateBattleView
+from common.utils.tests import TestCaseUtils
+from pokemons.models import Pokemon
 from users.models import User
 
 
-class TestCreateBattleView(TestCase):
+class TestCreateBattleView(TestCaseUtils, TestCase):
 
     def setUp(self):
         super().setUp()
         self.view_url = reverse_lazy('battles:create-battle')
         self.battle = mommy.make('battles.Battle')
-        self.user = User.objects.create_user(
-            email = "test@vinta.com.br",
-            password = "vintaisawesome"
-        )
-        self.user_opponent = User.objects.create_user(
-            email = "opponent@vinta.com.br",
-            password = "vintaisawesome"
-        )
+        self.user_opponent = mommy.make('users.User')
         self.battle_params = {
             "creator": self.user.id,
             "opponent": self.user_opponent.id
         }
-        self.auth_client = Client()
-        self.auth_client.login(email=self.user.email,
-                               password=self.user.password)
     
     def test_response_status_200(self):
         response = self.auth_client.get(self.view_url)
@@ -52,3 +44,24 @@ class TestCreateBattleView(TestCase):
         response = self.client.post(self.view_url, self.battle_params)
         battle = Battle.objects.get(id=self.battle.id)
         self.assertTrue(response, battle)
+
+class TestBattleDetailView(TestCaseUtils, TestCase):
+
+    def setUp(self):
+        super().setUp()
+        self.battle = mommy.make('battles.Battle')
+        self.pokemons = mommy.make('pokemons.Pokemon', _quantity=3)
+        self.battle_team_creator = mommy.make('battles.BattleTeam',
+                                              battle_related=self.battle,
+                                              pokemons=self.pokemons,
+                                              trainer=self.battle.creator)
+        self.battle_team_opponent = mommy.make('battles.BattleTeam',
+                                               battle_related=self.battle,
+                                               pokemons=self.pokemons,
+                                               trainer=self.battle.opponent)
+        self.view_url = reverse_lazy('battles:details',
+                                     kwargs={'pk': self.battle.id})
+
+    def test_response_status_200(self):
+        response = self.auth_client.get(self.view_url)
+        self.assertEqual(response.status_code, 200)

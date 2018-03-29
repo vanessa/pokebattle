@@ -2,8 +2,11 @@ from django.test import Client, TestCase
 
 from model_mommy import mommy
 
-class TestCreateBattleForm(TestCase):
-    pass
+from battles.forms import CreateBattleForm
 
-class TestChooseTeamForm(TestCase):
-    pass
+class TestCreateBattleForm(TestCase):
+
+    def setUp(self):
+        super().setUp()
+        self.battle = mommy.make('battles.Battle')
+        
