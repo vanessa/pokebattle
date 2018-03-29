@@ -44,7 +44,7 @@ class TestCreateBattleView(TestCase):
         response = self.client.post(self.view_url, self.battle_params)
         self.assertEqual(response.status_code, 302)
 
-    def test_redirection_if_not_logged(self):
+    def test_if_redirects_non_logged(self):
         response = self.client.get(self.view_url)
         self.assertEqual(response.status_code, 302)
 
