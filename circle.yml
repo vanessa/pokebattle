@@ -13,6 +13,7 @@ dependencies:
     # more details in https://github.com/pre-commit/pre-commit-hooks/issues/252
     - curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
     - sudo apt-get install git-lfs --upgrade
+    - cd /opt/circleci/.pyenv/plugins/python-build/../.. && git pull && cd -
   post:
     - pip install requests pipenv --upgrade
     - pipenv install --dev
@@ -46,9 +47,3 @@ test:
     - npm run test
   post:
     - pipenv run coverage html -d $CIRCLE_ARTIFACTS
-
-# This is necessary for the boilerplate's CI. You can remove these lines
-general:
-  branches:
-    ignore:
-      - boilerplate-release
