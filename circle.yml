@@ -10,7 +10,7 @@ machine:  # remember to update those!
     - pyenv update
     - pyenv install 3.6.4
   post:
-    -pyenv global 3.6.4
+    - pyenv global 3.6.4
 
 dependencies:
   pre:
