@@ -6,6 +6,11 @@ machine:  # remember to update those!
   environment:
     # makes default virtualenv be ignored by pipenv avoiding dependencies conflict
     PIPENV_IGNORE_VIRTUALENVS: True
+  pre:
+    - pyenv update
+    - pyenv install 3.6.4
+  post:
+    -pyenv global 3.6.4
 
 dependencies:
   pre:
@@ -13,7 +18,6 @@ dependencies:
     # more details in https://github.com/pre-commit/pre-commit-hooks/issues/252
     - curl -s https://packagecloud.io/install/repositories/github/git-lfs/script.deb.sh | sudo bash
     - sudo apt-get install git-lfs --upgrade
-    - cd /opt/circleci/.pyenv/plugins/python-build/../.. && git pull && cd -
   post:
     - pip install requests pipenv --upgrade
     - pipenv install --dev
