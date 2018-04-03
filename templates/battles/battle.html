@@ -21,7 +21,7 @@
         </div>
         {% endcomment %}
         <section class="pick-team">
-            {% if not creators_pokemons or not opponents_pokemons %}
+            {% if not user_has_chosen_a_team %}
                 <a href="{% url 'battles:team' battle.pk %}">Pick my team</a>
             {% endif %}
         </section>

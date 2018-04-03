@@ -1,14 +1,10 @@
-import json
-
 from django import forms
-
-import requests as r
 
 from pokemons.models import Pokemon
 from users.models import User
 
+from .helpers import get_or_create_pokemon
 from .models import Battle, BattleTeam
-from .variables import POKEMON_URL
 
 
 class CreateBattleForm(forms.ModelForm):
@@ -23,7 +19,7 @@ class CreateBattleForm(forms.ModelForm):
             queryset=users
         )
 
-    def clean(self, **kwargs):
+    def clean(self):
         cleaned_data = super().clean()
         if cleaned_data['creator'] == cleaned_data['opponent']:
             raise forms.ValidationError(
@@ -41,7 +37,7 @@ class ChooseTeamForm(forms.ModelForm):
     second_pokemon = forms.CharField(required=True, label='Second pokemon')
     third_pokemon = forms.CharField(required=True, label='Third pokemon')
 
-    def clean(self, **kwargs):
+    def clean(self):
         cleaned_data = super().clean()
 
         if not cleaned_data['first_pokemon'].isdigit():
@@ -67,30 +63,7 @@ class ChooseTeamForm(forms.ModelForm):
         ])
 
         for pokemon in pokemon_list:
-            try:
-                pokemon = Pokemon.objects.get(id=pokemon)
-            except Pokemon.DoesNotExist:
-                result = r.get('{}{}'.format(POKEMON_URL, str(pokemon)))
-                result = json.loads(result.text)
-                new_pokemon = Pokemon(
-                    id=pokemon,
-                    name=result['name'],
-                    sprite=result['sprites']['front_default']
-                )
-                stats = [(stats['stat']['name'], stats['base_stat'])
-                         for stats in result['stats']]
-                stats_obj = {}
-                for stat in stats:
-                    stat_name = stat[0]
-                    stat_value = stat[1]
-                    if (stat_name == 'defense' or
-                        stat_name == 'attack' or
-                            stat_name == 'hp'):
-                        stats_obj[stat_name] = stat_value
-                new_pokemon.defense = stats_obj['defense']
-                new_pokemon.attack = stats_obj['attack']
-                new_pokemon.hp = stats_obj['hp']
-                new_pokemon.save()
+            get_or_create_pokemon(pokemon)
         new_team = BattleTeam.objects.create(
             battle_related=cleaned_data['battle_related'],
             trainer=cleaned_data['trainer'],

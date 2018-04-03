@@ -1,21 +1,26 @@
-import json
-
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse
-from django.http import HttpResponseRedirect
 from django.views import generic
-
-import requests as r
 
 from pokemons.models import Pokemon
 
 from .forms import ChooseTeamForm, CreateBattleForm
-from .models import Battle, BattleTeam
+from .models import Battle
 
 
-class BattlesListView(LoginRequiredMixin, generic.TemplateView):
+class BattlesListView(LoginRequiredMixin, generic.ListView):
     template_name = 'battles/battles_list.html'
-
+    context_object_name = 'battles_created'
+    
+    def get_queryset(self):
+        return Battle.objects.filter(creator=self.request.user)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['battles_invited'] = Battle.objects.filter(
+            opponent=self.request.user
+        )
+        return context
 
 class CreateBattleView(LoginRequiredMixin, generic.CreateView):
     model = Battle
@@ -44,27 +49,31 @@ class BattleView(LoginRequiredMixin, generic.DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['creators_pokemons'] = BattleTeam.objects.get(
-            battle_related=self.object,
-            trainer=self.object.creator
-            ).pokemons.all()
-        context['opponents_pokemons'] = BattleTeam.objects.get(
-            battle_related=self.object,
-            trainer=self.object.opponent
-            ).pokemons.all()
+        context['creators_pokemons'] = Pokemon.objects.filter(
+            battle_team__battle_related=self.object,
+            battle_team__trainer=self.object.creator
+        )
+        context['opponents_pokemons'] = Pokemon.objects.filter(
+            battle_team__battle_related=self.object,
+            battle_team__trainer=self.object.opponent
+        )
         context['user_is_opponent'] = True if self.object.opponent == self.request.user else False
+        context['user_has_chosen_a_team'] = Pokemon.objects.filter(
+            battle_team__battle_related=self.object,
+            battle_team__trainer=self.request.user
+        ).exists()
         return context
 
 
 class ChoosePokemonTeamView(LoginRequiredMixin, generic.FormView):
     template_name = 'battles/choose_team.html'
-    form_class = ChooseTeamForm
+    form_class = ChooseTeamForm         
 
     def get_initial(self):
         return {
             'trainer': self.request.user,
             'battle_related': Battle.objects.get(pk=self.kwargs['pk'])
-            }
+        }
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

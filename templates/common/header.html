@@ -6,6 +6,9 @@
         </div>
         <div class="menu">
             {% if user.is_authenticated %}
+                <a href="{% url 'battles:battles-list' %}">
+                    My Battles
+                </a>
                 <a href="{% url 'battles:create-battle' %}">
                     Battle with Someone
                 </a>

@@ -1,11 +1,13 @@
 import json
 
+import requests as r
+
 from pokemons.models import Pokemon
 
 from .variables import POKEMON_URL
 
 
-def get_or_create_pokemon(self, pid):
+def get_or_create_pokemon(pid):
     try:
         query = Pokemon.objects.get(id=pid)
     except Pokemon.DoesNotExist:
@@ -14,18 +16,19 @@ def get_or_create_pokemon(self, pid):
         )
         pkn = json.loads(pkn.text)
         new_pokemon = Pokemon(
-            id = pid,
-            name = pkn['name'],
-            sprite = pkn['sprites']['front_default']
+            id=pid,
+            name=pkn['name'],
+            sprite=pkn['sprites']['front_default']
         )
-        stats = [(stats['stat']['name'], stats['base_stat']) for stats in pkn['stats']]
+        stats = [(stats['stat']['name'], stats['base_stat'])
+                 for stats in pkn['stats']]
         stats_list = {}
         for stat in stats:
             stat_name = stat[0]
             stat_value = stat[1]
             if (stat_name == 'defense' or
                 stat_name == 'attack' or
-                stat_name == 'hp'):
+                    stat_name == 'hp'):
                 stats_list[stat_name] = stat_value
         new_pokemon.defense = stats_list['defense']
         new_pokemon.attack = stats_list['attack']
