@@ -39,8 +39,7 @@ class TestCreateBattleView(TestCaseUtils, TestCase):
 
     def test_if_redirects_non_logged(self):
         response = self.client.get(self.view_url)
-        # TODO: change to resolve instead of placing the url string
-        self.assertRedirects(response, expected_url='/admin/login/?next=/battles/create')
+        self.assertRedirects(response, expected_url='/login?next=/battles/create')
 
     def test_battle_was_created_in_db(self):
         response = self.client.post(self.view_url, self.battle_params)
