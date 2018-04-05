@@ -7,9 +7,9 @@ from pokemons.models import Pokemon
 from .variables import POKEMON_URL
 
 
-def get_or_create_pokemon(pid):
+def create_pokemon_if_not_exists(pid):
     try:
-        query = Pokemon.objects.get(id=pid)
+        Pokemon.objects.get(id=pid)
     except Pokemon.DoesNotExist:
         pkn = r.get(
             POKEMON_URL + str(pid)

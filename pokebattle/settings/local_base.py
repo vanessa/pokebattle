@@ -5,6 +5,8 @@ DEBUG = True
 
 HOST = 'http://localhost:8000'
 
+LOGIN_URL = '/admin/login/'
+
 SECRET_KEY = 'secret'
 
 DATABASES = {

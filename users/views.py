@@ -1,4 +1,6 @@
 from django.shortcuts import render  # noqa
+from django.views import generic
 
 
-# Create your views here.
+class LoginView(generic.TemplateView):
+    template_name = 'auth/login.html'

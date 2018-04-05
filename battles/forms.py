@@ -1,56 +1,49 @@
 from django import forms
 
+from pokemons.helpers import create_pokemon_if_not_exists
 from pokemons.models import Pokemon
 from users.models import User
 
-from .helpers import get_or_create_pokemon
 from .models import Battle, BattleTeam
 
 
 class CreateBattleForm(forms.ModelForm):
     class Meta:
         model = Battle
-        fields = ['creator', 'opponent']
+        fields = ['opponent']
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        users = User.objects.exclude(id=self.initial['creator'].id)
-        self.fields['opponent'] = forms.ModelChoiceField(
-            queryset=users
-        )
-
-    def clean(self):
-        cleaned_data = super().clean()
-        if cleaned_data['creator'] == cleaned_data['opponent']:
-            raise forms.ValidationError(
-                'You can\'t battle with yourself.'
-            )
-        return cleaned_data
+        users = User.objects.exclude(id=self.initial['creator'])
+        self.fields['opponent'].queryset = users
 
 
 class ChooseTeamForm(forms.ModelForm):
     class Meta:
         model = BattleTeam
-        fields = ['battle_related', 'trainer']
+        fields = []
 
-    first_pokemon = forms.CharField(required=True, label='First pokemon')
-    second_pokemon = forms.CharField(required=True, label='Second pokemon')
-    third_pokemon = forms.CharField(required=True, label='Third pokemon')
+    first_pokemon = forms.IntegerField(
+        min_value=1, max_value=802, required=True, label='First pokemon')
+    second_pokemon = forms.IntegerField(
+        min_value=1, max_value=802, required=True, label='Second pokemon')
+    third_pokemon = forms.IntegerField(
+        min_value=1, max_value=802, required=True, label='Third pokemon')
 
     def clean(self):
         cleaned_data = super().clean()
 
-        if not cleaned_data['first_pokemon'].isdigit():
+        if not cleaned_data.get('first_pokemon'):
             raise forms.ValidationError(
                 'Invalid input. Please, use numbers only.'
             )
 
-        if not cleaned_data['second_pokemon'].isdigit():
+        if not cleaned_data.get('second_pokemon'):
             raise forms.ValidationError(
                 'Invalid input. Please, use numbers only.'
             )
 
-        if not cleaned_data['third_pokemon'].isdigit():
+        if not cleaned_data.get('third_pokemon'):
             raise forms.ValidationError(
                 'Invalid input. Please, use numbers only.'
             )
@@ -63,10 +56,10 @@ class ChooseTeamForm(forms.ModelForm):
         ])
 
         for pokemon in pokemon_list:
-            get_or_create_pokemon(pokemon)
+            create_pokemon_if_not_exists(pokemon)
         new_team = BattleTeam.objects.create(
-            battle_related=cleaned_data['battle_related'],
-            trainer=cleaned_data['trainer'],
+            battle_related=self.initial['battle_related'],
+            trainer=self.initial['trainer'],
         )
         new_team.pokemons.add(*Pokemon.objects.filter(id__in=pokemon_list))
         return cleaned_data

@@ -7,7 +7,7 @@ import django_js_reverse.views
 
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r'^admin/', admin.site.urls, name='admin'),
     url(r'^jsreverse/$', django_js_reverse.views.urls_js, name='js_reverse'),
     url(r'^$', TemplateView.as_view(template_name='common/index.html'), name='home'),
     url(r'^battles/', include('battles.urls', namespace='battles'))

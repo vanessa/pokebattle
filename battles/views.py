@@ -11,10 +11,10 @@ from .models import Battle
 class BattlesListView(LoginRequiredMixin, generic.ListView):
     template_name = 'battles/battles_list.html'
     context_object_name = 'battles_created'
-    
+
     def get_queryset(self):
         return Battle.objects.filter(creator=self.request.user)
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['battles_invited'] = Battle.objects.filter(
@@ -22,24 +22,23 @@ class BattlesListView(LoginRequiredMixin, generic.ListView):
         )
         return context
 
+
 class CreateBattleView(LoginRequiredMixin, generic.CreateView):
     model = Battle
     template_name = 'battles/create_battle.html'
     form_class = CreateBattleForm
 
     def get_initial(self):
-        return {'creator': self.request.user}
+        return {'creator': self.request.user.id}
 
     def get_success_url(self):
         return reverse('battles:details', kwargs={'pk': self.object.pk})
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        user = self.request.user
-        context.update({
-            'creator': user
-        })
-        return context
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.creator = self.request.user
+        self.object.save()
+        return super().form_valid(form)
 
 
 class BattleView(LoginRequiredMixin, generic.DetailView):
@@ -67,7 +66,7 @@ class BattleView(LoginRequiredMixin, generic.DetailView):
 
 class ChoosePokemonTeamView(LoginRequiredMixin, generic.FormView):
     template_name = 'battles/choose_team.html'
-    form_class = ChooseTeamForm         
+    form_class = ChooseTeamForm
 
     def get_initial(self):
         return {

@@ -1,16 +1,12 @@
-from django.test import Client, TestCase
+from django.test import TestCase
 from django.urls import resolve, reverse_lazy
 
 from model_mommy import mommy
 
-from battles.models import Battle, BattleTeam
-from battles.views import (
-    CreateBattleView,
-    BattleView
-)
+from battles.forms import CreateBattleForm
+from battles.models import Battle
+from battles.views import BattleView, CreateBattleView
 from common.utils.tests import TestCaseUtils
-from pokemons.models import Pokemon
-from users.models import User
 
 
 class TestCreateBattleView(TestCaseUtils, TestCase):
@@ -18,13 +14,14 @@ class TestCreateBattleView(TestCaseUtils, TestCase):
     def setUp(self):
         super().setUp()
         self.view_url = reverse_lazy('battles:create-battle')
-        self.battle = mommy.make('battles.Battle')
         self.user_opponent = mommy.make('users.User')
+        self.battle = mommy.make('battles.Battle')
+        self.view_class = CreateBattleView()
         self.battle_params = {
-            "creator": self.user.id,
-            "opponent": self.user_opponent.id
+            'creator': self.user.id,
+            'opponent': self.user_opponent.id
         }
-    
+
     def test_response_status_200(self):
         response = self.auth_client.get(self.view_url)
         self.assertEqual(response.status_code, 200)
@@ -36,17 +33,24 @@ class TestCreateBattleView(TestCaseUtils, TestCase):
         )
 
     def test_battle_creation(self):
-        response = self.client.post(self.view_url, self.battle_params)
+        response = self.auth_client.post(self.view_url, self.battle_params)
         self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, response.url)
 
     def test_if_redirects_non_logged(self):
         response = self.client.get(self.view_url)
-        self.assertEqual(response.status_code, 302)
+        # TODO: change to resolve instead of placing the url string
+        self.assertRedirects(response, expected_url='/admin/login/?next=/battles/create')
 
     def test_battle_was_created_in_db(self):
         response = self.client.post(self.view_url, self.battle_params)
-        battle = Battle.objects.get(id=self.battle.id)
-        self.assertTrue(response, battle)
+        battle = Battle.objects.filter(id=self.battle.id).exists()
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(battle)
+
+    def test_create_battle_view_form(self):
+        self.assertEqual(self.view_class.get_form_class(), CreateBattleForm)
+
 
 class TestBattleDetailView(TestCaseUtils, TestCase):
 
@@ -77,4 +81,5 @@ class TestBattleDetailView(TestCaseUtils, TestCase):
 
     def test_if_redirects_non_logged(self):
         response = self.client.get(self.view_url)
+        # TODO: make sure it's for the expected url
         self.assertEqual(response.status_code, 302)

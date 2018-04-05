@@ -33,6 +33,8 @@ pylint:
     - invalid-name
     - no-self-use
     - no-member
+    - too-many-ancestors
+    - attribute-defined-outside-init
   options:
     max-line-length: 100
 

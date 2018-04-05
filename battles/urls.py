@@ -1,10 +1,13 @@
-from django.conf.urls import url
+from django.conf.urls import include, url
 
 from .views import BattlesListView, BattleView, ChoosePokemonTeamView, CreateBattleView
 
 
 urlpatterns = [
     url(r'^$', BattlesListView.as_view(), name='battles-list'),
+
+    url(r'^', include('users.urls')),
+
     url(r'^create$', CreateBattleView.as_view(), name='create-battle'),
     url(r'^details/(?P<pk>[\w-]+)$', BattleView.as_view(), name='details'),
     url(r'^details/(?P<pk>[\w-]+)/team$',
