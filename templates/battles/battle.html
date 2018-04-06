@@ -26,8 +26,8 @@
             {% endif %}
         </section>
         <section class="battle-pokemons">
+            <div class="column creators-pokemons">
             {% if creators_pokemons %}
-            <div class="column">
                 {% for pokemon in creators_pokemons %}
                 <div class="pokemon-card">
                     <img src="{{ pokemon.sprite }}">
@@ -39,10 +39,10 @@
                     </div>
                 </div>
                 {% endfor %}
+                {% endif %}
             </div>
-            {% endif %}
+            <div class="column opponents-pokemons">
             {% if opponents_pokemons %}
-            <div class="column">
                 {% for pokemon in opponents_pokemons %}
                 <div class="pokemon-card">
                     <img src="{{ pokemon.sprite }}">
@@ -54,8 +54,8 @@
                     </div>
                 </div>
                 {% endfor %}
+                {% endif %}
             </div>
-            {% endif %}
         </section>
     </div>
 {% endblock %}

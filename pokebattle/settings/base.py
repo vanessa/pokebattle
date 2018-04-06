@@ -3,6 +3,7 @@
 import os
 
 from decouple import config  # noqa
+from django.core.urlresolvers import reverse_lazy
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -11,6 +12,8 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 def base_dir_join(*args):
     return os.path.join(BASE_DIR, *args)
 
+
+LOGIN_URL = reverse_lazy('auth:login')
 
 SITE_ID = 1
 

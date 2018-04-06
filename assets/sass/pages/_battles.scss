@@ -33,26 +33,32 @@
             }
         }
     }
-    
-    input {
-        font-size: 1.2rem;
-        margin: 10px 0;
-        border: 1px solid #ccc;
-        position: relative;
-        display: block;
-    }
 
-    input[type="submit"] {
-        display: block;
-        background: $default-color;
-        font-size: 1.2rem;
-        color: $bright-font-color;
-        padding: 4px 12px;
-        border: 0;
-        border-radius: $default-border-radius;
-        margin: 15px auto;
-        cursor: pointer;
+    .battle-creation-form {
+        width: 50%;
+
+        input {
+            font-size: 1.2rem;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            position: relative;
+            display: block;
+            width: 100%;
+        }
+    
+        input[type="submit"] {
+            display: block;
+            background: $default-color;
+            font-size: 1.2rem;
+            color: $bright-font-color;
+            padding: 4px 12px;
+            border: 0;
+            border-radius: $default-border-radius;
+            margin: 15px auto;
+            cursor: pointer;
+        }
     }
+    
 
     .status {
         margin: 10px 0;
@@ -94,6 +100,14 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 20px;
+
+    .creators-pokemons {
+        order: 0;
+    }
+
+    .opponents-pokemons {
+        order: 1;
+    }
 }
 
 .pokemon-card {
