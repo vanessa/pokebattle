@@ -1,7 +1,5 @@
 from .base import *  # noqa
-from django.core.urlresolvers import reverse_lazy
 
-LOGIN_URL = reverse_lazy('auth:login')
 
 SECRET_KEY = 'test'
 
