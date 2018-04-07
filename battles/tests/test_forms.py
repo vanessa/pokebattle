@@ -66,11 +66,32 @@ class TestChooseTeamForm(TestCaseUtils, TestCase):
                 'battle_related': self.battle
             },
             'data': {
-                'first_pokemon': mommy.make('pokemons.Pokemon', id=1).id,
-                'second_pokemon': mommy.make('pokemons.Pokemon', id=2).id,
-                'third_pokemon': mommy.make('pokemons.Pokemon', id=3).id
+                'first_pokemon': mommy.make(
+                    'pokemons.Pokemon', id=1, attack=10, defense=10, hp=10).id,
+                'second_pokemon': mommy.make(
+                    'pokemons.Pokemon', id=2, attack=10, defense=10, hp=10).id,
+                'third_pokemon': mommy.make(
+                    'pokemons.Pokemon', id=3, attack=10, defense=10, hp=10).id
             }
         }
 
         form = ChooseTeamForm(**params)
         self.assertTrue(form.is_valid(), form.errors)
+
+    def test_pokemon_with_stats_equal_or_more_than_600(self):
+        params = {
+            'initial': {
+                'trainer': self.user,
+                'battle_related': self.battle
+            },
+            'data': {
+                'first_pokemon': mommy.make(
+                    'pokemons.Pokemon', id=1, attack=100, defense=100, hp=100).id,
+                'second_pokemon': mommy.make(
+                    'pokemons.Pokemon', id=2, attack=100, defense=100, hp=100).id,
+                'third_pokemon': mommy.make(
+                    'pokemons.Pokemon', id=3, attack=10, defense=10, hp=10).id
+            }
+        }
+        form = ChooseTeamForm(**params)
+        self.assertFalse(form.is_valid())

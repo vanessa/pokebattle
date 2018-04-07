@@ -33,11 +33,26 @@ class ChooseTeamForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
 
+        if not cleaned_data.get('first_pokemon'):
+            raise forms.ValidationError(
+                'Invalid input. Please, use numbers only.'
+            )
+
+        if not cleaned_data.get('second_pokemon'):
+            raise forms.ValidationError(
+                'Invalid input. Please, use numbers only.'
+            )
+
+        if not cleaned_data.get('third_pokemon'):
+            raise forms.ValidationError(
+                'Invalid input. Please, use numbers only.'
+            )
+
         pokemon_list = []
         pokemon_list.extend([
-            cleaned_data['first_pokemon'],
-            cleaned_data['second_pokemon'],
-            cleaned_data['third_pokemon']
+            cleaned_data.get('first_pokemon'),
+            cleaned_data.get('second_pokemon'),
+            cleaned_data.get('third_pokemon')
         ])
 
         for pokemon in pokemon_list:
