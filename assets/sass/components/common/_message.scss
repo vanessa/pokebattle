@@ -1,0 +1,10 @@
+.message {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: .8em;
+
+    &.error {
+        color: #fff;
+        background: desaturate(darken(red, 10%), 15%);
+    }
+}

@@ -1,11 +1,13 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse
+from django.http.response import HttpResponseRedirect
 from django.views import generic
 
 from pokemons.models import Pokemon
 
 from .forms import ChooseTeamForm, CreateBattleForm
-from .models import Battle
+from .models import Battle, BattleTeam
 
 
 class BattlesListView(LoginRequiredMixin, generic.ListView):
@@ -67,6 +69,15 @@ class BattleView(LoginRequiredMixin, generic.DetailView):
 class ChoosePokemonTeamView(LoginRequiredMixin, generic.FormView):
     template_name = 'battles/choose_team.html'
     form_class = ChooseTeamForm
+
+    def get(self, request, *args, **kwargs):
+        battle_pk = kwargs['pk']
+        battle_team = BattleTeam.objects.filter(
+            battle_related__pk=battle_pk, trainer=request.user)
+        if battle_team.exists():
+            messages.error(request, 'You already chose a team!')
+            return HttpResponseRedirect(reverse('battles:details', kwargs={'pk': battle_pk}))
+        return super().get(request, *args, **kwargs)
 
     def get_initial(self):
         return {

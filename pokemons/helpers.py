@@ -34,3 +34,7 @@ def create_pokemon_if_not_exists(pid):
         new_pokemon.attack = stats_list['attack']
         new_pokemon.hp = stats_list['hp']
         new_pokemon.save()
+
+
+def check_if_pokemon_stats_exceeds_600():
+    pass

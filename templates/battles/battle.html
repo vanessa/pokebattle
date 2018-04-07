@@ -6,13 +6,13 @@
 {% block body %}
     <div class="pokebattle-container battle">
         {% if not opponents_pokemons %}
-            <div class="status waiting">
-                {% if user_is_opponent %}
-                    Waiting for you to choose
-                {% else %}
-                    Waiting for opponent
-                {% endif %}
-            </div>
+        <div class="status waiting">
+            {% if user_is_opponent %}
+            Waiting for you to choose
+            {% else %}
+            Waiting for opponent
+            {% endif %}
+        </div>
         {% endif %}
         <h2>{{ battle.creator.get_short_name }} vs. {{ battle.opponent.get_short_name }}</h2>
         {% comment %}    
@@ -20,6 +20,7 @@
             <strong>amanda</strong> won!
         </div>
         {% endcomment %}
+        {% include 'common/message.html' %}
         <section class="pick-team">
             {% if not user_has_chosen_a_team %}
                 <a href="{% url 'battles:team' battle.pk %}">Pick my team</a>
