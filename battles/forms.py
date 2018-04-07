@@ -1,6 +1,6 @@
 from django import forms
 
-from pokemons.helpers import create_pokemon_if_not_exists
+from pokemons.helpers import check_if_pokemon_stats_exceeds_600, create_pokemon_if_not_exists
 from pokemons.models import Pokemon
 from users.models import User
 
@@ -42,6 +42,9 @@ class ChooseTeamForm(forms.ModelForm):
 
         for pokemon in pokemon_list:
             create_pokemon_if_not_exists(pokemon)
+
+        print(check_if_pokemon_stats_exceeds_600(pokemon_list))
+
         new_team = BattleTeam.objects.create(
             battle_related=self.initial['battle_related'],
             trainer=self.initial['trainer'],

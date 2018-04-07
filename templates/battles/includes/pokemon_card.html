@@ -1,9 +1,21 @@
-<div class="pokemon-card" order="{{ chosen_pokemon.order }}">
-    <img src="{{ chosen_pokemon.pokemon.sprite }}">
-    <i>{{ chosen_pokemon.pokemon.name }}</i>
-    <div class="attributes">
-        <span>A: {{ chosen_pokemon.pokemon.attack }}</span>
-        <span>D: {{ chosen_pokemon.pokemon.defense }}</span>
-        <span>HP: {{ chosen_pokemon.pokemon.hp }}</span>
+{% if not user_has_chosen_a_team %}
+    <div class="pokemon-card inactive">
+        <div class="pokemon-pic placeholder-comp"></div>
+        <i class="pokemon-name placeholder-comp"></i>
+        <div class="attributes">
+            <span class="placeholder-comp"></span>
+            <span class="placeholder-comp"></span>
+            <span class="placeholder-comp"></span>
+        </div>
     </div>
-</div>
+{% else %}
+    <div class="pokemon-card" order="{{ order }}">
+        <img src="{{ pokemon.sprite }}">
+        <i>{{ pokemon.name }}</i>
+        <div class="attributes">
+            <span>A: {{ pokemon.attack }}</span>
+            <span>D: {{ pokemon.defense }}</span>
+            <span>HP: {{ pokemon.hp }}</span>
+        </div>
+    </div>
+{% endif %}

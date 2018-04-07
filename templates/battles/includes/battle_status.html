@@ -1,0 +1,9 @@
+{% if not opponents_pokemons or not creators_pokemons %}
+<div class="status waiting">
+    {% if not user_has_chosen_a_team %}
+        Waiting for you
+    {% else %}
+        Waiting for your opponent
+    {% endif %}
+</div>
+{% endif %}
