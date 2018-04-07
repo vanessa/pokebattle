@@ -43,7 +43,10 @@ class ChooseTeamForm(forms.ModelForm):
         for pokemon in pokemon_list:
             create_pokemon_if_not_exists(pokemon)
 
-        print(check_if_pokemon_stats_exceeds_600(pokemon_list))
+        if check_if_pokemon_stats_exceeds_600(pokemon_list) is True:
+            raise forms.ValidationError(
+                'Your Pokemon stats cannot sum more than 600.'
+            )
 
         new_team = BattleTeam.objects.create(
             battle_related=self.initial['battle_related'],

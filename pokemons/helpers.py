@@ -41,6 +41,6 @@ def check_if_pokemon_stats_exceeds_600(pokemon_list):
     for pokemon_id in pokemon_list:
         pkn = Pokemon.objects.get(id=pokemon_id)
         stats_sum = pkn.attack + pkn.defense + pkn.hp
-        stats.extend(stats_sum)
+        stats.extend([stats_sum])
     result = sum(stats)
     return True if result >= 600 else False
