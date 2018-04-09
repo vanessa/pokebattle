@@ -10,9 +10,13 @@ __pycache__/
 # coverage result
 .coverage
 /coverage/
+/htmlcov/
 
 # pycharm
 .idea
+
+# vscode
+.vscode
 
 # data
 *.dump
