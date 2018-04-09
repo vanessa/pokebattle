@@ -11,7 +11,7 @@
 {% else %}
     <div class="pokemon-card" order="{{ order }}">
         <img src="{{ pokemon.sprite }}">
-        <i>{{ pokemon.name }}</i>
+        <i>{{ pokemon.name }} ({{ pokemon.id }})</i>
         <div class="attributes">
             <span>A: {{ pokemon.attack }}</span>
             <span>D: {{ pokemon.defense }}</span>

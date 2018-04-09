@@ -33,27 +33,51 @@ class ChooseTeamForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
 
-        if not cleaned_data.get('first_pokemon'):
+        first_pokemon = cleaned_data.get('first_pokemon')
+        second_pokemon = cleaned_data.get('second_pokemon')
+        third_pokemon = cleaned_data.get('third_pokemon')
+
+        if not first_pokemon:
             raise forms.ValidationError(
                 'Invalid input. Please, use numbers only.'
             )
 
-        if not cleaned_data.get('second_pokemon'):
+        if not second_pokemon:
             raise forms.ValidationError(
                 'Invalid input. Please, use numbers only.'
             )
 
-        if not cleaned_data.get('third_pokemon'):
+        if not third_pokemon:
             raise forms.ValidationError(
                 'Invalid input. Please, use numbers only.'
+            )
+
+        if str(first_pokemon).startswith('0'):
+            raise forms.ValidationError(
+                'Pokemon\'s id cannot start with 0!'
+            )
+
+        if str(second_pokemon).startswith('0'):
+            raise forms.ValidationError(
+                'Pokemon\'s id cannot start with 0!'
+            )
+
+        if str(third_pokemon).startswith('0'):
+            raise forms.ValidationError(
+                'Pokemon\'s id cannot start with 0!'
             )
 
         pokemon_list = []
         pokemon_list.extend([
-            cleaned_data.get('first_pokemon'),
-            cleaned_data.get('second_pokemon'),
-            cleaned_data.get('third_pokemon')
+            first_pokemon,
+            second_pokemon,
+            third_pokemon
         ])
+
+        if len(set(pokemon_list)) != 3:
+            raise forms.ValidationError(
+                'There\'s duplicates Pokemon'  # TODO
+            )
 
         for pokemon in pokemon_list:
             create_pokemon_if_not_exists(pokemon)
