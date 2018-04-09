@@ -15,6 +15,8 @@ def base_dir_join(*args):
 
 LOGIN_URL = reverse_lazy('auth:login')
 
+LOGIN_REDIRECT_URL = reverse_lazy('battles:list')
+
 SITE_ID = 1
 
 SECURE_HSTS_PRELOAD = True
