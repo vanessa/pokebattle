@@ -92,4 +92,5 @@ class ChooseTeamForm(forms.ModelForm):
             trainer=self.initial['trainer'],
         )
         new_team.pokemons.add(*Pokemon.objects.filter(id__in=pokemon_list))
+
         return cleaned_data
