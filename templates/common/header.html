@@ -15,7 +15,7 @@
                 <span class="name">
                     Hello, <strong>{{ user.get_short_name }}</strong>!
                 </span>
-                <a href="#">Logout</a>
+                <a href="{% url 'auth:logout' %}">Logout</a>
             {% else %}
                 <a href="{% url 'auth:login' %}">Login</a>
             {% endif %}

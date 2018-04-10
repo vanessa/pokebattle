@@ -14,5 +14,8 @@ def can_run_battle(battle_id):
         return True
 
 
-def run_battle():
-    pass
+def check_and_run_battle(battle_id):
+    if can_run_battle(battle_id) is True:
+        print('Go on')
+    else:
+        print('No!')

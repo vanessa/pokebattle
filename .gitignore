@@ -15,9 +15,6 @@ __pycache__/
 # pycharm
 .idea
 
-# vscode
-.vscode
-
 # data
 *.dump
 
@@ -25,8 +22,9 @@ __pycache__/
 node_modules/
 npm-debug.log
 
-#Folders
+# Folders
 .DS_Store
+.vscode/
 
 # Webpack
 /assets/bundles/*

@@ -4,6 +4,7 @@ from pokemons.helpers import check_if_pokemon_stats_exceeds_600, create_pokemon_
 from pokemons.models import Pokemon
 from users.models import User
 
+from .helpers import check_and_run_battle
 from .models import Battle, BattleTeam
 
 
@@ -36,6 +37,7 @@ class ChooseTeamForm(forms.ModelForm):
         first_pokemon = cleaned_data.get('first_pokemon')
         second_pokemon = cleaned_data.get('second_pokemon')
         third_pokemon = cleaned_data.get('third_pokemon')
+        battle = self.initial['battle_related']
 
         if not first_pokemon:
             raise forms.ValidationError(
@@ -92,5 +94,7 @@ class ChooseTeamForm(forms.ModelForm):
             trainer=self.initial['trainer'],
         )
         new_team.pokemons.add(*Pokemon.objects.filter(id__in=pokemon_list))
+
+        check_and_run_battle(battle.id)
 
         return cleaned_data
