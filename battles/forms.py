@@ -76,7 +76,7 @@ class ChooseTeamForm(forms.ModelForm):
 
         if len(set(pokemon_list)) != 3:
             raise forms.ValidationError(
-                'There\'s duplicates Pokemon'  # TODO
+                'There are duplicates Pokemon, please use unique ids'
             )
 
         for pokemon in pokemon_list:
@@ -92,5 +92,4 @@ class ChooseTeamForm(forms.ModelForm):
             trainer=self.initial['trainer'],
         )
         new_team.pokemons.add(*Pokemon.objects.filter(id__in=pokemon_list))
-
         return cleaned_data
