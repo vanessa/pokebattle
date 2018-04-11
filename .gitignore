@@ -25,7 +25,7 @@ __pycache__/
 node_modules/
 npm-debug.log
 
-#Folders
+# Folders
 .DS_Store
 
 # Webpack
@@ -37,6 +37,7 @@ npm-debug.log
 # Sass
 .sass-cache
 *.map
+.stylelintrc
 
 # General
 /venv/
