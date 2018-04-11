@@ -32,6 +32,14 @@ class TestBattle(TestCaseUtils, TestCase):
     def test_cannot_run_battle_without_a_team(self):
         self.assertFalse(can_run_battle(self.battle.id))
 
+    def test_cannot_run_battle_with_just_one_team(self):
+        mommy.make(
+            'battles.BattleTeam', battle_related=self.battle,
+            pokemons=mommy.make('pokemons.Pokemon', _quantity=3),
+            trainer=self.battle.opponent
+        )
+        self.assertFalse(can_run_battle(self.battle.id))
+
     def test_two_pokemon_comparison(self):
         winner = compare_two_pokemons(
             self.creator_pokemon.id, self.opponent_pokemon.id)
