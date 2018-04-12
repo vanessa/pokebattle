@@ -49,3 +49,7 @@ class TestBattle(TestCaseUtils, TestCase):
     def test_battle_running(self):
         self.add_related_battle_to_teams()
         self.assertNotEqual(run_battle_and_get_winner(self.battle.id), None)
+
+    def test_if_battle_returns_a_winner(self):
+        self.add_related_battle_to_teams()
+        self.assertIsInstance(run_battle_and_get_winner(self.battle.id))
