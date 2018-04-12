@@ -66,18 +66,19 @@ def mount_battle_list(battle_id):
     return result['creator_team'], result['opponent_team']
 
 
+def get_pokemon_winner_list(battle_id):
+    battle_list = mount_battle_list(battle_id)
+    comparison_winners = []
+    for creator_pokemon, opponent_pokemon in zip(battle_list[0], battle_list[1]):
+        comparison_winners.append(compare_two_pokemons(
+            creator_pokemon, opponent_pokemon))
+    return comparison_winners
+
+
 def check_run_battle_and_get_winner(battle_id):
 
-    def get_pokemon_winner_list():
-        battle_list = mount_battle_list(battle_id)
-        comparison_winners = []
-        for creator_pokemon, opponent_pokemon in zip(battle_list[0], battle_list[1]):
-            comparison_winners.append(compare_two_pokemons(
-                creator_pokemon, opponent_pokemon))
-        return comparison_winners
-
     def get_winner():
-        winner_list = get_pokemon_winner_list()
+        winner_list = get_pokemon_winner_list(battle_id)
         teams = BattleTeam.objects.filter(
             battle_related__id=battle_id, pokemons__in=winner_list)
         winner_trainer_id = Counter(
@@ -92,21 +93,28 @@ def check_run_battle_and_get_winner(battle_id):
     return check_and_run_battle()
 
 
+def generate_pokemon_label(battle_id):
+    winner_list = get_pokemon_winner_list(battle_id)
+    # TODO: iterate in battle teams and find the winner pokemons to generate the labels
+
+
 def send_email_when_battle_runs(battle_id):
     battle = Battle.objects.get(id=battle_id)
 
     def send_email_to_trainer(user_id):
         user = User.objects.get(id=user_id)
-        relative_opponent = battle.opponent if battle.creator == user else battle.opponent
+        relative_opponent = battle.creator if battle.creator != user else battle.opponent
         send_templated_mail(
             template_name='battle_result',
             from_email=settings.DEFAULT_FROM_EMAIL,
             recipient_list=[user.email],
             context={
                 'username': user.get_short_name(),
-                'relative_opponent': relative_opponent,
-                'winner': battle.winner
+                'relative_opponent': relative_opponent.get_short_name(),
+                'winner': battle.winner.get_short_name(),
+                'creator_team': BattleTeam.objects.get(battle_related=battle, trainer=battle.creator).pokemons.all(),
+                'opponent_team': BattleTeam.objects.get(battle_related=battle, trainer=battle.opponent).pokemons.all()
             }
         )
-    
-    [send_email_to_trainer(user.id) for user in [battle.creator, battle.opponent]]
+        [send_email_to_trainer(user.id)
+         for user in [battle.creator, battle.opponent]]

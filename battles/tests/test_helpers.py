@@ -6,10 +6,12 @@ from battles.helpers import (
     can_run_battle,
     compare_two_pokemons,
     check_run_battle_and_get_winner,
-    send_email_when_battle_runs
+    send_email_when_battle_runs,
+    generate_pokemon_label
 )
 from common.utils.tests import TestCaseUtils
 from users.models import User
+from battles.models import Battle
 
 
 class TestBattle(TestCaseUtils, TestCase):
@@ -69,3 +71,7 @@ class TestBattle(TestCaseUtils, TestCase):
     def test_send_email_only_if_a_battle_can_run(self):
         self.assertFalse(can_run_battle(self.battle.id))
         self.assertEqual(send_email_when_battle_runs(self.battle.id), None)
+
+    def test_generate(self):
+        self.add_related_battle_to_teams()
+        print(generate_pokemon_label(self.battle.id))
