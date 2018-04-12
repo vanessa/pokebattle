@@ -17,6 +17,8 @@ LOGIN_URL = reverse_lazy('auth:login')
 
 LOGIN_REDIRECT_URL = reverse_lazy('battles:list')
 
+LOGOUT_REDIRECT_URL = reverse_lazy('home')
+
 SITE_ID = 1
 
 SECURE_HSTS_PRELOAD = True

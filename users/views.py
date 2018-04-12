@@ -1,5 +1,5 @@
 from django.conf import settings
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, LogoutView
 from django.http.response import HttpResponseRedirect
 from django.shortcuts import render  # noqa
 
@@ -11,3 +11,6 @@ class UserLoginView(LoginView):
         if request.user.is_authenticated():
             return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
         return super().get(request, *args, **kwargs)
+
+class UserLogoutView(LogoutView):
+    pass
