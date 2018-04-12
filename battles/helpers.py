@@ -44,9 +44,20 @@ def compare_two_pokemons(creator_pokemon_id, opponent_pokemon_id):
     winner = get_winner_if_not_tie()
     return winner
 
+def mount_battle_dict(battle_id):
+    battle = Battle.objects.get(id=battle_id)
+    creator_team = BattleTeam.objects.get(battle_related=battle, trainer=battle.creator)
+    opponent_team = BattleTeam.objects.get(battle_related=battle, trainer=battle.opponent)
+    result = []
+    result[0] = [pokemon.id for pokemon in creator_team.pokemons.all()]
+    result[1] = [pokemon.id for pokemon in opponent_team.pokemons.all()]
+    return result
 
 def check_and_run_battle(battle_id):
     if can_run_battle(battle_id) is True:
-        print('Do it!')
+        pokemon = mount_battle_dict(battle_id)
+        for creator_pokemon, opponent_pokemon in zip([iter(pokemon)]):
+            print(creator_pokemon)
+        # TODO run tests
     else:
         print('No!')
