@@ -82,10 +82,7 @@ def run_battle_and_get_winner(battle_id):
         return battle_winner
 
     def check_and_run_battle():
-        battle = Battle.objects.get(id=battle_id)
         if can_run_battle(battle_id) is True:
             return get_winner()
-        else:
-            print('Battle cannot be ran')
 
     return check_and_run_battle()
