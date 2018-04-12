@@ -2,7 +2,7 @@ from django.test import TestCase
 
 from model_mommy import mommy
 
-from battles.helpers import can_run_battle, check_and_run_battle, compare_two_pokemons
+from battles.helpers import can_run_battle, compare_two_pokemons, run_battle_and_get_winner
 from common.utils.tests import TestCaseUtils
 
 
@@ -48,4 +48,4 @@ class TestBattle(TestCaseUtils, TestCase):
 
     def test_battle_running(self):
         self.add_related_battle_to_teams()
-        check_and_run_battle(self.battle.id)
+        self.assertNotEqual(run_battle_and_get_winner(self.battle.id), None)
