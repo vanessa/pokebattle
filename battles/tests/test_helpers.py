@@ -4,6 +4,7 @@ from model_mommy import mommy
 
 from battles.helpers import can_run_battle, compare_two_pokemons, run_battle_and_get_winner
 from common.utils.tests import TestCaseUtils
+from users.models import User
 
 
 class TestBattle(TestCaseUtils, TestCase):
@@ -52,4 +53,4 @@ class TestBattle(TestCaseUtils, TestCase):
 
     def test_if_battle_returns_a_winner(self):
         self.add_related_battle_to_teams()
-        self.assertIsInstance(run_battle_and_get_winner(self.battle.id))
+        self.assertIsInstance(run_battle_and_get_winner(self.battle.id), User)
