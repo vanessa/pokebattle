@@ -15,6 +15,7 @@
 
   <body>
     <!-- Body Content -->
+    {% include 'common/header.html' %}
     {% block body %}{% endblock %}
 
     {% render_bundle 'main' 'js' 'JQUERY' %}

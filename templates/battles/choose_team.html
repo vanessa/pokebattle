@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+{% block title %}PokeBattle &middot; Choose your team{% endblock %}
+
+{% block body %}
+    <div class="pokebattle-container battle">
+        <a href="{% url 'battles:details' battle.pk %}">&laquo; Back to battle</a>
+        <h3>{{ battle }}</h3>
+        <h2>Choose your Pokemons!</h2>
+        <div class="team-form-instruction">
+            Remember to use only their ids
+        </div>
+        {% if form.errors %}
+            <div class="form-error">{{ form.errors }}</div>
+        {% endif %}
+        <form method="POST">
+            {% csrf_token %}
+            {% render_field form.first_pokemon placeholder=form.first_pokemon.label %}
+            {% render_field form.second_pokemon placeholder=form.second_pokemon.label %}
+            {% render_field form.third_pokemon placeholder=form.third_pokemon.label %}
+            
+            <div class="inputs-hidden">
+                {% render_field form.battle_related %}
+                {% render_field form.trainer %}
+            </div>
+            <input type="submit" value="Pick my team">
+        </form>
+    </div>
+{% endblock %}

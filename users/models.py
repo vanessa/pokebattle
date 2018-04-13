@@ -26,7 +26,7 @@ class User(AbstractBaseUser, PermissionsMixin, IndexedTimeStampedModel):
         return self.email
 
     def get_short_name(self):
-        return self.email
+        return self.email.split('@')[0]
 
     def __str__(self):
         return self.email

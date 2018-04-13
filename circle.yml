@@ -1,11 +1,16 @@
-machine:  # remeber to update those!
+machine:  # remember to update those!
   python:
-    version: 3.6.0
+    version: 3.6.4
   node:
     version: 6.1.0
   environment:
     # makes default virtualenv be ignored by pipenv avoiding dependencies conflict
     PIPENV_IGNORE_VIRTUALENVS: True
+  pre:
+    - cd /opt/circleci/.pyenv/plugins/python-build/../.. && git pull && cd -
+    - pyenv install 3.6.4
+  post:
+    - pyenv global 3.6.4
 
 dependencies:
   pre:
@@ -25,7 +30,7 @@ test:
     - pipenv run prospector
     # security checks
     - pipenv run bandit -r .
-    - pipenv run pip freeze | safety check --stdin
+    - pipenv check
     # imports check
     - pipenv run isort **/*.py --check-only
     # pre-commit additional checks
@@ -46,9 +51,3 @@ test:
     - npm run test
   post:
     - pipenv run coverage html -d $CIRCLE_ARTIFACTS
-
-# This is necessary for the boilerplate's CI. You can remove these lines
-general:
-  branches:
-    ignore:
-      - boilerplate-release
