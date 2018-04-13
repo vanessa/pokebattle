@@ -1,7 +1,3 @@
-{% block subject %}Results of your battle with {{ relative_opponent }}{% endblock %}
-{% block plain %}
-{% endblock %}
-{% block html %}
 {% load inlinecss %}
 {% inlinecss "css/email-template.css" %}
 <div class="pokebattle-email-container" style="background-color: #f2f2f2;">
@@ -10,50 +6,37 @@
             PokeBattle
         </h2>
         <p>
-            Hello {{ username }},
+            Hello vanessa,
         </p>
         <p>
-            Here are the results of your battle against <strong>{{ relative_opponent }}</strong>.
+            Here are the results of your battle against <strong>amanda</strong>.
         </p>
-        <div class="team-labels">
-            <div class="your-team label">Your team</div>
-            <div class="opponent-team label">Opponent's team</div>
-        </div>
         <div class="email-two-column">
             <div class="creator-team-column team-column">
-                {% for pokemon in your_team %}
                 <div class="pokemon-card">
                     <div class="pokemon-picture creator-card-pokemon-picture">
-                        <img src="{{ pokemon.sprite }}">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/9.png">
                     </div>
                     <div class="pokemon-name creator-card-pokemon-name">
-                        {{ pokemon.name }}
+                        Pikachu
                     </div>
                     <div class="pokemon-attributes creator-card-pokemon-attributes">
-                        A: {{ pokemon.attack }} | D: {{ pokemon.defense }} | HP: {{ pokemon.hp }}
+                        A: 20 | D: 10 | HP: 21
                     </div>
                 </div>
-                {% endfor %}
-            </div>
-            <div class="versus-column">
-                <div id="first">vs.</div>
-                <div id="second">vs.</div>
-                <div id="third">vs.</div>
             </div>
             <div class="opponent-team-column team-column">
-                {% for pokemon in opponent_team %}
                 <div class="pokemon-card">
                     <div class="pokemon-picture opponent-card-pokemon-picture">
-                        <img src="{{ pokemon.sprite }}">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/15.png">
                     </div>
                     <div class="pokemon-name opponent-card-pokemon-name">
-                        {{ pokemon.name }}
+                        Pikachu
                     </div>
                     <div class="pokemon-attributes opponent-card-pokemon-name">
-                        A: {{ pokemon.attack }} | D: {{ pokemon.defense }} | HP: {{ pokemon.hp }}
+                        A: 20 | D: 10 | HP: 21
                     </div>
                 </div>
-                {% endfor %}
             </div>
         </div>
         <p class="battle-winner">
@@ -62,4 +45,3 @@
     </div>
 </div>
 {% endinlinecss %}
-{% endblock %}

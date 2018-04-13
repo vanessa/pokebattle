@@ -5,13 +5,16 @@ from django.views.generic import TemplateView
 
 import django_js_reverse.views
 
+from battles.emails import EmailSimulationView
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls, name='admin'),
     url(r'^jsreverse/$', django_js_reverse.views.urls_js, name='js_reverse'),
     url(r'^$', TemplateView.as_view(template_name='common/index.html'), name='home'),
     url(r'^', include('users.urls', namespace='auth')),
-    url(r'^battles/', include('battles.urls', namespace='battles'))
+    url(r'^battles/', include('battles.urls', namespace='battles')),
+    url(r'^email$', EmailSimulationView.as_view(), name='email')
 ]
 
 if settings.DEBUG:

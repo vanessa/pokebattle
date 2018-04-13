@@ -109,10 +109,10 @@ def send_email_when_battle_runs(battle_id):
                 'username': user.get_short_name(),
                 'relative_opponent': relative_opponent.get_short_name(),
                 'winner': battle.winner.get_short_name(),
-                'creator_team': BattleTeam.objects.get(battle_related=battle,
-                                                       trainer=battle.creator).pokemons.all(),
+                'your_team': BattleTeam.objects.get(battle_related=battle,
+                                                    trainer=user).pokemons.all(),
                 'opponent_team': BattleTeam.objects.get(battle_related=battle,
-                                                        trainer=battle.opponent).pokemons.all()
+                                                        trainer=relative_opponent).pokemons.all()
             }
         )
     return [send_email_to_trainer(user.id) for user in [battle.creator, battle.opponent]]
