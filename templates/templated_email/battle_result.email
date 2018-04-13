@@ -319,11 +319,13 @@
                                                                         padding: 10px 0 10px;
                                                                         margin: 15px;
                                                                         font-size: 1.2em;">
+                                                                        {% comment %}
                                                                         <div>
                                                                            <span style="border-radius: 5px; color: #fff; padding: 3px 10px; font-weight: bold; font-size: .7em; background-color: #10ac84;">
                                                                            Won
                                                                            </span>
                                                                         </div>
+                                                                        {% endcomment %}
                                                                         <div style="margin-top: -5px">
                                                                            <img src="{{ pokemon.sprite }}">
                                                                         </div>
@@ -355,11 +357,13 @@
                                                                         padding: 10px 0 10px;
                                                                         margin: 15px;
                                                                         font-size: 1.2em;">
+                                                                        {% comment %}
                                                                         <div>
                                                                            <span style="border-radius: 5px; color: #fff; padding: 3px 10px; font-weight: bold; font-size: .7em; background-color: #ee5253;">
                                                                            Lost
                                                                            </span>
                                                                         </div>
+                                                                        {% endcomment %}
                                                                         <div style="margin-top: -15px">
                                                                            <img src="{{ pokemon.sprite }}">
                                                                         </div>

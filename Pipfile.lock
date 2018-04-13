@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "8b628d0554f80676ca3a7c002208b8ad607f5d220588cc2363458a53c3266094"
+            "sha256": "af780cca043d66c40002c8be4ed88f6ee4c9e90d24c63b2052ba16407c112f6e"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -769,7 +769,7 @@
                 "with-vulture"
             ],
             "git": "https://github.com/vintasoftware/prospector.git",
-            "ref": "f81e290"
+            "ref": "0a63f2b"
         },
         "pylint": {
             "hashes": [

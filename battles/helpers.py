@@ -1,7 +1,8 @@
 from collections import Counter
 
-from templated_email import send_templated_mail
 from django.conf import settings
+
+from templated_email import send_templated_mail
 
 from pokemons.helpers import Pokemon
 from users.models import User
@@ -89,13 +90,9 @@ def check_run_battle_and_get_winner(battle_id):
     def check_and_run_battle():
         if can_run_battle(battle_id) is True:
             return get_winner()
+        return False
 
     return check_and_run_battle()
-
-
-def generate_pokemon_label(battle_id):
-    winner_list = get_pokemon_winner_list(battle_id)
-    # TODO: iterate in battle teams and find the winner pokemons to generate the labels
 
 
 def send_email_when_battle_runs(battle_id):
@@ -112,9 +109,10 @@ def send_email_when_battle_runs(battle_id):
                 'username': user.get_short_name(),
                 'relative_opponent': relative_opponent.get_short_name(),
                 'winner': battle.winner.get_short_name(),
-                'creator_team': BattleTeam.objects.get(battle_related=battle, trainer=battle.creator).pokemons.all(),
-                'opponent_team': BattleTeam.objects.get(battle_related=battle, trainer=battle.opponent).pokemons.all()
+                'creator_team': BattleTeam.objects.get(battle_related=battle,
+                                                       trainer=battle.creator).pokemons.all(),
+                'opponent_team': BattleTeam.objects.get(battle_related=battle,
+                                                        trainer=battle.opponent).pokemons.all()
             }
         )
-        [send_email_to_trainer(user.id)
-         for user in [battle.creator, battle.opponent]]
+    return [send_email_to_trainer(user.id) for user in [battle.creator, battle.opponent]]

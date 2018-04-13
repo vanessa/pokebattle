@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'webpack_loader',
     'import_export',
     'widget_tweaks',
+    'django_inlinecss',
+    'templated_email',
 
     'common',
     'users',

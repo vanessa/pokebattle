@@ -1,18 +1,12 @@
 from django import forms
 
-from pokemons.helpers import (
-    check_if_pokemon_stats_exceeds_600,
-    create_pokemon_if_not_exists
-)
+from pokemons.helpers import check_if_pokemon_stats_exceeds_600, create_pokemon_if_not_exists
 from pokemons.models import Pokemon
 from users.models import User
 
+from .helpers import check_run_battle_and_get_winner, send_email_when_battle_runs
 from .models import Battle, BattleTeam
 
-from .helpers import (
-    check_run_battle_and_get_winner,
-    send_email_when_battle_runs
-)
 
 class CreateBattleForm(forms.ModelForm):
     class Meta:
@@ -105,8 +99,8 @@ class ChooseTeamForm(forms.ModelForm):
         battle_winner = check_run_battle_and_get_winner(battle.id)
 
         if battle_winner:
-            send_email_when_battle_runs(battle.id)
             battle.winner = battle_winner
             battle.save()
-        
+            send_email_when_battle_runs(battle.id)
+
         return cleaned_data
