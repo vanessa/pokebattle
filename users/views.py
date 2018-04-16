@@ -12,5 +12,6 @@ class UserLoginView(LoginView):
             return HttpResponseRedirect(settings.LOGIN_REDIRECT_URL)
         return super().get(request, *args, **kwargs)
 
+
 class UserLogoutView(LogoutView):
     pass
