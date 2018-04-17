@@ -80,7 +80,7 @@ class ChooseTeamForm(forms.ModelForm):
 
         if len(set(pokemon_list)) != 3:
             raise forms.ValidationError(
-                'There are duplicates Pokemon, please use unique ids'
+                'There are duplicate Pokemon, please use unique ids'
             )
 
         for pokemon in pokemon_list:
