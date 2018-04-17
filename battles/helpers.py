@@ -1,17 +1,10 @@
 from .models import Battle, BattleTeam
 
 
-def can_run_battle(battle_id):
-    battle = Battle.objects.get(id=battle_id)
-    try:
-        BattleTeam.objects.get(
-            battle_related=battle, trainer=battle.creator)
-        BattleTeam.objects.get(
-            battle_related=battle, trainer=battle.opponent)
-    except BattleTeam.DoesNotExist:
-        return False
-    else:
-        return True
+def can_run_battle(battle):
+    creator_team = BattleTeam.objects.filter(battle_related=battle, trainer=battle.creator).exists()
+    opponent_team = BattleTeam.objects.filter(battle_related=battle, trainer=battle.opponent).exists()
+    return creator_team and opponent_team
 
 
 def check_and_run_battle(battle_id):

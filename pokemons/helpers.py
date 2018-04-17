@@ -1,46 +1,49 @@
 import json
 
+from django.conf import settings
+
 import requests as r
 
 from pokemons.models import Pokemon
 
-from .variables import POKEMON_URL
 
-
-def create_pokemon_if_not_exists(pid):
-    try:
-        Pokemon.objects.get(id=pid)
-    except Pokemon.DoesNotExist:
-        pkn = r.get(
-            POKEMON_URL + str(pid)
+def init_pokemon_object_if_non_existent(pid):
+    if Pokemon.objects.filter(id=pid).exists():
+        pokemon_dict = r.get(
+            '{pokeapi}/{pokemon_id}'.format(
+                pokeapi=settings.POKEAPI_POKEMON_URL,
+                pokemon_id=pid
+            )
         )
-        pkn = json.loads(pkn.text)
+        pokemon_dict = json.loads(pokemon_dict.text)
+        attributes = get_pokemon_attributes(pokemon_dict)
         new_pokemon = Pokemon(
             id=pid,
-            name=pkn['name'],
-            sprite=pkn['sprites']['front_default']
+            name=pokemon_dict['name'],
+            sprite=pokemon_dict['sprites']['front_default'],
+            defense=attributes['defense'],
+            attack=attributes['attack'],
+            hp=attributes['hp']
         )
-        stats = [(stats['stat']['name'], stats['base_stat'])
-                 for stats in pkn['stats']]
-        stats_list = {}
-        for stat in stats:
-            stat_name = stat[0]
-            stat_value = stat[1]
-            if (stat_name == 'defense' or
-                stat_name == 'attack' or
-                    stat_name == 'hp'):
-                stats_list[stat_name] = stat_value
-        new_pokemon.defense = stats_list['defense']
-        new_pokemon.attack = stats_list['attack']
-        new_pokemon.hp = stats_list['hp']
-        new_pokemon.save()
+        return new_pokemon
+
+
+def get_pokemon_attributes(pokemon_dict):
+    stats = [(stats['stat']['name'], stats['base_stat'])
+             for stats in pokemon_dict['stats']]
+    stats_dict = {}
+    for stat in stats:
+        stat_name = stat[0]
+        stat_value = stat[1]
+        if (stat_name == 'defense' or
+            stat_name == 'attack' or
+                stat_name == 'hp'):
+            stats_dict[stat_name] = stat_value
+    return stats_dict
 
 
 def check_if_pokemon_stats_exceeds_600(pokemon_list):
-    stats = []
-    for pokemon_id in pokemon_list:
-        pkn = Pokemon.objects.get(id=pokemon_id)
-        stats_sum = pkn.attack + pkn.defense + pkn.hp
-        stats.extend([stats_sum])
+    stats = [pokemon.attack + pokemon.defense + pokemon.hp
+             for pokemon in pokemon_list]
     result = sum(stats)
-    return True if result >= 600 else False
+    return result >= 600
