@@ -7,8 +7,8 @@ import requests as r
 from pokemons.models import Pokemon
 
 
-def init_pokemon_object_if_non_existent(pid):
-    if Pokemon.objects.filter(id=pid).exists():
+def init_pokemon_object(pid):
+    if not Pokemon.objects.filter(id=pid).exists():
         pokemon_dict = r.get(
             '{pokeapi}/{pokemon_id}'.format(
                 pokeapi=settings.POKEAPI_POKEMON_URL,
@@ -26,6 +26,7 @@ def init_pokemon_object_if_non_existent(pid):
             hp=attributes['hp']
         )
         return new_pokemon
+    return Pokemon.objects.get(id=pid)
 
 
 def get_pokemon_attributes(pokemon_dict):

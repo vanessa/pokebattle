@@ -1,6 +1,6 @@
 from django import forms
 
-from pokemons.helpers import check_if_pokemon_stats_exceeds_600, init_pokemon_object_if_non_existent
+from pokemons.helpers import check_if_pokemon_stats_exceeds_600, init_pokemon_object
 from pokemons.models import Pokemon
 from users.models import User
 
@@ -45,17 +45,17 @@ class ChooseTeamForm(forms.ModelForm):
 
     def clean_first_pokemon(self):
         value = self.cleaned_data.get('first_pokemon')
-        pokemon = init_pokemon_object_if_non_existent(value)
+        pokemon = init_pokemon_object(value)
         return pokemon
 
     def clean_second_pokemon(self):
         value = self.cleaned_data.get('second_pokemon')
-        pokemon = init_pokemon_object_if_non_existent(value)
+        pokemon = init_pokemon_object(value)
         return pokemon
 
     def clean_third_pokemon(self):
         value = self.cleaned_data.get('third_pokemon')
-        pokemon = init_pokemon_object_if_non_existent(value)
+        pokemon = init_pokemon_object(value)
         return pokemon
 
     def clean(self):
