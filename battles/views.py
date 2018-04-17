@@ -31,7 +31,7 @@ class CreateBattleView(LoginRequiredMixin, generic.CreateView):
     form_class = CreateBattleForm
 
     def get_initial(self):
-        return {'creator': self.request.user}
+        return {'creator': self.request.user.id}
 
     def get_success_url(self):
         return reverse('battles:details', kwargs={'pk': self.object.pk})
