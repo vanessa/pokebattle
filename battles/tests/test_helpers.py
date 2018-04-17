@@ -4,7 +4,7 @@ from model_mommy import mommy
 
 from battles.helpers.battle import can_run_battle, check_run_battle_and_return_winner
 from battles.helpers.emails import send_email_when_battle_finishes
-from battles.helpers.fight import compare_two_pokemons
+from battles.helpers.fight import compare_attack_to_defense, compare_hp
 from common.utils.tests import TestCaseUtils
 from users.models import User
 
@@ -15,7 +15,7 @@ class TestBattle(TestCaseUtils, TestCase):
         super().setUp()
         self.battle = mommy.make('battles.Battle')
         self.creator_pokemon = mommy.make(
-            'pokemons.Pokemon', name='Creatorpokemon', attack=60, defense=40, hp=30)
+            'pokemons.Pokemon', name='Creatorpokemon', attack=60, defense=20, hp=30)
         self.opponent_pokemon = mommy.make(
             'pokemons.Pokemon', name='Opponentpokemon', attack=30, defense=50, hp=10)
         self.creator_battle_team = mommy.make('battles.BattleTeam',
@@ -53,9 +53,13 @@ class TestBattle(TestCaseUtils, TestCase):
         self.creator_battle_team.battle_related = self.battle
         self.assertFalse(can_run_battle(self.battle.id))
 
-    def test_two_pokemon_comparison(self):
-        winner = compare_two_pokemons(
-            self.creator_pokemon.id, self.opponent_pokemon.id)
+    def test_pokemon_attack_to_defense_comparison(self):
+        winner = compare_attack_to_defense(
+            self.creator_pokemon, self.opponent_pokemon)
+        self.assertEqual(winner, self.creator_pokemon)
+
+    def test_pokemon_hp_comparison(self):
+        winner = compare_hp(self.creator_pokemon, self.opponent_pokemon)
         self.assertEqual(winner, self.creator_pokemon)
 
     def test_battle_running(self):
