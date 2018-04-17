@@ -40,7 +40,6 @@ whitenoise = "*"
 ipython = "*"
 requests = "*"
 django-widget-tweaks = "*"
-pokebase = "*"
 "autopep8" = "*"
 django-inlinecss = "*"
 
