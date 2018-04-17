@@ -74,5 +74,10 @@ class TestPokemonHelpers(TestCaseUtils, TestCase):
         self.assertDictEqual(expected_dict, attributes_dict)
 
     def test_pokemon_with_stats_higher_than_600_is_invalid(self):
+        for pokemon in self.pokemon_list:
+            pokemon.attack = 80
+            pokemon.defense = 80
+            pokemon.hp = 80
+            pokemon.save()
         stats = check_if_pokemon_stats_exceeds_600(self.pokemon_list)
-        self.assertFalse(stats)
+        self.assertTrue(stats)
