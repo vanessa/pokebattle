@@ -7,7 +7,9 @@ import requests
 from model_mommy import mommy
 
 from common.utils.tests import TestCaseUtils
-from pokemons.helpers import get_pokemon_attributes, init_pokemon_object
+from pokemons.helpers import (
+    check_if_pokemon_stats_exceeds_600, get_pokemon_attributes, init_pokemon_object
+)
 from pokemons.models import Pokemon
 
 
@@ -20,6 +22,9 @@ class TestPokemonHelpers(TestCaseUtils, TestCase):
             'pokemons.Pokemon', name='Creatorpokemon', id=5)
         self.opponent_pokemon = mommy.make(
             'pokemons.Pokemon', name='Opponentpokemon')
+        self.pokemon_list = mommy.make(
+            'pokemons.Pokemon', _quantity=3
+        )
 
     def example_request(self):
         return requests.get(
@@ -67,3 +72,7 @@ class TestPokemonHelpers(TestCaseUtils, TestCase):
             hp=58
         )
         self.assertDictEqual(expected_dict, attributes_dict)
+
+    def test_pokemon_with_stats_higher_than_600_is_invalid(self):
+        stats = check_if_pokemon_stats_exceeds_600(self.pokemon_list)
+        self.assertFalse(stats)
