@@ -1,9 +1,11 @@
-from .models import Battle, BattleTeam
+from .models import BattleTeam
 
 
 def can_run_battle(battle):
-    creator_team = BattleTeam.objects.filter(battle_related=battle, trainer=battle.creator).exists()
-    opponent_team = BattleTeam.objects.filter(battle_related=battle, trainer=battle.opponent).exists()
+    creator_team = BattleTeam.objects.filter(
+        battle_related=battle, trainer=battle.creator).exists()
+    opponent_team = BattleTeam.objects.filter(
+        battle_related=battle, trainer=battle.opponent).exists()
     return creator_team and opponent_team
 
 
