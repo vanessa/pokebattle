@@ -3,7 +3,6 @@
 import os
 
 from decouple import config  # noqa
-from django.core.urlresolvers import reverse_lazy
 
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -13,11 +12,11 @@ def base_dir_join(*args):
     return os.path.join(BASE_DIR, *args)
 
 
-LOGIN_URL = reverse_lazy('auth:login')
+LOGIN_URL = '/login'
 
-LOGIN_REDIRECT_URL = reverse_lazy('battles:list')
+LOGIN_REDIRECT_URL = '/battles'
 
-LOGOUT_REDIRECT_URL = reverse_lazy('home')
+LOGOUT_REDIRECT_URL = '/'
 
 SITE_ID = 1
 
@@ -132,3 +131,7 @@ WEBPACK_LOADER = {
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+
+# PokeAPI
+POKEAPI_URL = 'http://pokeapi.co/api/v2'
+POKEAPI_POKEMON_URL = '{pokeapi}/pokemon'.format(pokeapi=POKEAPI_URL)

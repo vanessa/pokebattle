@@ -58,7 +58,7 @@ class BattleView(LoginRequiredMixin, generic.DetailView):
             battle_team__battle_related=self.object,
             battle_team__trainer=self.object.opponent
         )
-        context['user_is_opponent'] = True if self.object.opponent == self.request.user else False
+        context['user_is_opponent'] = self.object.opponent == self.request.user
         context['user_has_chosen_a_team'] = Pokemon.objects.filter(
             battle_team__battle_related=self.object,
             battle_team__trainer=self.request.user
@@ -92,3 +92,7 @@ class ChoosePokemonTeamView(LoginRequiredMixin, generic.FormView):
 
     def get_success_url(self):
         return reverse('battles:details', kwargs={'pk': self.kwargs['pk']})
+
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
