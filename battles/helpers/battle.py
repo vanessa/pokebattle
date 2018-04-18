@@ -1,12 +1,12 @@
 from collections import Counter
 
+from battles.helpers.emails import send_email_when_battle_finishes
 from battles.helpers.fight import compare_two_pokemons
 from battles.models import Battle, BattleTeam
 from users.models import User
 
 
-def can_run_battle(battle_id):
-    battle = Battle.objects.get(id=battle_id)
+def can_run_battle(battle):
     try:
         BattleTeam.objects.get(
             battle_related=battle, trainer=battle.creator)
@@ -41,17 +41,18 @@ def get_winner_pokemon_list(battle_id):
     return comparison_winners
 
 
-def get_the_battle_winner(battle_id):
-    winner_list = get_winner_pokemon_list(battle_id)
+def get_the_battle_winner(battle):
+    winner_list = get_winner_pokemon_list(battle)
     teams = BattleTeam.objects.filter(
-        battle_related__id=battle_id, pokemons__in=winner_list)
+        battle_related__id=battle, pokemons__in=winner_list)
     winner_trainer_id = Counter(
         [team.trainer.id for team in teams]).most_common()[0][0]
     battle_winner = User.objects.get(id=winner_trainer_id)
     return battle_winner
 
 
-def check_run_battle_and_return_winner(battle_id):
-    if can_run_battle(battle_id):
-        return get_the_battle_winner(battle_id)
+def check_run_battle_and_return_winner(battle):
+    if can_run_battle(battle):
+        send_email_when_battle_finishes(battle)
+        return get_the_battle_winner(battle)
     return False
