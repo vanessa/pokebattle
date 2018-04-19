@@ -75,11 +75,12 @@ class ChooseTeamForm(forms.ModelForm):
             battle_related=self.initial.get('battle_related')
         ).first()
 
-        if teams_cannot_battle(existent_team_pokemon, team):
-            raise forms.ValidationError(
-                'Some of your Pokemon already exists in '
-                'the opponent\'s team, please pick other ones.'
-            )
+        if existent_team_pokemon:
+            if teams_cannot_battle(existent_team_pokemon.pokemons.all(), team):
+                raise forms.ValidationError(
+                    'Some of your Pokemon already exists in '
+                    'the opponent\'s team, please pick other ones.'
+                )
 
         return cleaned_data
 
