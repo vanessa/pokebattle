@@ -52,13 +52,12 @@ def get_the_battle_winner(battle):
 def check_run_battle_and_return_winner(battle):
     if can_run_battle(battle):
         return get_the_battle_winner(battle)
-    return None
+    return False
 
 
-def check_battle_team_is_unique(battle, opponent_pokemon_list):
-    existent_team_pokemon = BattleTeam.objects.filter(
-        battle_related=battle
-    ).first()
-    if existent_team_pokemon:
-        return opponent_pokemon_list in list(existent_team_pokemon.pokemons.all())
-    return None
+def teams_cannot_battle(first_team, second_team):
+    if first_team:
+        result = any(
+            pokemon in first_team for pokemon in second_team)
+        return result
+    return False
