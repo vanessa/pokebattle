@@ -61,3 +61,12 @@ def teams_cannot_battle(first_team, second_team):
             pokemon in first_team for pokemon in second_team)
         return result
     return False
+
+
+def battle_team_existent(battle, second_team):
+    existent_team_pokemon = BattleTeam.objects.filter(
+        battle_related=battle
+    ).first()
+    if existent_team_pokemon:
+        return teams_cannot_battle(existent_team_pokemon, second_team)
+    return False
