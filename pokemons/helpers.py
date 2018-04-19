@@ -48,3 +48,7 @@ def check_if_pokemon_stats_exceeds_600(pokemon_list):
              for pokemon in pokemon_list]
     result = sum(stats)
     return result >= 600
+
+
+def has_team_duplicate_pokemon(pokemon_list):
+    return len(set(pokemon_list)) != 3

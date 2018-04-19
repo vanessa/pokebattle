@@ -1,8 +1,7 @@
 from collections import Counter
 
-from battles.helpers.emails import send_email_when_battle_finishes
 from battles.helpers.fight import compare_two_pokemons
-from battles.models import Battle, BattleTeam
+from battles.models import BattleTeam
 from users.models import User
 
 
@@ -18,8 +17,7 @@ def can_run_battle(battle):
         return True
 
 
-def mount_battle_list(battle_id):
-    battle = Battle.objects.get(id=battle_id)
+def mount_battle_list(battle):
     creator_team = BattleTeam.objects.get(
         battle_related=battle, trainer=battle.creator)
     opponent_team = BattleTeam.objects.get(
@@ -32,8 +30,8 @@ def mount_battle_list(battle_id):
     return result['creator_team'], result['opponent_team']
 
 
-def get_winner_pokemon_list(battle_id):
-    battle_list = mount_battle_list(battle_id)
+def get_winner_pokemon_list(battle):
+    battle_list = mount_battle_list(battle)
     comparison_winners = []
     for creator_pokemon, opponent_pokemon in zip(battle_list[0], battle_list[1]):
         comparison_winners.append(compare_two_pokemons(
@@ -44,7 +42,7 @@ def get_winner_pokemon_list(battle_id):
 def get_the_battle_winner(battle):
     winner_list = get_winner_pokemon_list(battle)
     teams = BattleTeam.objects.filter(
-        battle_related__id=battle, pokemons__in=winner_list)
+        battle_related=battle, pokemons__in=winner_list)
     winner_trainer_id = Counter(
         [team.trainer.id for team in teams]).most_common()[0][0]
     battle_winner = User.objects.get(id=winner_trainer_id)
@@ -53,6 +51,14 @@ def get_the_battle_winner(battle):
 
 def check_run_battle_and_return_winner(battle):
     if can_run_battle(battle):
-        send_email_when_battle_finishes(battle)
         return get_the_battle_winner(battle)
-    return False
+    return None
+
+
+def check_battle_team_is_unique(battle, opponent_pokemon_list):
+    existent_team_pokemon = BattleTeam.objects.filter(
+        battle_related=battle
+    ).first()
+    if existent_team_pokemon:
+        return opponent_pokemon_list in list(existent_team_pokemon.pokemons.all())
+    return None

@@ -2,7 +2,9 @@ from django.test import TestCase
 
 from model_mommy import mommy
 
-from battles.helpers.battle import can_run_battle, check_run_battle_and_return_winner
+from battles.helpers.battle import (
+    can_run_battle, check_battle_team_is_unique, check_run_battle_and_return_winner
+)
 from battles.helpers.emails import send_email_when_battle_finishes
 from battles.helpers.fight import compare_attack_to_defense, compare_hp
 from common.utils.tests import TestCaseUtils
@@ -51,6 +53,7 @@ class TestBattle(TestCaseUtils, TestCase):
 
     def test_cannot_run_battle_with_just_one_of_two_teams(self):
         self.creator_battle_team.battle_related = self.battle
+        self.creator_battle_team.save()
         self.assertFalse(can_run_battle(self.battle))
 
     def test_pokemon_attack_to_defense_comparison(self):
@@ -74,9 +77,22 @@ class TestBattle(TestCaseUtils, TestCase):
 
     def test_email_sending_to_participants(self):
         self.add_related_battle_to_teams()
-        winner = self.run_battle_save_and_return_winner()
+        self.run_battle_save_and_return_winner()
         send_email_when_battle_finishes(self.battle)
-        self.assertIsInstance(winner, User)
+        self.assertIsInstance(self.battle.winner, User)
 
     def test_send_email_only_if_a_battle_can_run(self):
         self.assertFalse(can_run_battle(self.battle))
+
+    def test_error_for_not_unique_teams(self):
+        random_pokemon = mommy.make('pokemons.Pokemon', _quantity=3)
+        result = check_battle_team_is_unique(
+            self.battle, random_pokemon)
+        self.assertFalse(result)
+
+    def test_success_for_unique_teams(self):
+        self.creator_battle_team.battle_related = self.battle
+        self.creator_battle_team.save()
+        random_pokemon = mommy.make('pokemons.Pokemon', _quantity=3)
+        result = check_battle_team_is_unique(self.battle, random_pokemon)
+        self.assertTrue(result)

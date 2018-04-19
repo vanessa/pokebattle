@@ -1,11 +1,14 @@
 from django import forms
 
-from pokemons.helpers import check_if_pokemon_stats_exceeds_600, init_pokemon_object
+from battles.helpers.battle import check_battle_team_is_unique, check_run_battle_and_return_winner
+from pokemons.helpers import (
+    check_if_pokemon_stats_exceeds_600, has_team_duplicate_pokemon, init_pokemon_object
+)
 from pokemons.models import Pokemon
 from users.models import User
 
-from .helpers import check_and_run_battle
 from .models import Battle, BattleTeam
+from .validators import validate_integer_doesnt_start_with_zero
 
 
 class CreateBattleForm(forms.ModelForm):
@@ -17,15 +20,6 @@ class CreateBattleForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         users = User.objects.exclude(id=self.initial['creator'])
         self.fields['opponent'].queryset = users
-
-
-def validate_integer_doesnt_start_with_zero(value):
-    if str(value).startswith('0'):
-        raise forms.ValidationError(
-            'Your Pokemon id ({pokemon_id}) cannot start with 0.'.format(
-                pokemon_id=value
-            )
-        )
 
 
 class ChooseTeamForm(forms.ModelForm):
@@ -65,16 +59,24 @@ class ChooseTeamForm(forms.ModelForm):
         second_pokemon = cleaned_data.get('second_pokemon')
         third_pokemon = cleaned_data.get('third_pokemon')
 
-        if len(set([first_pokemon, second_pokemon, third_pokemon])) != 3:
+        team = [first_pokemon, second_pokemon, third_pokemon]
+
+        if has_team_duplicate_pokemon(team):
             raise forms.ValidationError(
                 'There are duplicates Pokemon, please use unique ids.'
             )
 
-        if check_if_pokemon_stats_exceeds_600([first_pokemon, second_pokemon,
-                                               third_pokemon]):
+        if check_if_pokemon_stats_exceeds_600(team):
             raise forms.ValidationError(
                 'Your Pokemon stats cannot sum more than 600.'
             )
+
+        if not check_battle_team_is_unique(self.initial.get('battle_related'), team):
+            raise forms.ValidationError(
+                'Some of your Pokemon already exists in '
+                'the opponent\'s team, please pick other ones.'
+            )
+
         return cleaned_data
 
     def save(self, commit=True):
@@ -93,4 +95,4 @@ class ChooseTeamForm(forms.ModelForm):
         )
         new_team.pokemons.add(
             *Pokemon.objects.filter(id__in=[pokemon.id for pokemon in pokemon_list]))
-        check_and_run_battle(self.initial['battle_related'])
+        check_run_battle_and_return_winner(self.initial['battle_related'])
