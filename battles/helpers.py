@@ -14,3 +14,7 @@ def check_and_run_battle(battle_id):
         print('Go on')
     else:
         print('No!')
+
+
+def has_team_duplicate_pokemon(pokemon_list):
+    return len(set(pokemon_list)) != 3

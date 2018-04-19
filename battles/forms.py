@@ -4,7 +4,7 @@ from pokemons.helpers import check_if_pokemon_stats_exceeds_600, init_pokemon_ob
 from pokemons.models import Pokemon
 from users.models import User
 
-from .helpers import check_and_run_battle
+from .helpers import check_and_run_battle, has_team_duplicate_pokemon
 from .models import Battle, BattleTeam
 
 
@@ -65,7 +65,9 @@ class ChooseTeamForm(forms.ModelForm):
         second_pokemon = cleaned_data.get('second_pokemon')
         third_pokemon = cleaned_data.get('third_pokemon')
 
-        if len(set([first_pokemon, second_pokemon, third_pokemon])) != 3:
+        team = [first_pokemon, second_pokemon, third_pokemon]
+
+        if has_team_duplicate_pokemon(team):
             raise forms.ValidationError(
                 'There are duplicates Pokemon, please use unique ids.'
             )
