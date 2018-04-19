@@ -7,7 +7,8 @@ from django.views import generic
 from pokemons.models import Pokemon
 
 from .forms import ChooseTeamForm, CreateBattleForm
-from .models import Battle, BattleTeam
+from .helpers import has_request_user_chosen_a_team
+from .models import Battle
 
 
 class BattlesListView(LoginRequiredMixin, generic.ListView):
@@ -66,15 +67,13 @@ class BattleView(LoginRequiredMixin, generic.DetailView):
         return context
 
 
-class ChoosePokemonTeamView(LoginRequiredMixin, generic.FormView):
+class ChoosePokemonTeamView(LoginRequiredMixin, generic.CreateView):
     template_name = 'battles/choose_team.html'
     form_class = ChooseTeamForm
 
     def get(self, request, *args, **kwargs):
         battle_pk = kwargs['pk']
-        battle_team = BattleTeam.objects.filter(
-            battle_related__pk=battle_pk, trainer=request.user)
-        if battle_team.exists():
+        if has_request_user_chosen_a_team(battle_pk, request.user):
             messages.error(request, 'You already chose a team!')
             return HttpResponseRedirect(reverse('battles:details', kwargs={'pk': battle_pk}))
         return super().get(request, *args, **kwargs)
@@ -92,7 +91,3 @@ class ChoosePokemonTeamView(LoginRequiredMixin, generic.FormView):
 
     def get_success_url(self):
         return reverse('battles:details', kwargs={'pk': self.kwargs['pk']})
-
-    def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
