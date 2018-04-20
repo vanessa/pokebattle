@@ -63,7 +63,7 @@ class TestPokemonHelpers(TestCaseUtils, TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.headers['Content-Type'], 'application/json')
 
-    def test_pokemon_attributes_is_a_valid_list(self):
+    def test_pokemon_attributes_is_a_valid_dict(self):
         response = json.loads(self.example_request().text)
         attributes_dict = get_pokemon_attributes(response)
         expected_dict = dict(
