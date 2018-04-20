@@ -66,7 +66,7 @@ class BattleView(LoginRequiredMixin, generic.DetailView):
         return context
 
 
-class ChoosePokemonTeamView(LoginRequiredMixin, generic.FormView):
+class ChoosePokemonTeamView(LoginRequiredMixin, generic.CreateView):
     template_name = 'battles/choose_team.html'
     form_class = ChooseTeamForm
 
@@ -92,7 +92,3 @@ class ChoosePokemonTeamView(LoginRequiredMixin, generic.FormView):
 
     def get_success_url(self):
         return reverse('battles:details', kwargs={'pk': self.kwargs['pk']})
-
-    def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
