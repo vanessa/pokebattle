@@ -7,11 +7,11 @@
     <div class="pokebattle-container battle">
         {% include 'battles/includes/battle_status.html' %}
         <h2>{{ battle.creator.get_short_name }} vs. {{ battle.opponent.get_short_name }}</h2>
-        {% comment %}    
+        {% if battle.winner %}    
         <div class="battle-result-label">
-            <strong>amanda</strong> won!
+            <strong>{{ battle.winner.get_short_name }}</strong> won!
         </div>
-        {% endcomment %}
+        {% endif %}
         {% include 'common/message.html' %}
         <section class="pick-team">
             {% if not user_has_chosen_a_team %}

@@ -1,5 +1,6 @@
 from collections import Counter
 
+from battles.helpers.emails import send_email_when_battle_finishes
 from battles.helpers.fight import compare_two_pokemons
 from battles.models import BattleTeam
 from users.models import User
@@ -54,6 +55,7 @@ def check_run_battle_and_save_winner(battle):
         winner = get_the_battle_winner(battle)
         battle.winner = winner
         battle.save()
+        send_email_when_battle_finishes(battle)
         return True
     return False
 
