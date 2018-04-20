@@ -49,9 +49,12 @@ def get_the_battle_winner(battle):
     return battle_winner
 
 
-def check_run_battle_and_return_winner(battle):
+def check_run_battle_and_save_winner(battle):
     if can_run_battle(battle):
-        return get_the_battle_winner(battle)
+        winner = get_the_battle_winner(battle)
+        battle.winner = winner
+        battle.save()
+        return True
     return False
 
 

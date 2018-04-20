@@ -3,7 +3,7 @@ from django.test import TestCase
 from model_mommy import mommy
 
 from battles.helpers.battle import (
-    can_run_battle, check_run_battle_and_return_winner, teams_cannot_battle
+    can_run_battle, check_run_battle_and_save_winner, teams_cannot_battle
 )
 from battles.helpers.emails import send_email_when_battle_finishes
 from battles.helpers.fight import compare_attack_to_defense, compare_hp
@@ -33,7 +33,7 @@ class TestBattle(TestCaseUtils, TestCase):
 
     def run_battle_save_and_return_winner(self):
         self.assertTrue(can_run_battle(self.battle))
-        winner = check_run_battle_and_return_winner(self.battle)
+        winner = check_run_battle_and_save_winner(self.battle)
         self.battle.winner = winner
         self.battle.save()
         return winner
@@ -68,12 +68,12 @@ class TestBattle(TestCaseUtils, TestCase):
     def test_battle_running(self):
         self.add_related_battle_to_teams()
         self.assertNotEqual(
-            check_run_battle_and_return_winner(self.battle), None)
+            check_run_battle_and_save_winner(self.battle), None)
 
     def test_if_battle_returns_a_winner(self):
         self.add_related_battle_to_teams()
         self.assertIsInstance(
-            check_run_battle_and_return_winner(self.battle), User)
+            check_run_battle_and_save_winner(self.battle), User)
 
     def test_email_sending_to_participants(self):
         self.add_related_battle_to_teams()
