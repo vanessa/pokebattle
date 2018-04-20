@@ -6,7 +6,7 @@
         </div>
         <div class="menu">
             {% if user.is_authenticated %}
-                <a href="{% url 'battles:battles-list' %}">
+                <a href="{% url 'battles:list' %}">
                     My Battles
                 </a>
                 <a href="{% url 'battles:create-battle' %}">
@@ -15,9 +15,9 @@
                 <span class="name">
                     Hello, <strong>{{ user.get_short_name }}</strong>!
                 </span>
-                <a href="#">Logout</a>
+                <a href="{% url 'auth:logout' %}">Logout</a>
             {% else %}
-                <a href="#">Login</a>
+                <a href="{% url 'auth:login' %}">Login</a>
             {% endif %}
         </div>
     </nav>

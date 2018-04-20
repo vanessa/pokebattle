@@ -1,6 +1,11 @@
+from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render  # noqa
-from django.views import generic
 
 
-class LoginView(generic.TemplateView):
+class UserLoginView(LoginView):
     template_name = 'auth/login.html'
+    redirect_authenticated_user = True
+
+
+class UserLogoutView(LogoutView):
+    pass

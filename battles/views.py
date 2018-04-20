@@ -1,10 +1,13 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse
+from django.http.response import HttpResponseRedirect
 from django.views import generic
 
 from pokemons.models import Pokemon
 
 from .forms import ChooseTeamForm, CreateBattleForm
+from .helpers import has_request_user_chosen_a_team
 from .models import Battle
 
 
@@ -56,7 +59,7 @@ class BattleView(LoginRequiredMixin, generic.DetailView):
             battle_team__battle_related=self.object,
             battle_team__trainer=self.object.opponent
         )
-        context['user_is_opponent'] = True if self.object.opponent == self.request.user else False
+        context['user_is_opponent'] = self.object.opponent == self.request.user
         context['user_has_chosen_a_team'] = Pokemon.objects.filter(
             battle_team__battle_related=self.object,
             battle_team__trainer=self.request.user
@@ -64,9 +67,16 @@ class BattleView(LoginRequiredMixin, generic.DetailView):
         return context
 
 
-class ChoosePokemonTeamView(LoginRequiredMixin, generic.FormView):
+class ChoosePokemonTeamView(LoginRequiredMixin, generic.CreateView):
     template_name = 'battles/choose_team.html'
     form_class = ChooseTeamForm
+
+    def get(self, request, *args, **kwargs):
+        battle_pk = kwargs['pk']
+        if has_request_user_chosen_a_team(battle_pk, request.user):
+            messages.error(request, 'You already chose a team!')
+            return HttpResponseRedirect(reverse('battles:details', kwargs={'pk': battle_pk}))
+        return super().get(request, *args, **kwargs)
 
     def get_initial(self):
         return {

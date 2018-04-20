@@ -33,26 +33,32 @@
             }
         }
     }
-    
-    input {
-        font-size: 1.2rem;
-        margin: 10px 0;
-        border: 1px solid #ccc;
-        position: relative;
-        display: block;
-    }
 
-    input[type="submit"] {
-        display: block;
-        background: $default-color;
-        font-size: 1.2rem;
-        color: $bright-font-color;
-        padding: 4px 12px;
-        border: 0;
-        border-radius: $default-border-radius;
-        margin: 15px auto;
-        cursor: pointer;
+    .battle-creation-form {
+        width: 50%;
+
+        input {
+            font-size: 1.2rem;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            position: relative;
+            display: block;
+            width: 100%;
+        }
+    
+        input[type="submit"] {
+            display: block;
+            background: $default-color;
+            font-size: 1.2rem;
+            color: $bright-font-color;
+            padding: 4px 12px;
+            border: 0;
+            border-radius: $default-border-radius;
+            margin: 15px auto;
+            cursor: pointer;
+        }
     }
+    
 
     .status {
         margin: 10px 0;
@@ -64,7 +70,7 @@
             font-weight: bold;
             padding: 5px 12px;
             border-radius: 5px;
-            animation: opacityPulse ease-in-out infinite 1.5s;
+            animation: opacity-pulse ease-in-out infinite 1.5s;
         }
     }
 
@@ -94,6 +100,14 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 20px;
+
+    .creators-pokemons {
+        order: 0;
+    }
+
+    .opponents-pokemons {
+        order: 1;
+    }
 }
 
 .pokemon-card {
@@ -107,6 +121,10 @@
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     align-items: center;
+
+    img {
+        max-width: 100px;
+    }
 
     i {
         font-style: normal;
@@ -125,5 +143,43 @@
 
     &:hover {
         transform: translateY(-2px);
+    }
+
+    // Pokemon card inactive (when the user
+    // can't see the opponent's team)
+    
+    &.inactive {
+        grid-gap: 15px; 
+
+        .pokemon-pic {
+            width: 80px;
+            height: 80px;
+            margin: 5px 0 5px 15px;
+            border-radius: 50%;
+        }
+
+        .pokemon-name {
+            display: block;
+            width: 90px;
+            height: 25px;
+        }
+
+        .attributes {
+            span {
+                display: block;
+                width: 100%;
+                height: 20px;
+                margin: 10px 0;
+            }
+        }
+
+        .placeholder-comp {
+            background: #f0f0f0;
+            animation: opacity-pulse ease-in-out infinite 1.5s;
+        }
+
+        &:hover {
+            transform: translateY(0);
+        }
     }
 }

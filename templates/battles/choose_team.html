@@ -13,7 +13,7 @@
         {% if form.errors %}
             <div class="form-error">{{ form.errors }}</div>
         {% endif %}
-        <form method="POST">
+        <form method="POST" class="battle-creation-form">
             {% csrf_token %}
             {% render_field form.first_pokemon placeholder=form.first_pokemon.label %}
             {% render_field form.second_pokemon placeholder=form.second_pokemon.label %}

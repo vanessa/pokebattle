@@ -12,6 +12,12 @@ def base_dir_join(*args):
     return os.path.join(BASE_DIR, *args)
 
 
+LOGIN_URL = '/login'
+
+LOGIN_REDIRECT_URL = '/battles'
+
+LOGOUT_REDIRECT_URL = '/'
+
 SITE_ID = 1
 
 SECURE_HSTS_PRELOAD = True
@@ -123,3 +129,7 @@ WEBPACK_LOADER = {
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+
+# PokeAPI
+POKEAPI_URL = 'http://pokeapi.co/api/v2'
+POKEAPI_POKEMON_URL = '{pokeapi}/pokemon'.format(pokeapi=POKEAPI_URL)

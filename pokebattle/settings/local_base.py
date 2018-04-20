@@ -1,12 +1,9 @@
 from .base import *  # noqa
-from django.core.urlresolvers import reverse_lazy
 
 
 DEBUG = True
 
 HOST = 'http://localhost:8000'
-
-LOGIN_URL = reverse_lazy('auth:login')
 
 SECRET_KEY = 'secret'
 

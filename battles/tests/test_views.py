@@ -39,7 +39,8 @@ class TestCreateBattleView(TestCaseUtils, TestCase):
 
     def test_if_redirects_non_logged(self):
         response = self.client.get(self.view_url)
-        self.assertRedirects(response, expected_url='/login?next=/battles/create')
+        self.assertRedirects(
+            response, expected_url='/login?next=/battles/create')
 
     def test_battle_was_created_in_db(self):
         response = self.client.post(self.view_url, self.battle_params)
@@ -80,5 +81,6 @@ class TestBattleDetailView(TestCaseUtils, TestCase):
 
     def test_if_redirects_non_logged(self):
         response = self.client.get(self.view_url)
-        # TODO: make sure it's for the expected url
         self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response, expected_url='/login?next=/battles/details/{0}'.format(self.battle.id))

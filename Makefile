@@ -10,3 +10,4 @@ test:
 
 testreset:
 	pipenv run python manage.py test $(ARG) --parallel
+	

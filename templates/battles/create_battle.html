@@ -6,7 +6,7 @@
 {% block body %}
     <div class="pokebattle-container battle">
         <h2>Pick your Pokemons!</h2>
-        <form method="POST">
+        <form method="POST" class="battle-creation-form">
             {% csrf_token %}
             {% if form.errors %}
             <div class="message">
