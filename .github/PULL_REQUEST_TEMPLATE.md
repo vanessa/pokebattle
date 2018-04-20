@@ -14,13 +14,9 @@
 ## Critical points affected:
 <!--- Go over all the following points, and put an `x` in all the boxes that apply. -->
 - [ ] Signup flow
-- [ ] Calendar
-- [ ] Payment
-- [ ] Charge & import tasks
-- [ ] Plan edition
-- [ ] Menu application
-- [ ] Menu user edition
-- [ ] Menu user skip
+- [ ] Battle creation
+- [ ] Battle team choosing
+- [ ] Battle execution
 
 ## Types of changes
 <!--- What types of changes does your code introduce? Put an `x` in all the boxes that apply: -->
