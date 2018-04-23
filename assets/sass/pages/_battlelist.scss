@@ -27,14 +27,12 @@
                     transform: translateY(-2px);
                 }
 
-                &:before {
-                    counter-increment: li;
-                    content: counter(li);
+                .battle-id {
                     border-radius: $default-border-radius;
-                    background: transparentize($gray, .3);
+                    background: transparentize($gray, .25);
                     color: #fff;
                     display: inline-block;
-                    width: 20px;
+                    width: 22px;
                     margin-right: 5px;
                     height: 20px;
                     font-size: .8em;
