@@ -2,22 +2,25 @@
 {% block title %}PokeBattle &middot; Your battles{% endblock %}
 
 {% block body %}
-<div class="pokebattle-container battles-list">
-    <div class="battles-created">
-        <h4>Battles you created</h4>
-        <ul>
-            {% for battle in battles_created %}
-            {% include 'battles/includes/battle_list_card.html' %}
-            {% endfor %}
-        </ul>
+<div class="pokebattle-container">
+    {% if messages %}
+        {% for message in messages %}
+        <li class="info-message{% if message.tags %} {{ message.tags }}{% endif %}">{{ message }}</li>
+        {% endfor %}
+    {% endif %}
+    <div class="battles-list">
+        <div class="battles-created">
+            <h4>Battles you created</h4>
+            <ul>
+                {% for battle in battles_created %} {% include 'battles/includes/battle_list_card.html' %} {% endfor %}
+            </ul>
+        </div>
+        <div class="battles-invited">
+            <h4>Battles you were invited</h4>
+            <ul>
+                {% for battle in battles_invited %} {% include 'battles/includes/battle_list_card.html' %} {% endfor %}
+            </ul>
+        </div>
     </div>
-    <div class="battles-invited">
-        <h4>Battles you were invited</h4>
-        <ul>
-            {% for battle in battles_invited %}
-            {% include 'battles/includes/battle_list_card.html' %}
-            {% endfor %}
-        </ul>
-</div>
-</div>
+    </div>
 {% endblock %}

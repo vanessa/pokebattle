@@ -4,3 +4,18 @@
     font-size: .8em;
     color: darkred;
 }
+
+.info-message {
+    background: lightblue;
+    list-style: none;
+    padding: 5px 10px;
+    margin: 0 auto;
+    width: 50%;
+    text-align: center;
+}
+
+@media (max-width: $md-screen-size) {
+    .info-message {
+        width: 100%;
+    }
+}

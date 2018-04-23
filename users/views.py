@@ -23,6 +23,11 @@ class UserSignupView(generic.CreateView):
     template_name = 'auth/signup.html'
     success_url = reverse_lazy('battles:list')
 
+    def dispatch(self, request, *args, **kwargs):
+        if self.request.user.is_authenticated:
+            return HttpResponseRedirect(self.success_url)
+        return super().dispatch(request, *args, **kwargs)
+
     def form_valid(self, form):
         user = form.save()
         new_user = authenticate(
