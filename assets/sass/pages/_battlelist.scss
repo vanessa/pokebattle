@@ -44,7 +44,7 @@
 
 .battles-list a.ongoing:after {
     content: 'Ongoing';
-    background: $blue;
+    background: $orange;
     @include animation-opacity-pulse;
 }
 
