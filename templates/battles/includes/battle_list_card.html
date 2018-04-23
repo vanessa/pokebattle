@@ -1,0 +1,5 @@
+<li>
+    <a href="{% url 'battles:details' battle.id %}" class="{{ battle.get_status_label }}">
+        {{ battle }}
+    </a>
+</li>

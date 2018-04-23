@@ -72,7 +72,7 @@
          </div>
       </div>
       <p class="battle-winner" style="text-align: center; font-size: 1.6em">
-         and the winner is... <span style="font-weight: bold; color: orangered">amanda</span>!
+         and the winner is... <span style="font-weight: bold; color: orangered">{{ relative_opponent }}</span>!
       </p>
    </div>
 </div>

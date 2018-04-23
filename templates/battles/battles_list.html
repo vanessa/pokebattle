@@ -7,11 +7,7 @@
         <h4>Battles you created</h4>
         <ul>
             {% for battle in battles_created %}
-            <li>
-                <a href="{% url 'battles:details' battle.id %}" class="ongoing">
-                    {{ battle }}
-                </a>
-            </li>
+            {% include 'battles/includes/battle_list_card.html' %}
             {% endfor %}
         </ul>
     </div>
@@ -19,11 +15,7 @@
         <h4>Battles you were invited</h4>
         <ul>
             {% for battle in battles_invited %}
-            <li>
-                <a href="{% url 'battles:details' battle.id %}" class="finished">
-                    {{ battle }}
-                </a>
-            </li>
+            {% include 'battles/includes/battle_list_card.html' %}
             {% endfor %}
         </ul>
 </div>

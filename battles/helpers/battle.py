@@ -54,6 +54,7 @@ def check_run_battle_and_save_winner(battle):
     if can_run_battle(battle):
         winner = get_the_battle_winner(battle)
         battle.winner = winner
+        battle.status = 'F'
         battle.save()
         send_email_when_battle_finishes(battle)
         return True
