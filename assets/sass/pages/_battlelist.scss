@@ -16,7 +16,8 @@
                 align-items: center;
                 justify-content: space-between;
                 padding: 10px 8px;
-                grid-template-columns: 1fr 6fr 1fr;
+                grid-template-columns: 1fr 9fr 1fr;
+                grid-gap: 5px;
                 margin: 5px 0;
                 border-radius: $default-border-radius;
                 box-shadow: $default-box-shadow;
@@ -25,18 +26,6 @@
                 &:hover {
                     text-decoration: none;
                     transform: translateY(-2px);
-                }
-
-                .battle-id {
-                    border-radius: $default-border-radius;
-                    background: transparentize($gray, .25);
-                    color: #fff;
-                    display: inline-block;
-                    width: 22px;
-                    margin-right: 5px;
-                    height: 20px;
-                    font-size: .8em;
-                    text-align: center;
                 }
             }
         }
@@ -62,4 +51,25 @@
 .battles-list a.finished:after {
     content: 'Finished';
     background: $green;
+}
+
+.battle-id {
+    border-radius: $default-border-radius;
+    background: transparentize($gray, .25);
+    color: #fff;
+    display: inline-block;
+    margin-right: 5px;
+    padding: 2px 5px;
+    font-size: .7em;
+    text-align: center;
+}
+
+@media (max-width: $md-screen-size) {
+    .battles-list {
+        display: grid;
+        grid-template-rows: 1fr 1fr;
+        grid-template-columns: 1fr;
+        max-width: 100%;
+        grid-gap: 10px;
+    }
 }
