@@ -33,3 +33,13 @@ class TestUserSignupView(TestCaseUtils, TestCase):
         success_url = reverse_lazy('battles:list')
         self.assertEqual(response.status_code, 302)
         self.assertRedirects(response, success_url)
+
+    def test_signup_redirection_has_welcome_message(self):
+        user_params = {
+            'email': 'test@vinta.com.br',
+            'password1': 'testpassword123',
+            'password2': 'testpassword123'
+        }
+        response = self.client.post(self.view_url, user_params)
+        message_count = len(response.cookies['messages'])
+        self.assertTrue(message_count > 0)
