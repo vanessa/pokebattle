@@ -1,0 +1,67 @@
+.battles-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    max-width: 60%;
+    margin: 10px auto;
+    grid-gap: 50px;
+
+    ul {
+        list-style: none;
+        padding-left: 0;
+        counter-reset: li;
+
+        li {
+            a {
+                display: grid;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px 8px;
+                grid-template-columns: 1fr 6fr 1fr;
+                margin: 5px 0;
+                border-radius: $default-border-radius;
+                box-shadow: $default-box-shadow;
+                transition: $default-transition;
+
+                &:hover {
+                    text-decoration: none;
+                    transform: translateY(-2px);
+                }
+
+                &:before {
+                    counter-increment: li;
+                    content: counter(li);
+                    border-radius: $default-border-radius;
+                    background: transparentize($gray, .3);
+                    color: #fff;
+                    display: inline-block;
+                    width: 20px;
+                    margin-right: 5px;
+                    height: 20px;
+                    font-size: .8em;
+                    text-align: center;
+                }
+            }
+        }
+    }
+}
+
+// Battle status labels
+
+.battles-list a:after {
+    color: #fff;
+    border-radius: $default-border-radius;
+    padding: 3px 8px;
+    font-size: .65em;
+    font-weight: bold;
+}
+
+.battles-list a.ongoing:after {
+    content: 'Ongoing';
+    background: $blue;
+    @include animation-opacity-pulse;
+}
+
+.battles-list a.finished:after {
+    content: 'Finished';
+    background: $green;
+}

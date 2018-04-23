@@ -2,24 +2,30 @@
 {% block title %}PokeBattle &middot; Your battles{% endblock %}
 
 {% block body %}
-<div class="pokebattle-container">
-    <ul>
+<div class="pokebattle-container battles-list">
+    <div class="battles-created">
         <h4>Battles you created</h4>
-        {% for battle in battles_created %}
-        <li>
-            <a href="{% url 'battles:details' battle.id %}">
-                {{ battle }}
-            </a>
-        </li>
-        {% endfor %}
+        <ul>
+            {% for battle in battles_created %}
+            <li>
+                <a href="{% url 'battles:details' battle.id %}" class="ongoing">
+                    {{ battle }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="battles-invited">
         <h4>Battles you were invited</h4>
-        {% for battle in battles_invited %}
-        <li>
-            <a href="{% url 'battles:details' battle.id %}">
-                {{ battle }}
-            </a>
-        </li>
-        {% endfor %}
-    </ul>
+        <ul>
+            {% for battle in battles_invited %}
+            <li>
+                <a href="{% url 'battles:details' battle.id %}" class="finished">
+                    {{ battle }}
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+</div>
 </div>
 {% endblock %}
