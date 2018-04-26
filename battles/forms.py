@@ -55,6 +55,7 @@ class ChooseTeamForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
 
+        # rw: try to have a pattern see that sometimes you call team, sometimes pokemons. (check the save method)
         first_pokemon = cleaned_data.get('first_pokemon')
         second_pokemon = cleaned_data.get('second_pokemon')
         third_pokemon = cleaned_data.get('third_pokemon')
@@ -71,10 +72,12 @@ class ChooseTeamForm(forms.ModelForm):
                 'Your Pokemon stats cannot sum more than 600.'
             )
 
+        # rw: use prefetch related for pokemons.
         existent_team_pokemon = BattleTeam.objects.filter(
-            battle_related=self.initial.get('battle_related')
+            battle_related=self.initial.get('battle_related')  # rw: put it in a variable before(optional).
         ).first()
 
+        # rw: you can use an and here, to avoid not needed nested ifs.
         if existent_team_pokemon:
             if teams_cannot_battle(existent_team_pokemon.pokemons.all(), team):
                 raise forms.ValidationError(
@@ -95,9 +98,11 @@ class ChooseTeamForm(forms.ModelForm):
             pokemon.save()
 
         new_team = BattleTeam.objects.create(
-            battle_related=self.initial.get('battle_related'),
+            battle_related=self.initial.get('battle_related'),  # rw: put in a variable, is better than repeat yourself.
             trainer=self.initial.get('trainer'),
         )
+        # rw: i believe you can just pass the pokemon list here.
         new_team.pokemons.add(
             *Pokemon.objects.filter(id__in=[pokemon.id for pokemon in pokemon_list]))
+        # rw: let's move this to form_valid at the view.
         check_run_battle_and_save_winner(self.initial['battle_related'])
