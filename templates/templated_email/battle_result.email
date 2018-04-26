@@ -1,0 +1,79 @@
+{% block subject %}Results of your battle with {{ relative_opponent }}{% endblock %}
+
+{% block plain %}
+    Hello {{ username }},
+
+    Here are the results of your battle against {{ relative_opponent }}.
+
+    Your team:
+    {% for pokemon in your_team %}
+        {{ pokemon.name }} (A: {{ pokemon.attack }}, D: {{ pokemon.defense }}, HP: {{ pokemon.hp }})
+    {% endfor %}
+
+    Opponent's team:
+    {% for pokemon in opponent_team %}
+        {{ pokemon.name }} (A: {{ pokemon.attack }}, D: {{ pokemon.defense }}, HP: {{ pokemon.hp }})
+    {% endfor %}
+
+    The winner is... {{ winner }}
+{% endblock %}
+
+{% block html %}
+<div class="pokebattle-email-container" style="background-color: #f2f2f2;">
+   <div class="pokebattle-email-column" style='max-width: 600px; margin: 0 auto; padding: 20px; font-family: "Open Sans", "Segoe UI", "Tahoma", sans-serif; position: relative; background-color: #fff;'>
+      <h2 class="email-header" style="margin-top: 0; text-align: center; color: darkslategray">
+         PokeBattle
+      </h2>
+      <p>
+         Hello {{ username }},
+      </p>
+      <p>
+         Here are the results of your battle against <strong>{{ relative_opponent }}</strong>.
+      </p>
+      <div class="team-labels" style="display: flex; justify-content: space-around; align-items: center">
+         <div class="your-team label" style="width: 20%; text-align: center; border-radius: 5px; background: darkslategray; color: #fff; padding: 3px 8px; margin: 0 auto; font-size: 0.8em; text-transform: capitalize">Your team</div>
+         <div class="opponent-team label" style="width: 20%; text-align: center; border-radius: 5px; background: darkslategray; color: #fff; padding: 3px 8px; margin: 0 auto; font-size: 0.8em; text-transform: capitalize">{{ relative_opponent|title }}'s Team</div>
+      </div>
+      <div class="email-two-column" style="margin: 0 auto; display: flex; width: 100%; align-items: center; position: relative">
+         <div class="creator-team-column team-column" style="padding: 10px 10px 0; margin: 0 auto; width: 42%">
+            {% for pokemon in your_team %}
+            <div class="pokemon-card" style="flex-grow: 1; border-radius: 5px; border: 1px solid #ccc; padding: 15px; display: block; text-align: center; margin: 0 auto 15px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1)">
+               <div class="pokemon-picture creator-card-pokemon-picture">
+                  <img src="{{ pokemon.sprite }}" style="max-width: 100px; margin: -10px auto"/>
+               </div>
+               <div class="pokemon-name creator-card-pokemon-name" style="font-weight: bold">
+                  {{ pokemon.name }}
+               </div>
+               <div class="pokemon-attributes creator-card-pokemon-attributes" style="font-size: 0.9em; color: #444">
+                  A: {{ pokemon.attack }} | D: {{ pokemon.defense }} | HP: {{ pokemon.hp }}
+               </div>
+            </div>
+            {% endfor %}
+         </div>
+         <div class="versus-column" style="height: 100%; position: absolute; display: flex; flex-direction: column; justify-content: space-around; left: 50%; transform: translatex(-50%)">
+            <div id="first" style="color: #444; font-weight: bold">vs.</div>
+            <div id="second" style="color: #444; font-weight: bold">vs.</div>
+            <div id="third" style="color: #444; font-weight: bold">vs.</div>
+         </div>
+         <div class="opponent-team-column team-column" style="padding: 10px 10px 0; margin: 0 auto; width: 42%">
+            {% for pokemon in opponent_team %}
+            <div class="pokemon-card" style="flex-grow: 1; border-radius: 5px; border: 1px solid #ccc; padding: 15px; display: block; text-align: center; margin: 0 auto 15px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1)">
+               <div class="pokemon-picture creator-card-pokemon-picture">
+                  <img src="{{ pokemon.sprite }}" style="max-width: 100px; margin: -10px auto"/>
+               </div>
+               <div class="pokemon-name creator-card-pokemon-name" style="font-weight: bold">
+                  {{ pokemon.name }}
+               </div>
+               <div class="pokemon-attributes creator-card-pokemon-attributes" style="font-size: 0.9em; color: #444">
+                  A: {{ pokemon.attack }} | D: {{ pokemon.defense }} | HP: {{ pokemon.hp }}
+               </div>
+            </div>
+            {% endfor %}
+         </div>
+      </div>
+      <p class="battle-winner" style="text-align: center; font-size: 1.6em">
+         and the winner is... <span style="font-weight: bold; color: orangered">amanda</span>!
+      </p>
+   </div>
+</div>
+{% endblock %}

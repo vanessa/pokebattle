@@ -35,6 +35,7 @@ npm-debug.log
 # Sass
 .sass-cache
 *.map
+.stylelintrc
 
 # General
 /venv/

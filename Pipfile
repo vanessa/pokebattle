@@ -1,12 +1,9 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-
 [dev-packages]
-
 bandit = "*"
 coverage = "*"
 django-debug-toolbar = "*"
@@ -16,13 +13,11 @@ fixmydjango = "*"
 isort = "*"
 model-mommy = "*"
 pre-commit = "*"
-prospector = {git = "https://github.com/vintasoftware/prospector.git", ref="f81e290", extras = ["with-vulture"]}
+prospector = {git = "https://github.com/vintasoftware/prospector.git", ref="0a63f2b", extras = ["with-vulture"]}
 pylint = "*"
 safety = "*"
 
-
 [packages]
-
 django = ">=1.11,<2"
 celery = {extras = ["redis"]}
 django-model-utils = "*"
@@ -42,8 +37,8 @@ requests = "*"
 django-widget-tweaks = "*"
 "autopep8" = "*"
 django-inlinecss = "*"
-
+django-templated-email = "*"
+pycodestyle = "==2.3.1"
 
 [requires]
-
 python_version = "3.6"

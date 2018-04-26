@@ -38,6 +38,10 @@ pylint:
   options:
     max-line-length: 100
 
+mccabe:
+  disable:
+    - MC0001
+
 dodgy:
   run: true
 
