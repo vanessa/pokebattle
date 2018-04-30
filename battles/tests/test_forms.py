@@ -78,7 +78,7 @@ class TestChooseTeamForm(TestCaseUtils, TestCase):
         form = ChooseTeamForm(**params)
         self.assertTrue(form.is_valid(), form.errors)
 
-    def test_pokemon_with_stats_equal_or_more_than_600(self):
+    def test_pokemon_with_stats_equal_or_more_than_limit(self):
         params = {
             'initial': {
                 'trainer': self.user,
