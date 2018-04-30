@@ -2,7 +2,7 @@ from django import forms
 
 from battles.helpers.battle import run_battle, teams_cannot_battle
 from pokemons.helpers import (
-    check_if_pokemon_stats_exceeds_600, has_team_duplicate_pokemon, init_pokemon_object
+    has_team_duplicate_pokemon, init_pokemon_object, pokemon_stats_exceeds_limit
 )
 from pokemons.models import Pokemon
 from users.models import User
@@ -66,7 +66,7 @@ class ChooseTeamForm(forms.ModelForm):
                 'There are duplicates Pokemon, please use unique ids.'
             )
 
-        if check_if_pokemon_stats_exceeds_600(team):
+        if pokemon_stats_exceeds_limit(team):
             raise forms.ValidationError(
                 'Your Pokemon stats cannot sum more than 600.'
             )

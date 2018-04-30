@@ -37,7 +37,7 @@ def get_winner_pokemon_list(battle):
     return comparison_winners
 
 
-def get_the_battle_winner(battle):
+def get_battle_winner(battle):
     winner_list = get_winner_pokemon_list(battle)
     teams = BattleTeam.objects.filter(
         battle_related=battle, pokemons__in=winner_list)
@@ -50,7 +50,7 @@ def get_the_battle_winner(battle):
 def run_battle(battle):
     if not can_run_battle(battle):
         return False
-    winner = get_the_battle_winner(battle)
+    winner = get_battle_winner(battle)
     battle.winner = winner
     battle.status = 'F'
     battle.save()
@@ -59,11 +59,10 @@ def run_battle(battle):
 
 
 def teams_cannot_battle(first_team, second_team):
-    if first_team:
-        result = any(
-            pokemon in first_team for pokemon in second_team)
-        return result
-    return False
+    if not first_team:
+        return False
+    result = any(pokemon in first_team for pokemon in second_team)
+    return result
 
 
 def battle_team_existent(battle, second_team):

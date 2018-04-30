@@ -8,7 +8,7 @@ from model_mommy import mommy
 
 from common.utils.tests import TestCaseUtils
 from pokemons.helpers import (
-    check_if_pokemon_stats_exceeds_600, get_pokemon_attributes, init_pokemon_object
+    get_pokemon_attributes, init_pokemon_object, pokemon_stats_exceeds_limit
 )
 from pokemons.models import Pokemon
 
@@ -79,5 +79,5 @@ class TestPokemonHelpers(TestCaseUtils, TestCase):
             pokemon.defense = 80
             pokemon.hp = 80
             pokemon.save()
-        stats = check_if_pokemon_stats_exceeds_600(self.pokemon_list)
+        stats = pokemon_stats_exceeds_limit(self.pokemon_list)
         self.assertTrue(stats)

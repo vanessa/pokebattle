@@ -30,8 +30,7 @@ def init_pokemon_object(pid):
 
 
 def get_pokemon_attributes(pokemon_dict):
-    stats = [(stats['stat']['name'], stats['base_stat'])
-             for stats in pokemon_dict['stats']]
+    stats = [(stats['stat']['name'], stats['base_stat']) for stats in pokemon_dict['stats']]
     stats_dict = {}
     for stat in stats:
         stat_name = stat[0]
@@ -43,12 +42,12 @@ def get_pokemon_attributes(pokemon_dict):
     return stats_dict
 
 
-def check_if_pokemon_stats_exceeds_600(pokemon_list):
-    stats = [pokemon.attack + pokemon.defense + pokemon.hp
-             for pokemon in pokemon_list]
+def pokemon_stats_exceeds_limit(team):
+    power_limit = 600
+    stats = [pokemon.sum_attributes for pokemon in team]
     result = sum(stats)
-    return result >= 600
+    return result >= power_limit
 
 
-def has_team_duplicate_pokemon(pokemon_list):
-    return len(set(pokemon_list)) != 3
+def has_team_duplicate_pokemon(team):
+    return len(set(team)) != 3
