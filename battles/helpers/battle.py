@@ -50,15 +50,15 @@ def get_the_battle_winner(battle):
     return battle_winner
 
 
-def check_run_battle_and_save_winner(battle):
-    if can_run_battle(battle):
-        winner = get_the_battle_winner(battle)
-        battle.winner = winner
-        battle.status = 'F'
-        battle.save()
-        send_email_when_battle_finishes(battle)
-        return True
-    return False
+def run_battle(battle):
+    if not can_run_battle(battle):
+        return False
+    winner = get_the_battle_winner(battle)
+    battle.winner = winner
+    battle.status = 'F'
+    battle.save()
+    send_email_when_battle_finishes(battle)
+    return True
 
 
 def teams_cannot_battle(first_team, second_team):

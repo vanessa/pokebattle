@@ -4,7 +4,7 @@ from django.urls import resolve, reverse_lazy
 from model_mommy import mommy
 
 from battles.forms import CreateBattleForm
-from battles.helpers.battle import check_run_battle_and_save_winner
+from battles.helpers.battle import run_battle
 from battles.models import Battle
 from battles.views import BattleView, CreateBattleView
 from common.utils.tests import TestCaseUtils
@@ -118,7 +118,7 @@ class TestChooseTeamView(TestCaseUtils, TestCase):
         response = self.auth_client.post(
             self.view_url, self.battle_team_params)
         self.assertEqual(response.status_code, 302)
-        self.assertFalse(check_run_battle_and_save_winner(self.battle))
+        self.assertFalse(run_battle(self.battle))
 
     def test_run_the_battle_when_it_has_two_teams(self):
         first_team_pokemons = mommy.make('pokemons.Pokemon', _quantity=3)
@@ -128,4 +128,4 @@ class TestChooseTeamView(TestCaseUtils, TestCase):
         mommy.make('battles.BattleTeam', battle_related=self.battle,
                    pokemons=second_team_pokemons, trainer=self.battle.opponent)
         self.auth_client.post(self.view_url)
-        self.assertTrue(check_run_battle_and_save_winner(self.battle))
+        self.assertTrue(run_battle(self.battle))

@@ -1,6 +1,6 @@
 from django import forms
 
-from battles.helpers.battle import check_run_battle_and_save_winner, teams_cannot_battle
+from battles.helpers.battle import run_battle, teams_cannot_battle
 from pokemons.helpers import (
     check_if_pokemon_stats_exceeds_600, has_team_duplicate_pokemon, init_pokemon_object
 )
@@ -100,4 +100,4 @@ class ChooseTeamForm(forms.ModelForm):
         )
         new_team.pokemons.add(
             *Pokemon.objects.filter(id__in=[pokemon.id for pokemon in pokemon_list]))
-        check_run_battle_and_save_winner(self.initial['battle_related'])
+        run_battle(self.initial['battle_related'])
