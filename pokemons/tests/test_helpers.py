@@ -7,9 +7,7 @@ import requests
 from model_mommy import mommy
 
 from common.utils.tests import TestCaseUtils
-from pokemons.helpers import (
-    get_pokemon_attributes, init_pokemon_object, pokemon_stats_exceeds_limit
-)
+from pokemons.helpers import get_pokemon_attributes, init_pokemon, pokemon_stats_exceeds_limit
 from pokemons.models import Pokemon
 
 
@@ -35,11 +33,11 @@ class TestPokemonHelpers(TestCaseUtils, TestCase):
         )
 
     def test_function_returns_a_pokemon_if_existent(self):
-        pokemon = init_pokemon_object(self.creator_pokemon.id)
+        pokemon = init_pokemon(self.creator_pokemon.id)
         self.assertIsInstance(pokemon, Pokemon)
 
     def test_function_returns_a_pokemon_if_non_existent(self):
-        pokemon = init_pokemon_object(15)
+        pokemon = init_pokemon(15)
         self.assertIsInstance(pokemon, Pokemon)
 
     def test_pokeapi_url_is_correct(self):

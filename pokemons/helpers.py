@@ -7,7 +7,7 @@ import requests as r
 from pokemons.models import Pokemon
 
 
-def init_pokemon_object(pid):
+def init_pokemon(pid):
     if not Pokemon.objects.filter(id=pid).exists():
         pokemon_dict = r.get(
             '{pokeapi}/{pokemon_id}'.format(

@@ -1,9 +1,7 @@
 from django import forms
 
 from battles.helpers.battle import run_battle, teams_cannot_battle
-from pokemons.helpers import (
-    has_team_duplicate_pokemon, init_pokemon_object, pokemon_stats_exceeds_limit
-)
+from pokemons.helpers import has_team_duplicate_pokemon, init_pokemon, pokemon_stats_exceeds_limit
 from pokemons.models import Pokemon
 from users.models import User
 
@@ -39,17 +37,17 @@ class ChooseTeamForm(forms.ModelForm):
 
     def clean_first_pokemon(self):
         value = self.cleaned_data.get('first_pokemon')
-        pokemon = init_pokemon_object(value)
+        pokemon = init_pokemon(value)
         return pokemon
 
     def clean_second_pokemon(self):
         value = self.cleaned_data.get('second_pokemon')
-        pokemon = init_pokemon_object(value)
+        pokemon = init_pokemon(value)
         return pokemon
 
     def clean_third_pokemon(self):
         value = self.cleaned_data.get('third_pokemon')
-        pokemon = init_pokemon_object(value)
+        pokemon = init_pokemon(value)
         return pokemon
 
     def clean(self):
