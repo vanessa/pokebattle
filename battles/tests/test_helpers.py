@@ -2,9 +2,7 @@ from django.test import TestCase
 
 from model_mommy import mommy
 
-from battles.helpers.battle import (
-    can_run_battle, check_run_battle_and_save_winner, teams_cannot_battle
-)
+from battles.helpers.battle import can_run_battle, run_battle, teams_cannot_battle
 from battles.helpers.emails import send_email_when_battle_finishes
 from battles.helpers.fight import compare_attack_to_defense, compare_hp
 from common.utils.tests import TestCaseUtils
@@ -73,11 +71,11 @@ class TestBattle(TestCaseUtils, TestCase):
     def test_battle_running(self):
         self.add_related_battle_to_teams()
         self.assertNotEqual(
-            check_run_battle_and_save_winner(self.battle), None)
+            run_battle(self.battle), None)
 
     def test_if_battle_returns_a_winner(self):
         self.add_related_battle_to_teams()
-        check_run_battle_and_save_winner(self.battle)
+        run_battle(self.battle)
         self.assertIsInstance(self.battle.winner, User)
 
     def test_email_sending_to_participants(self):

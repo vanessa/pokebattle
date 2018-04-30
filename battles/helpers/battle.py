@@ -44,7 +44,7 @@ def get_the_battle_winner(battle):
     return battle_winner
 
 
-def check_run_battle_and_save_winner(battle):
+def run_battle(battle):
     if can_run_battle(battle):
         winner = get_the_battle_winner(battle)
         battle.winner = winner
