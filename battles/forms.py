@@ -1,6 +1,6 @@
 from django import forms
 
-from battles.helpers.battle import teams_cannot_battle
+from battles.helpers.battle import can_teams_battle
 from pokemons.helpers import (
     check_if_pokemon_stats_exceeds_limit, has_team_duplicate_pokemon, init_pokemon
 )
@@ -75,7 +75,7 @@ class ChooseTeamForm(forms.ModelForm):
             battle_related=battle_related
         ).first()
 
-        if existent_team_pokemon and teams_cannot_battle(
+        if existent_team_pokemon and can_teams_battle(
                 existent_team_pokemon.pokemons.all(), team):
             raise forms.ValidationError(
                 'Some of your Pokemon already exists in '

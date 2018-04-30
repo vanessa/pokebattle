@@ -17,11 +17,10 @@ def mount_battle_list(battle):
         battle_related=battle, trainer=battle.creator)
     opponent_team = BattleTeam.objects.get(
         battle_related=battle, trainer=battle.opponent)
-    result = {}
-    result['creator_team'] = [
-        pokemon.id for pokemon in creator_team.pokemons.all()]
-    result['opponent_team'] = [
-        pokemon.id for pokemon in opponent_team.pokemons.all()]
+    result = {
+        'creator_team': [pokemon.id for pokemon in creator_team.pokemons.all()],
+        'opponent_team': [pokemon.id for pokemon in opponent_team.pokemons.all()]
+    }
     return result['creator_team'], result['opponent_team']
 
 
@@ -34,7 +33,7 @@ def get_winner_pokemon_list(battle):
     return comparison_winners
 
 
-def get_the_battle_winner(battle):
+def get_battle_winner(battle):
     winner_list = get_winner_pokemon_list(battle)
     teams = BattleTeam.objects.filter(
         battle_related=battle, pokemons__in=winner_list)
@@ -45,27 +44,24 @@ def get_the_battle_winner(battle):
 
 
 def run_battle(battle):
-    if can_run_battle(battle):
-        winner = get_the_battle_winner(battle)
-        battle.winner = winner
-        battle.save()
-        send_email_when_battle_finishes(battle)
-        return True
-    return False
+    if not can_run_battle(battle):
+        return False
+    winner = get_battle_winner(battle)
+    battle.winner = winner
+    battle.save()
+    send_email_when_battle_finishes(battle)
+    return True
 
 
-def teams_cannot_battle(first_team, second_team):
-    if first_team:
-        result = any(
-            pokemon in first_team for pokemon in second_team)
-        return result
-    return False
+def can_teams_battle(first_team, second_team):
+    if not first_team:
+        return False
+    result = any(pokemon in first_team for pokemon in second_team)
+    return result
 
 
 def battle_team_existent(battle, second_team):
-    existent_team_pokemon = BattleTeam.objects.filter(
-        battle_related=battle
-    ).first()
+    existent_team_pokemon = BattleTeam.objects.filter(battle_related=battle).first()
     if existent_team_pokemon:
-        return teams_cannot_battle(existent_team_pokemon, second_team)
+        return can_teams_battle(existent_team_pokemon, second_team)
     return False

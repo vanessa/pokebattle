@@ -2,7 +2,7 @@ from django.test import TestCase
 
 from model_mommy import mommy
 
-from battles.helpers.battle import can_run_battle, run_battle, teams_cannot_battle
+from battles.helpers.battle import can_run_battle, can_teams_battle, run_battle
 from battles.helpers.emails import send_email_when_battle_finishes
 from battles.helpers.fight import compare_attack_to_defense, compare_hp
 from common.utils.tests import TestCaseUtils
@@ -92,7 +92,7 @@ class TestBattle(TestCaseUtils, TestCase):
         example_existent_pokemon = mommy.make(
             'pokemons.Pokemon', _quantity=3, id=2)
         random_pokemon = mommy.make('pokemons.Pokemon', _quantity=3, id=2)
-        result = teams_cannot_battle(
+        result = can_teams_battle(
             example_existent_pokemon, random_pokemon)
         self.assertTrue(result)
 
@@ -100,5 +100,5 @@ class TestBattle(TestCaseUtils, TestCase):
         example_existent_pokemon = mommy.make(
             'pokemons.Pokemon', _quantity=3, id=2)
         random_pokemon = mommy.make('pokemons.Pokemon', _quantity=3)
-        result = teams_cannot_battle(example_existent_pokemon, random_pokemon)
+        result = can_teams_battle(example_existent_pokemon, random_pokemon)
         self.assertFalse(result)
