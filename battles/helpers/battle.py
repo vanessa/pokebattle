@@ -19,15 +19,12 @@ def can_run_battle(battle):
 
 
 def mount_battle_list(battle):
-    creator_team = BattleTeam.objects.get(
-        battle_related=battle, trainer=battle.creator)
-    opponent_team = BattleTeam.objects.get(
-        battle_related=battle, trainer=battle.opponent)
-    result = {}
-    result['creator_team'] = [
-        pokemon.id for pokemon in creator_team.pokemons.all()]
-    result['opponent_team'] = [
-        pokemon.id for pokemon in opponent_team.pokemons.all()]
+    creator_team = BattleTeam.objects.get(battle_related=battle, trainer=battle.creator)
+    opponent_team = BattleTeam.objects.get(battle_related=battle, trainer=battle.opponent)
+    result = {
+        'creator_team': [pokemon.id for pokemon in creator_team.pokemons.all()],
+        'opponent_team': [pokemon.id for pokemon in opponent_team.pokemons.all()]
+    }
     return result['creator_team'], result['opponent_team']
 
 
