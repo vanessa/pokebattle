@@ -49,7 +49,7 @@ class TestBattle(TestCaseUtils, TestCase):
         self.opponent_battle_team.battle_related = self.battle
         self.opponent_battle_team.save()
 
-    def test_can_run_battle_with_a_team(self):
+    def test_can_run_battle_with_two_teams(self):
         self.add_related_battle_to_teams()
         self.assertTrue(can_run_battle(self.battle))
 

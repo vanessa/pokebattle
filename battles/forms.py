@@ -1,10 +1,9 @@
 from django import forms
 
-from battles.helpers.battle import check_run_battle_and_save_winner, teams_cannot_battle
+from battles.helpers.battle import teams_cannot_battle
 from pokemons.helpers import (
     check_if_pokemon_stats_exceeds_600, has_team_duplicate_pokemon, init_pokemon_object
 )
-from pokemons.models import Pokemon
 from users.models import User
 
 from .models import Battle, BattleTeam
@@ -58,6 +57,7 @@ class ChooseTeamForm(forms.ModelForm):
         first_pokemon = cleaned_data.get('first_pokemon')
         second_pokemon = cleaned_data.get('second_pokemon')
         third_pokemon = cleaned_data.get('third_pokemon')
+        battle_related = self.initial.get('battle_related')
 
         team = [first_pokemon, second_pokemon, third_pokemon]
 
@@ -72,32 +72,32 @@ class ChooseTeamForm(forms.ModelForm):
             )
 
         existent_team_pokemon = BattleTeam.objects.filter(
-            battle_related=self.initial.get('battle_related')
+            battle_related=battle_related
         ).first()
 
-        if existent_team_pokemon:
-            if teams_cannot_battle(existent_team_pokemon.pokemons.all(), team):
-                raise forms.ValidationError(
-                    'Some of your Pokemon already exists in '
-                    'the opponent\'s team, please pick other ones.'
-                )
+        if existent_team_pokemon and teams_cannot_battle(
+                existent_team_pokemon.pokemons.all(), team):
+            raise forms.ValidationError(
+                'Some of your Pokemon already exists in '
+                'the opponent\'s team, please pick other ones.'
+            )
 
         return cleaned_data
 
     def save(self, commit=True):
-        pokemon_list = [
-            self.cleaned_data.get('first_pokemon'),
-            self.cleaned_data.get('second_pokemon'),
-            self.cleaned_data.get('third_pokemon')
-        ]
+        first_pokemon = self.cleaned_data.get('first_pokemon')
+        second_pokemon = self.cleaned_data.get('second_pokemon')
+        third_pokemon = self.cleaned_data.get('third_pokemon')
 
-        for pokemon in pokemon_list:
+        team = [first_pokemon, second_pokemon, third_pokemon]
+        battle_related = self.initial.get('battle_related')
+        trainer = self.initial.get('trainer')
+
+        for pokemon in team:
             pokemon.save()
 
         new_team = BattleTeam.objects.create(
-            battle_related=self.initial.get('battle_related'),
-            trainer=self.initial.get('trainer'),
+            battle_related=battle_related,
+            trainer=trainer
         )
-        new_team.pokemons.add(
-            *Pokemon.objects.filter(id__in=[pokemon.id for pokemon in pokemon_list]))
-        check_run_battle_and_save_winner(self.initial['battle_related'])
+        new_team.pokemons.add(*team)
