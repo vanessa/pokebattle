@@ -76,7 +76,7 @@ class ChooseTeamForm(forms.ModelForm):
 
         if has_team_duplicate_pokemon(team):
             raise forms.ValidationError(
-                'There are duplicates Pokemon, please use unique ids.'
+                'There are duplicate Pokemon, please use unique ids.'
             )
 
         if check_if_pokemon_stats_exceeds_limit(team):

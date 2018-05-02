@@ -12,7 +12,7 @@
             Remember to use only their ids
         </div>
         {% if form.errors %}
-            <div class="form-error">{{ form.errors }}</div>
+            <div class="form-error">{{ form.non_field_errors }}</div>
         {% endif %}
         <form method="POST" class="battle-creation-form">
             {% csrf_token %}
@@ -27,7 +27,7 @@
             <input type="submit" value="Pick my team">
         </form>
     </div>
-    
+
 <script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
 {{ form.media }}
 {% endblock %}
