@@ -4,6 +4,8 @@ from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseRedirect
 from django.views import generic
 
+from dal import autocomplete
+
 from battles.helpers.battle import run_battle
 from pokemons.models import Pokemon
 
@@ -65,6 +67,19 @@ class BattleView(LoginRequiredMixin, generic.DetailView):
             battle_team__trainer=self.request.user
         ).exists()
         return context
+
+
+class PokemonAutocompleteView(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        if not self.request.user.is_authenticated():
+            return Pokemon.objects.none()
+
+        qs = Pokemon.objects.all()
+
+        if self.q:
+            qs = qs.filter(name__istartswith=self.q)
+
+        return qs
 
 
 class ChoosePokemonTeamView(LoginRequiredMixin, generic.CreateView):

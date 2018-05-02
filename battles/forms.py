@@ -1,13 +1,15 @@
 from django import forms
 
+from dal import autocomplete
+
 from battles.helpers.battle import can_teams_battle
 from pokemons.helpers import (
     check_if_pokemon_stats_exceeds_limit, has_team_duplicate_pokemon, init_pokemon
 )
+from pokemons.models import Pokemon
 from users.models import User
 
 from .models import Battle, BattleTeam
-from .validators import validate_integer_doesnt_start_with_zero
 
 
 class CreateBattleForm(forms.ModelForm):
@@ -26,15 +28,23 @@ class ChooseTeamForm(forms.ModelForm):
         model = BattleTeam
         fields = []
 
-    first_pokemon = forms.IntegerField(
-        min_value=1, max_value=802, required=True, label='First pokemon',
-        validators=[validate_integer_doesnt_start_with_zero])
-    second_pokemon = forms.IntegerField(
-        min_value=1, max_value=802, required=True, label='Second pokemon',
-        validators=[validate_integer_doesnt_start_with_zero])
-    third_pokemon = forms.IntegerField(
-        min_value=1, max_value=802, required=True, label='Third pokemon',
-        validators=[validate_integer_doesnt_start_with_zero])
+    first_pokemon = forms.ModelChoiceField(
+        queryset=Pokemon.objects.all(),
+        widget=autocomplete.ModelSelect2(url='/battles/pokemon-autocomplete'),
+        label='First Pokemon'
+    )
+
+    second_pokemon = forms.ModelChoiceField(
+        queryset=Pokemon.objects.all(),
+        widget=autocomplete.ModelSelect2(url='/battles/pokemon-autocomplete'),
+        label='Second Pokemon'
+    )
+
+    third_pokemon = forms.ModelChoiceField(
+        queryset=Pokemon.objects.all(),
+        widget=autocomplete.ModelSelect2(url='/battles/pokemon-autocomplete'),
+        label='Third Pokemon'
+    )
 
     def clean_first_pokemon(self):
         value = self.cleaned_data.get('first_pokemon')

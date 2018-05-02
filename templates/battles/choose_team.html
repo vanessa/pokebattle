@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load widget_tweaks %}
 {% block title %}PokeBattle &middot; Choose your team{% endblock %}
 
@@ -26,4 +27,7 @@
             <input type="submit" value="Pick my team">
         </form>
     </div>
+    
+<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+{{ form.media }}
 {% endblock %}

@@ -1,0 +1,12 @@
+.battle-creation-form {
+    .select2-container {
+        display: block !important;
+        width: 100% !important;
+        margin: 5px 0 !important;
+
+        /*
+            Had to use !important, otherwise
+            the styling wouldn't be overrided.
+        */
+    }
+}
