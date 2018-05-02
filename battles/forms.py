@@ -33,7 +33,8 @@ class ChooseTeamForm(forms.ModelForm):
         widget=autocomplete.ModelSelect2(
             url='/battles/pokemon-autocomplete',
             attrs={
-                'data-placeholder': 'Select the first Pokemon'
+                'data-placeholder': 'Select the first Pokemon',
+                'data-html': True
             })
     )
 
@@ -42,7 +43,8 @@ class ChooseTeamForm(forms.ModelForm):
         widget=autocomplete.ModelSelect2(
             url='/battles/pokemon-autocomplete',
             attrs={
-                'data-placeholder': 'Select the second Pokemon'
+                'data-placeholder': 'Select the second Pokemon',
+                'data-html': True
             })
     )
 
@@ -51,7 +53,8 @@ class ChooseTeamForm(forms.ModelForm):
         widget=autocomplete.ModelSelect2(
             url='/battles/pokemon-autocomplete',
             attrs={
-                'data-placeholder': 'Select the third Pokemon'
+                'data-placeholder': 'Select the third Pokemon',
+                'data-html': True
             })
     )
 
