@@ -47,18 +47,21 @@ class ChooseTeamForm(forms.ModelForm):
     )
 
     def clean_first_pokemon(self):
-        value = self.cleaned_data.get('first_pokemon')
-        pokemon = init_pokemon(value)
+        pokemon = self.cleaned_data.get('first_pokemon')
+        if not isinstance(pokemon, Pokemon):
+            pokemon = init_pokemon(pokemon)
         return pokemon
 
     def clean_second_pokemon(self):
-        value = self.cleaned_data.get('second_pokemon')
-        pokemon = init_pokemon(value)
+        pokemon = self.cleaned_data.get('second_pokemon')
+        if not isinstance(pokemon, Pokemon):
+            pokemon = init_pokemon(pokemon)
         return pokemon
 
     def clean_third_pokemon(self):
-        value = self.cleaned_data.get('third_pokemon')
-        pokemon = init_pokemon(value)
+        pokemon = self.cleaned_data.get('third_pokemon')
+        if not isinstance(pokemon, Pokemon):
+            pokemon = init_pokemon(pokemon)
         return pokemon
 
     def clean(self):
