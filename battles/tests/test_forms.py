@@ -78,7 +78,64 @@ class TestChooseTeamForm(TestCaseUtils, TestCase):
         form = ChooseTeamForm(**params)
         self.assertTrue(form.is_valid(), form.errors)
 
-    def test_pokemon_with_stats_equal_or_more_than_600(self):
+    def test_choosing_first_pokemon_with_id_zero_returns_error(self):
+        params = {
+            'initial': {
+                'trainer': self.user,
+                'battle_related': self.battle
+            },
+            'data': {
+                'first_pokemon': 0,
+                'second_pokemon': mommy.make(
+                    'pokemons.Pokemon', id=2, attack=10, defense=10, hp=10).id,
+                'third_pokemon': mommy.make(
+                    'pokemons.Pokemon', id=3, attack=10, defense=10, hp=10).id
+            }
+        }
+
+        form = ChooseTeamForm(**params)
+        self.assertFalse(form.is_valid())
+        self.assertIn('first_pokemon', form.errors)
+
+    def test_choosing_second_pokemon_with_id_zero_returns_error(self):
+        params = {
+            'initial': {
+                'trainer': self.user,
+                'battle_related': self.battle
+            },
+            'data': {
+                'first_pokemon': mommy.make(
+                    'pokemons.Pokemon', id=1, attack=10, defense=10, hp=10).id,
+                'second_pokemon': 0,
+                'third_pokemon': mommy.make(
+                    'pokemons.Pokemon', id=3, attack=10, defense=10, hp=10).id
+            }
+        }
+
+        form = ChooseTeamForm(**params)
+        self.assertFalse(form.is_valid())
+        self.assertIn('second_pokemon', form.errors)
+
+    def test_choosing_third_pokemon_with_id_zero_returns_error(self):
+        params = {
+            'initial': {
+                'trainer': self.user,
+                'battle_related': self.battle
+            },
+            'data': {
+                'first_pokemon': mommy.make(
+                    'pokemons.Pokemon', id=2, attack=10, defense=10, hp=10).id,
+                'second_pokemon': mommy.make(
+                    'pokemons.Pokemon', id=2, attack=10, defense=10, hp=10).id,
+                'third_pokemon': 0
+            }
+        }
+
+        form = ChooseTeamForm(**params)
+        self.assertFalse(form.is_valid())
+        self.assertIn('third_pokemon', form.errors)
+
+    def test_pokemon_with_stats_equal_or_more_than_limit(self):
         params = {
             'initial': {
                 'trainer': self.user,

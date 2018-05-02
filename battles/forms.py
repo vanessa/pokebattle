@@ -2,11 +2,10 @@ from django import forms
 
 from battles.helpers.battle import run_battle, teams_cannot_battle
 from pokemons.helpers import has_team_duplicate_pokemon, init_pokemon, pokemon_stats_exceeds_limit
-from pokemons.models import Pokemon
 from users.models import User
 
 from .models import Battle, BattleTeam
-from .validators import validate_integer_doesnt_start_with_zero
+from .validators import validate_integer_doesnt_start_with_zero, validate_integer_is_not_zero
 
 
 class CreateBattleForm(forms.ModelForm):
@@ -27,13 +26,13 @@ class ChooseTeamForm(forms.ModelForm):
 
     first_pokemon = forms.IntegerField(
         min_value=1, max_value=802, required=True, label='First pokemon',
-        validators=[validate_integer_doesnt_start_with_zero])
+        validators=[validate_integer_doesnt_start_with_zero, validate_integer_is_not_zero])
     second_pokemon = forms.IntegerField(
         min_value=1, max_value=802, required=True, label='Second pokemon',
-        validators=[validate_integer_doesnt_start_with_zero])
+        validators=[validate_integer_doesnt_start_with_zero, validate_integer_is_not_zero])
     third_pokemon = forms.IntegerField(
         min_value=1, max_value=802, required=True, label='Third pokemon',
-        validators=[validate_integer_doesnt_start_with_zero])
+        validators=[validate_integer_doesnt_start_with_zero, validate_integer_is_not_zero])
 
     def clean_first_pokemon(self):
         value = self.cleaned_data.get('first_pokemon')
@@ -58,6 +57,11 @@ class ChooseTeamForm(forms.ModelForm):
         third_pokemon = cleaned_data.get('third_pokemon')
 
         team = [first_pokemon, second_pokemon, third_pokemon]
+
+        if None in team:
+            raise forms.ValidationError(
+                'There\'s some invalid Pokemon in your team.'
+            )
 
         if has_team_duplicate_pokemon(team):
             raise forms.ValidationError(
@@ -96,6 +100,5 @@ class ChooseTeamForm(forms.ModelForm):
             battle_related=self.initial.get('battle_related'),
             trainer=self.initial.get('trainer'),
         )
-        new_team.pokemons.add(
-            *Pokemon.objects.filter(id__in=[pokemon.id for pokemon in pokemon_list]))
+        new_team.pokemons.add(*pokemon_list)
         run_battle(self.initial['battle_related'])
