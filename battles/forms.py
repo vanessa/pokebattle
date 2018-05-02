@@ -30,20 +30,29 @@ class ChooseTeamForm(forms.ModelForm):
 
     first_pokemon = forms.ModelChoiceField(
         queryset=Pokemon.objects.all(),
-        widget=autocomplete.ModelSelect2(url='/battles/pokemon-autocomplete'),
-        label='First Pokemon'
+        widget=autocomplete.ModelSelect2(
+            url='/battles/pokemon-autocomplete',
+            attrs={
+                'data-placeholder': 'Select the first Pokemon'
+            })
     )
 
     second_pokemon = forms.ModelChoiceField(
         queryset=Pokemon.objects.all(),
-        widget=autocomplete.ModelSelect2(url='/battles/pokemon-autocomplete'),
-        label='Second Pokemon'
+        widget=autocomplete.ModelSelect2(
+            url='/battles/pokemon-autocomplete',
+            attrs={
+                'data-placeholder': 'Select the second Pokemon'
+            })
     )
 
     third_pokemon = forms.ModelChoiceField(
         queryset=Pokemon.objects.all(),
-        widget=autocomplete.ModelSelect2(url='/battles/pokemon-autocomplete'),
-        label='Third Pokemon'
+        widget=autocomplete.ModelSelect2(
+            url='/battles/pokemon-autocomplete',
+            attrs={
+                'data-placeholder': 'Select the third Pokemon'
+            })
     )
 
     def clean_first_pokemon(self):
