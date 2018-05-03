@@ -11,5 +11,14 @@ class Pokemon(models.Model):
     defense = models.SmallIntegerField('Defense')
     hp = models.SmallIntegerField('HP')
 
+    @property
+    def sum_attributes(self):
+        stats = [
+            self.attack,
+            self.defense,
+            self.hp
+        ]
+        return sum(stats)
+
     def __str__(self):
         return self.name

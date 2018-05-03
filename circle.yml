@@ -52,3 +52,4 @@ test:
     - npm run test
   post:
     - pipenv run coverage html -d $CIRCLE_ARTIFACTS
+    
