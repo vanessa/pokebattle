@@ -5,11 +5,17 @@ import os
 from decouple import config  # noqa
 
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+BASE_DIR = os.path.dirname(os.path.dirname(
+    os.path.dirname(os.path.abspath(__file__))))
 
 
 def base_dir_join(*args):
     return os.path.join(BASE_DIR, *args)
+
+
+# PokeAPI
+POKEAPI_URL = 'http://pokeapi.co/api/v2'
+POKEAPI_POKEMON_URL = '{pokeapi}/pokemon'.format(pokeapi=POKEAPI_URL)
 
 
 LOGIN_URL = '/login'
@@ -44,6 +50,8 @@ INSTALLED_APPS = [
     'webpack_loader',
     'import_export',
     'widget_tweaks',
+    'django_inlinecss',
+    'templated_email',
 
     'common',
     'users',
@@ -129,7 +137,3 @@ WEBPACK_LOADER = {
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
-
-# PokeAPI
-POKEAPI_URL = 'http://pokeapi.co/api/v2'
-POKEAPI_POKEMON_URL = '{pokeapi}/pokemon'.format(pokeapi=POKEAPI_URL)
