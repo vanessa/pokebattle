@@ -7,15 +7,9 @@ from users.models import User
 
 
 def can_run_battle(battle):
-    try:
-        BattleTeam.objects.get(
-            battle_related=battle, trainer=battle.creator)
-        BattleTeam.objects.get(
-            battle_related=battle, trainer=battle.opponent)
-    except BattleTeam.DoesNotExist:
-        return False
-    else:
+    if BattleTeam.objects.filter(battle_related=battle).count() == 2:
         return True
+    return False
 
 
 def mount_battle_list(battle):
@@ -58,7 +52,7 @@ def run_battle(battle):
     return True
 
 
-def teams_cannot_battle(first_team, second_team):
+def can_teams_battle(first_team, second_team):
     if not first_team:
         return False
     result = any(pokemon in first_team for pokemon in second_team)
@@ -66,9 +60,7 @@ def teams_cannot_battle(first_team, second_team):
 
 
 def battle_team_existent(battle, second_team):
-    existent_team_pokemon = BattleTeam.objects.filter(
-        battle_related=battle
-    ).first()
+    existent_team_pokemon = BattleTeam.objects.filter(battle_related=battle).first()
     if existent_team_pokemon:
-        return teams_cannot_battle(existent_team_pokemon, second_team)
+        return can_teams_battle(existent_team_pokemon, second_team)
     return False
