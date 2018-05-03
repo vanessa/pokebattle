@@ -41,7 +41,7 @@ def get_pokemon_attributes(pokemon_dict):
     return stats_dict
 
 
-def check_if_pokemon_stats_exceeds_limit(team):
+def pokemon_stats_exceeds_limit(team):
     power_limit = 600
     stats = [pokemon.sum_attributes for pokemon in team]
     result = sum(stats)
