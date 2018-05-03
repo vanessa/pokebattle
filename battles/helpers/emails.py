@@ -27,4 +27,4 @@ def send_battle_result_email(user, battle):
 
 def send_email_when_battle_finishes(battle):
     for trainer in [battle.creator, battle.opponent]:
-        return send_battle_result_email(trainer, battle)
+        send_battle_result_email(trainer, battle)

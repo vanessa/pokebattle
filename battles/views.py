@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseRedirect
 from django.views import generic
 
+from battles.helpers.battle import run_battle
 from pokemons.models import Pokemon
 
 from .forms import ChooseTeamForm, CreateBattleForm
@@ -92,3 +93,8 @@ class ChoosePokemonTeamView(LoginRequiredMixin, generic.CreateView):
         context = super().get_context_data(**kwargs)
         context['battle'] = Battle.objects.get(pk=self.kwargs['pk'])
         return context
+
+    def form_valid(self, form):
+        battle_team = form.save()
+        run_battle(battle_team.battle_related)
+        return HttpResponseRedirect(self.get_success_url())

@@ -1,6 +1,6 @@
 from django import forms
 
-from battles.helpers.battle import can_teams_battle, run_battle
+from battles.helpers.battle import can_teams_battle
 from pokemons.helpers import has_team_duplicate_pokemon, init_pokemon, pokemon_stats_exceeds_limit
 from users.models import User
 
@@ -99,4 +99,4 @@ class ChooseTeamForm(forms.ModelForm):
             trainer=trainer
         )
         new_team.pokemons.add(*team)
-        run_battle(battle_related)  # validation needs to run after new_team is saved
+        return new_team
