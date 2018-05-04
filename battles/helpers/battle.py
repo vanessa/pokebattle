@@ -7,9 +7,10 @@ from users.models import User
 
 
 def can_run_battle(battle):
-    if BattleTeam.objects.filter(battle_related=battle).count() == 2:
-        return True
-    return False
+    creator_team = BattleTeam.objects.filter(battle_related=battle, trainer=battle.creator).exists()
+    opponent_team = BattleTeam.objects.filter(
+        battle_related=battle, trainer=battle.opponent).exists()
+    return creator_team and opponent_team
 
 
 def mount_battle_list(battle):

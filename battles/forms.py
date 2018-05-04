@@ -104,3 +104,4 @@ class ChooseTeamForm(forms.ModelForm):
             trainer=trainer
         )
         new_team.pokemons.add(*team)
+        return new_team
