@@ -99,32 +99,29 @@ class TestChooseTeamView(TestCaseUtils, TestCase):
         )
         self.battle_team_params = {
             'battle_related': self.battle,
-            'first_pokemon': 1,
-            'second_pokemon': 2,
-            'third_pokemon': 3
+            'first_pokemon': mommy.make('pokemons.Pokemon', id=1, hp=1, attack=1, defense=1).id,
+            'second_pokemon': mommy.make('pokemons.Pokemon', id=2, hp=1, attack=1, defense=1).id,
+            'third_pokemon': mommy.make('pokemons.Pokemon', id=3, hp=1, attack=1, defense=1).id
         }
 
     def test_pokemon_is_chosen(self):
-        response = self.auth_client.post(
-            self.view_url, self.battle_team_params)
+        response = self.auth_client.post(self.view_url, self.battle_team_params)
         self.assertEqual(response.status_code, 302)
 
     def test_choosing_a_team_redirects_to_the_right_page(self):
-        response = self.auth_client.post(
-            self.view_url, self.battle_team_params)
+        response = self.auth_client.post(self.view_url, self.battle_team_params)
         self.assertEqual(response.url, self.battle_details_url)
 
     def test_picking_just_one_team_doesnt_run_the_battle(self):
-        response = self.auth_client.post(
-            self.view_url, self.battle_team_params)
+        response = self.auth_client.post(self.view_url, self.battle_team_params)
         self.assertEqual(response.status_code, 302)
         self.assertFalse(run_battle(self.battle))
 
     def test_run_the_battle_when_it_has_two_teams(self):
-        first_team_pokemons = mommy.make('pokemons.Pokemon', _quantity=3)
+        first_team_pokemons = mommy.make('pokemons.Pokemon', _quantity=3, attack=1, hp=1)
         mommy.make('battles.BattleTeam', battle_related=self.battle,
                    pokemons=first_team_pokemons, trainer=self.battle.creator)
-        second_team_pokemons = mommy.make('pokemons.Pokemon', _quantity=3)
+        second_team_pokemons = mommy.make('pokemons.Pokemon', _quantity=3, attack=1, hp=1)
         mommy.make('battles.BattleTeam', battle_related=self.battle,
                    pokemons=second_team_pokemons, trainer=self.battle.opponent)
         self.auth_client.post(self.view_url)
