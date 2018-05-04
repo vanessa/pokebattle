@@ -3,9 +3,7 @@ from django import forms
 from dal import autocomplete
 
 from battles.helpers.battle import can_teams_battle
-from pokemons.helpers import (
-    check_if_pokemon_stats_exceeds_limit, has_team_duplicate_pokemon, init_pokemon
-)
+from pokemons.helpers import has_team_duplicate_pokemon, pokemon_stats_exceeds_limit
 from pokemons.models import Pokemon
 from users.models import User
 
@@ -60,20 +58,14 @@ class ChooseTeamForm(forms.ModelForm):
 
     def clean_first_pokemon(self):
         pokemon = self.cleaned_data.get('first_pokemon')
-        if not isinstance(pokemon, Pokemon):
-            pokemon = init_pokemon(pokemon)
         return pokemon
 
     def clean_second_pokemon(self):
         pokemon = self.cleaned_data.get('second_pokemon')
-        if not isinstance(pokemon, Pokemon):
-            pokemon = init_pokemon(pokemon)
         return pokemon
 
     def clean_third_pokemon(self):
         pokemon = self.cleaned_data.get('third_pokemon')
-        if not isinstance(pokemon, Pokemon):
-            pokemon = init_pokemon(pokemon)
         return pokemon
 
     def clean(self):
@@ -91,7 +83,7 @@ class ChooseTeamForm(forms.ModelForm):
                 'There are duplicate Pokemon, please use unique ids.'
             )
 
-        if check_if_pokemon_stats_exceeds_limit(team):
+        if pokemon_stats_exceeds_limit(team):
             raise forms.ValidationError(
                 'Your Pokemon stats cannot sum more than 600.'
             )
@@ -126,3 +118,4 @@ class ChooseTeamForm(forms.ModelForm):
             trainer=trainer
         )
         new_team.pokemons.add(*team)
+        return new_team

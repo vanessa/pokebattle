@@ -117,6 +117,6 @@ class ChoosePokemonTeamView(LoginRequiredMixin, generic.CreateView):
         return context
 
     def form_valid(self, form):
-        battle_related = form.initial.get('battle_related')
-        run_battle(battle_related)
-        return super().form_valid(form)
+        battle_team = form.save()
+        run_battle(battle_team.battle_related)
+        return HttpResponseRedirect(self.get_success_url())

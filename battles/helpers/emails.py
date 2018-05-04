@@ -9,7 +9,7 @@ def send_battle_result_email(user, battle):
     relative_opponent = battle.creator if battle.creator != user else battle.opponent
     kwargs = dict(
         template_name='battle_result',
-        from_email=settings.DEFAULT_FROM_EMAIL,
+        from_email=settings.SERVER_EMAIL,
         recipient_list=[user.email],
         context={
             'username': user.get_short_name(),
@@ -27,4 +27,4 @@ def send_battle_result_email(user, battle):
 
 def send_email_when_battle_finishes(battle):
     for trainer in [battle.creator, battle.opponent]:
-        return send_battle_result_email(trainer, battle)
+        send_battle_result_email(trainer, battle)
