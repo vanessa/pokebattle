@@ -1,7 +1,9 @@
 from django import forms
 
 from battles.helpers.battle import can_teams_battle
-from pokemons.helpers import has_team_duplicate_pokemon, init_pokemon, pokemon_stats_exceeds_limit
+from pokemons.helpers.pokemon import (
+    has_team_duplicate_pokemon, init_pokemon, pokemon_stats_exceeds_limit
+)
 from users.models import User
 
 from .models import Battle, BattleTeam
