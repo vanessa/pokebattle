@@ -28,5 +28,5 @@ def bulk_save_pokemon_from_api():
         return
     response = response.json()
     for pokemon in response['results']:
-        if not _pokemon_existent(pokemon.name):
+        if not _pokemon_existent(pokemon['name']):
             _save_pokemon_from_api(pokemon['url'])
