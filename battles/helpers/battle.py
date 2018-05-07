@@ -14,10 +14,8 @@ def can_run_battle(battle):
 
 
 def mount_battle_list(battle):
-    creator_team = BattleTeam.objects.get(
-        battle_related=battle, trainer=battle.creator)
-    opponent_team = BattleTeam.objects.get(
-        battle_related=battle, trainer=battle.opponent)
+    creator_team = BattleTeam.objects.get(battle_related=battle, trainer=battle.creator)
+    opponent_team = BattleTeam.objects.get(battle_related=battle, trainer=battle.opponent)
     result = {
         'creator_team': [pokemon.id for pokemon in creator_team.pokemons.all()],
         'opponent_team': [pokemon.id for pokemon in opponent_team.pokemons.all()]
@@ -49,6 +47,7 @@ def run_battle(battle):
         return False
     winner = get_battle_winner(battle)
     battle.winner = winner
+    battle.status = 'F'
     battle.save()
     send_email_when_battle_finishes(battle)
     return True
