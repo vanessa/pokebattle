@@ -1,9 +1,13 @@
 .battles-list {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    max-width: 60%;
+    max-width: 70%;
     margin: 10px auto;
     grid-gap: 50px;
+
+    h4 {
+        text-align: center;
+    }
 
     ul {
         list-style: none;
@@ -44,7 +48,7 @@
 
 .battles-list a.ongoing:after {
     content: 'Ongoing';
-    background: $blue;
+    background: $orange;
     @include animation-opacity-pulse;
 }
 
