@@ -7,9 +7,7 @@ import requests
 from model_mommy import mommy
 
 from common.utils.tests import TestCaseUtils
-from pokemons.helpers import (
-    check_if_pokemon_stats_exceeds_600, get_pokemon_attributes, init_pokemon_object
-)
+from pokemons.helpers import get_pokemon_attributes, init_pokemon, pokemon_stats_exceeds_limit
 from pokemons.models import Pokemon
 
 
@@ -35,11 +33,11 @@ class TestPokemonHelpers(TestCaseUtils, TestCase):
         )
 
     def test_function_returns_a_pokemon_if_existent(self):
-        pokemon = init_pokemon_object(self.creator_pokemon.id)
+        pokemon = init_pokemon(self.creator_pokemon.id)
         self.assertIsInstance(pokemon, Pokemon)
 
     def test_function_returns_a_pokemon_if_non_existent(self):
-        pokemon = init_pokemon_object(15)
+        pokemon = init_pokemon(15)
         self.assertIsInstance(pokemon, Pokemon)
 
     def test_pokeapi_url_is_correct(self):
@@ -73,11 +71,11 @@ class TestPokemonHelpers(TestCaseUtils, TestCase):
         )
         self.assertDictEqual(expected_dict, attributes_dict)
 
-    def test_pokemon_with_stats_higher_than_600_is_invalid(self):
+    def test_pokemon_with_stats_higher_than_limit_is_invalid(self):
         for pokemon in self.pokemon_list:
             pokemon.attack = 80
             pokemon.defense = 80
             pokemon.hp = 80
             pokemon.save()
-        stats = check_if_pokemon_stats_exceeds_600(self.pokemon_list)
+        stats = pokemon_stats_exceeds_limit(self.pokemon_list)
         self.assertTrue(stats)
