@@ -103,6 +103,8 @@ class TestAPIHelpers(TestCase):
             responses.GET, 'https://pokeapi.co/api/v2/pokemon/22/',
             status=200, json=POKEAPI_POKEMON_DATA_EXAMPLE_SECOND)
         bulk_save_pokemon_from_api()
+        pokemon_count = Pokemon.objects.count()
+        self.assertEqual(pokemon_count, 2)
 
     @responses.activate
     def test_access_api_helper_doesnt_save_duplicate(self):
