@@ -5,6 +5,7 @@
 $orange: #FF6139;
 $royal-blue: #243B55;
 $green: #4BCC4B;
+$gray: #666;
 
 $default-color: $royal-blue;
 $default-font-color: #333;
@@ -28,3 +29,4 @@ $md-screen-size: 768px;
 // Minimal stuff
 $default-border-radius: 5px;
 $default-box-shadow: 0 1px 5px transparentize(#000, .85);
+$default-transition: transform .15s ease-in-out;

@@ -78,6 +78,11 @@ class ChooseTeamForm(forms.ModelForm):
 
         team = [first_pokemon, second_pokemon, third_pokemon]
 
+        if None in team:
+            raise forms.ValidationError(
+                'There are some invalid Pokemon in your team.'
+            )
+
         if has_team_duplicate_pokemon(team):
             raise forms.ValidationError(
                 'There are duplicate Pokemon, please use unique ids.'
