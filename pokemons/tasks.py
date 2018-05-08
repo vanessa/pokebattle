@@ -1,7 +1,7 @@
 import logging
 
 from pokebattle import celery_app
-from pokemons.helpers.api import bulk_save_pokemon_from_api
+from pokemons.helpers.api_wrapper import bulk_save_pokemon_from_api
 
 
 @celery_app.task

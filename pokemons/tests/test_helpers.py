@@ -8,7 +8,7 @@ import responses
 from model_mommy import mommy
 
 from common.utils.tests import TestCaseUtils
-from pokemons.helpers.api import bulk_save_pokemon_from_api
+from pokemons.helpers.api_wrapper import bulk_save_pokemon_from_api
 from pokemons.helpers.pokemon import (
     get_pokemon_attributes, init_pokemon, pokemon_stats_exceeds_limit
 )
