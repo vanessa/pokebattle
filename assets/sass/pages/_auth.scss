@@ -1,0 +1,23 @@
+.login-page {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-form {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15px;
+    width: 500px;
+
+    p {
+        width: 100%;
+    }
+
+    input {
+        text-align: center;
+    }
+}

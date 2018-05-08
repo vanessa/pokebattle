@@ -1,0 +1,35 @@
+label {
+    display: block;
+    font-size: .9em;
+    font-weight: bold;
+    margin-bottom: 3px;
+}
+
+input[type="text"],
+input[type="password"] {
+    display: block;
+    border: 0;
+    border-radius: 3px;
+    border: 1px solid lighten($gray, 30%);
+    width: 100%;
+}
+
+input[type="submit"] {
+    width: 100%;
+    background: $default-color;
+    color: $white;
+    border: 0;
+    border-radius: 3px;
+    display: block;
+    cursor: pointer;
+    &:hover {
+        background: lighten($default-color, 6%);
+    }
+}
+
+.errorlist {
+    color: $red;
+    list-style: none;
+    padding-left: 0;
+    text-align: center;
+}

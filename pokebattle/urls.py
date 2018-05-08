@@ -9,6 +9,7 @@ import django_js_reverse.views
 urlpatterns = [
     url(r'^admin/', admin.site.urls, name='admin'),
     url(r'^jsreverse/$', django_js_reverse.views.urls_js, name='js_reverse'),
+    url('', include('social_django.urls', namespace='social')),
     # App
     url(r'^', include('users.urls', namespace='auth')),
     url(r'^$', TemplateView.as_view(template_name='common/index.html'), name='home'),
