@@ -56,18 +56,6 @@ class ChooseTeamForm(forms.ModelForm):
             })
     )
 
-    def clean_first_pokemon(self):
-        pokemon = self.cleaned_data.get('first_pokemon')
-        return pokemon
-
-    def clean_second_pokemon(self):
-        pokemon = self.cleaned_data.get('second_pokemon')
-        return pokemon
-
-    def clean_third_pokemon(self):
-        pokemon = self.cleaned_data.get('third_pokemon')
-        return pokemon
-
     def clean(self):
         cleaned_data = super().clean()
 
