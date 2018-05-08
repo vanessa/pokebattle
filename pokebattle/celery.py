@@ -18,7 +18,6 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", settings_module)
 app = Celery('pokebattle')
 app.config_from_object('django.conf:settings', namespace='CELERY')
 app.autodiscover_tasks(lambda: settings.INSTALLED_APPS)
-app.conf.timezone = "America/Recife"
 
 app.conf.beat_schedule = {
     'save_pokemon_from_the_api': {
