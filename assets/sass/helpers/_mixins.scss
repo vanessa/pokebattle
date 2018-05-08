@@ -1,0 +1,3 @@
+@mixin animation-opacity-pulse() {
+    animation: opacity-pulse ease-in-out infinite 1.5s;
+}
