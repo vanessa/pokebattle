@@ -70,7 +70,7 @@ class BattleView(LoginRequiredMixin, generic.DetailView):
         return context
 
 
-class PokemonAutocompleteView(autocomplete.Select2QuerySetView):
+class PokemonListAPIView(autocomplete.Select2QuerySetView):
     def get_queryset(self):
         if not self.request.user.is_authenticated():
             return Pokemon.objects.none()

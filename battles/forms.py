@@ -29,7 +29,7 @@ class ChooseTeamForm(forms.ModelForm):
     first_pokemon = forms.ModelChoiceField(
         queryset=Pokemon.objects.all(),
         widget=autocomplete.ModelSelect2(
-            url='/battles/pokemon-autocomplete',
+            url='/api/pokemon',
             attrs={
                 'data-placeholder': 'Select the first Pokemon',
                 'data-html': True
@@ -39,7 +39,7 @@ class ChooseTeamForm(forms.ModelForm):
     second_pokemon = forms.ModelChoiceField(
         queryset=Pokemon.objects.all(),
         widget=autocomplete.ModelSelect2(
-            url='/battles/pokemon-autocomplete',
+            url='/api/pokemon',
             attrs={
                 'data-placeholder': 'Select the second Pokemon',
                 'data-html': True
@@ -49,7 +49,7 @@ class ChooseTeamForm(forms.ModelForm):
     third_pokemon = forms.ModelChoiceField(
         queryset=Pokemon.objects.all(),
         widget=autocomplete.ModelSelect2(
-            url='/battles/pokemon-autocomplete',
+            url='/api/pokemon',
             attrs={
                 'data-placeholder': 'Select the third Pokemon',
                 'data-html': True
