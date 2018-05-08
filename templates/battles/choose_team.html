@@ -12,7 +12,12 @@
             Remember to use only their ids
         </div>
         {% if form.errors %}
-            <div class="form-error">{{ form.non_field_errors }}</div>
+            {% for error in form.non_field_errors %}
+                <div class="form-error">{{ form.non_field_errors }}</div>
+            {% endfor %}
+            {% for error in form.errors %}
+                <div class="form-error">{{ error }}</div>
+            {% endfor %}
         {% endif %}
         <form method="POST" class="battle-creation-form">
             {% csrf_token %}
