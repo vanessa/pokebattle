@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block page_title %}Pokebattle &middot; Signup{% endblock %}
+
+{% block body %}
+<div class="pokebattle-container">
+    <form method="POST" name="signup-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" value="Login">
+    </form>
+</div>
+{% endblock %}

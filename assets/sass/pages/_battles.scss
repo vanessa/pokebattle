@@ -70,7 +70,7 @@
             font-weight: bold;
             padding: 5px 12px;
             border-radius: 5px;
-            animation: opacity-pulse ease-in-out infinite 1.5s;
+            @include animation-opacity-pulse;
         }
     }
 
@@ -175,7 +175,7 @@
 
         .placeholder-comp {
             background: #f0f0f0;
-            animation: opacity-pulse ease-in-out infinite 1.5s;
+            @include animation-opacity-pulse;
         }
 
         &:hover {

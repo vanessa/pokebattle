@@ -3,23 +3,24 @@
 
 {% block body %}
 <div class="pokebattle-container">
-    <ul>
-        <h4>Battles you created</h4>
-        {% for battle in battles_created %}
-        <li>
-            <a href="{% url 'battles:details' battle.id %}">
-                {{ battle }}
-            </a>
-        </li>
+    {% if messages %}
+        {% for message in messages %}
+        <li class="info-message{% if message.tags %} {{ message.tags }}{% endif %}">{{ message }}</li>
         {% endfor %}
-        <h4>Battles you were invited</h4>
-        {% for battle in battles_invited %}
-        <li>
-            <a href="{% url 'battles:details' battle.id %}">
-                {{ battle }}
-            </a>
-        </li>
-        {% endfor %}
-    </ul>
-</div>
+    {% endif %}
+    <div class="battles-list">
+        <div class="battles-created">
+            <h4>Battles you created</h4>
+            <ul>
+                {% for battle in battles_created %} {% include 'battles/includes/battle_list_card.html' %} {% endfor %}
+            </ul>
+        </div>
+        <div class="battles-invited">
+            <h4>Battles you were invited</h4>
+            <ul>
+                {% for battle in battles_invited %} {% include 'battles/includes/battle_list_card.html' %} {% endfor %}
+            </ul>
+        </div>
+    </div>
+    </div>
 {% endblock %}

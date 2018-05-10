@@ -6,7 +6,7 @@
 {% block body %}
     <div class="pokebattle-container battle">
         {% include 'battles/includes/battle_status.html' %}
-        <h2>{{ battle.creator.get_short_name }} vs. {{ battle.opponent.get_short_name }}</h2>
+        <h2><span class="battle-id">{{ battle.id }}</span> {{ battle.creator.get_short_name }} vs. {{ battle.opponent.get_short_name }}</h2>
         {% if battle.winner %}    
         <div class="battle-result-label">
             <strong>{{ battle.winner.get_short_name }}</strong> won!

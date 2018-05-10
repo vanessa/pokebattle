@@ -1,0 +1,6 @@
+<li>
+    <a href="{% url 'battles:details' battle.id %}" class="{{ battle.get_status_label }} {% if battle.winner %}battle-finished{% endif %}">
+        <span class="battle-id">{{ battle.id }}</span>
+        <span>{{ battle }}</span>
+    </a>
+</li>
