@@ -10,6 +10,7 @@ from battles.views import PokemonListAPIView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls, name='admin'),
+    url(r'^admin/statuscheck/', include('celerybeat_status.urls')),
     url(r'^jsreverse/$', django_js_reverse.views.urls_js, name='js_reverse'),
     url('', include('social_django.urls', namespace='social')),
 
