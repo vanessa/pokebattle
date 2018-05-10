@@ -190,6 +190,7 @@
             ],
             "index": "pypi",
             "version": "==0.0.10"
+        },
         "django-autocomplete-light": {
             "hashes": [
                 "sha256:5ccb1c8c4b75cf72bc5dabd920190ea1ca3a340f56fb6b12d07a62202837fa75"
