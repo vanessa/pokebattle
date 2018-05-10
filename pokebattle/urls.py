@@ -19,7 +19,7 @@ urlpatterns = [
     url(r'^battles/', include('battles.urls', namespace='battles')),
 
     # api
-    url(r'^api/pokemon$', PokemonListAPIView.as_view(), name='api-pokemon-list'),
+    url(r'^api/pokemon/$', PokemonListAPIView.as_view(), name='api-pokemon-list'),
 ]
 
 if settings.DEBUG:
