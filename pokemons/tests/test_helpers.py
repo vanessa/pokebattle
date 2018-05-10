@@ -1,5 +1,3 @@
-import json
-
 from django.conf import settings
 from django.test import TestCase
 
@@ -32,20 +30,8 @@ class TestPokemonHelpers(TestCaseUtils, TestCase):
             'pokemons.Pokemon', _quantity=3
         )
 
-    def example_request(self):
-        return requests.get(
-            '{pokeapi}/pokemon/{pokemon_id}'.format(
-                pokeapi=settings.POKEAPI_URL,
-                pokemon_id=self.creator_pokemon.id
-            )
-        )
-
     def test_function_returns_a_pokemon_if_existent(self):
         pokemon = init_pokemon(self.creator_pokemon.id)
-        self.assertIsInstance(pokemon, Pokemon)
-
-    def test_function_returns_a_pokemon_if_non_existent(self):
-        pokemon = init_pokemon(15)
         self.assertIsInstance(pokemon, Pokemon)
 
     def test_pokeapi_url_is_correct(self):
@@ -64,18 +50,31 @@ class TestPokemonHelpers(TestCaseUtils, TestCase):
         is_within_limit = 1 <= self.creator_pokemon.id <= 802
         self.assertFalse(is_within_limit)
 
+    @responses.activate
     def test_request_response_is_a_dict(self):
-        response = self.example_request()
+        url = '{pokeapi}/pokemon/{pokemon_id}'.format(
+            pokeapi=settings.POKEAPI_URL,
+            pokemon_id=self.creator_pokemon.id
+        )
+        responses.add(responses.GET, url, status=200, headers={'Content-Type': 'application/json'})
+        response = requests.get(url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.headers['Content-Type'], 'application/json')
 
+    @responses.activate
     def test_pokemon_attributes_is_a_valid_dict(self):
-        response = json.loads(self.example_request().text)
+        url = '{pokeapi}/pokemon/{pokemon_id}'.format(
+            pokeapi=settings.POKEAPI_URL,
+            pokemon_id=self.creator_pokemon.id
+        )
+        responses.add(responses.GET, url, status=200, headers={'Content-Type': 'application/json'},
+                      json=POKEAPI_POKEMON_DATA_EXAMPLE_FIRST)
+        response = requests.get(url).json()
         attributes_dict = get_pokemon_attributes(response)
         expected_dict = dict(
-            defense=58,
-            attack=64,
-            hp=58
+            defense=30,
+            attack=60,
+            hp=40
         )
         self.assertDictEqual(expected_dict, attributes_dict)
 
