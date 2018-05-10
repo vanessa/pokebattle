@@ -39,7 +39,7 @@ def send_battle_invite_email(battle):
         context={
             'username': battle.opponent.get_short_name(),
             'inviter': battle.creator.get_short_name(),
-            'battle_url': reverse_lazy('battle:details', args={'pk': battle.pk})
+            'battle_url': reverse_lazy('battles:details', args={'pk': battle.pk})
         }
     )
     return send_templated_mail(**kwargs)
