@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% load widget_tweaks %}
 {% block title %}PokeBattle &middot; Choose your team{% endblock %}
 
@@ -11,7 +12,12 @@
             Remember to use only their ids
         </div>
         {% if form.errors %}
-            <div class="form-error">{{ form.errors }}</div>
+            {% for error in form.non_field_errors %}
+                <div class="form-error">{{ form.non_field_errors }}</div>
+            {% endfor %}
+            {% for error in form.errors %}
+                <div class="form-error">{{ error }}</div>
+            {% endfor %}
         {% endif %}
         <form method="POST" class="battle-creation-form">
             {% csrf_token %}
@@ -26,4 +32,7 @@
             <input type="submit" value="Pick my team">
         </form>
     </div>
+
+<script type="text/javascript" src="{% static 'admin/js/vendor/jquery/jquery.js' %}"></script>
+{{ form.media }}
 {% endblock %}

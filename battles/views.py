@@ -2,7 +2,10 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse
 from django.http.response import HttpResponseRedirect
+from django.utils.html import format_html
 from django.views import generic
+
+from dal import autocomplete
 
 from battles.helpers.battle import run_battle
 from pokemons.models import Pokemon
@@ -65,6 +68,25 @@ class BattleView(LoginRequiredMixin, generic.DetailView):
             battle_team__trainer=self.request.user
         ).exists()
         return context
+
+
+class PokemonListAPIView(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        if not self.request.user.is_authenticated():
+            return Pokemon.objects.none()
+
+        qs = Pokemon.objects.all()
+
+        if self.q:
+            qs = qs.filter(name__istartswith=self.q)
+
+        return qs
+
+    def get_selected_result_label(self, item):
+        return item.name
+
+    def get_result_label(self, item):  # noqa
+        return format_html('<img src="{}"> {}', item.sprite, item.name)
 
 
 class ChoosePokemonTeamView(LoginRequiredMixin, generic.CreateView):
