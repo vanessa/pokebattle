@@ -1,5 +1,4 @@
 from django.conf import settings
-from django.urls import reverse_lazy
 
 from templated_email import send_templated_mail
 
@@ -31,7 +30,7 @@ def send_email_when_battle_finishes(battle):
         _send_battle_result_email(trainer, battle)
 
 
-def send_battle_invite_email(battle):
+def send_battle_invite_email(battle, request):
     kwargs = dict(
         template_name='battle_invite',
         from_email=settings.SERVER_EMAIL,
@@ -39,7 +38,7 @@ def send_battle_invite_email(battle):
         context={
             'username': battle.opponent.get_short_name(),
             'inviter': battle.creator.get_short_name(),
-            'battle_url': reverse_lazy('battles:details', args={'pk': battle.pk})
+            'battle_url': request.build_absolute_uri()
         }
     )
     return send_templated_mail(**kwargs)

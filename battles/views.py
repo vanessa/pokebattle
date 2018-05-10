@@ -45,7 +45,7 @@ class CreateBattleView(LoginRequiredMixin, generic.CreateView):
         self.object = form.save(commit=False)
         self.object.creator = self.request.user
         self.object.save()
-        send_battle_invite_email(self.object)
+        send_battle_invite_email(self.object, self.request)
         return super().form_valid(form)
 
 
