@@ -5,7 +5,7 @@ from templated_email import send_templated_mail
 from battles.models import BattleTeam
 
 
-def send_battle_result_email(user, battle):
+def _send_battle_result_email(user, battle):
     relative_opponent = battle.creator if battle.creator != user else battle.opponent
     kwargs = dict(
         template_name='battle_result',
@@ -27,4 +27,4 @@ def send_battle_result_email(user, battle):
 
 def send_email_when_battle_finishes(battle):
     for trainer in [battle.creator, battle.opponent]:
-        send_battle_result_email(trainer, battle)
+        _send_battle_result_email(trainer, battle)
