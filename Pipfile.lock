@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "5a6e14c755e073e77720bca83cd03672eb6d9d29ee874dce21c97bc1c6bcf916"
+            "sha256": "6e154af8bb9bd0b6b36babfc983faf7c7c5d4c2d6479f8e6dec0bca0063ca2c5"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -141,6 +141,13 @@
             ],
             "version": "==3.0.4"
         },
+        "cookies": {
+            "hashes": [
+                "sha256:15bee753002dff684987b8df8c235288eb8d45f8191ae056254812dfd42c81d3",
+                "sha256:d6b698788cae4cfa4e62ef8643a9ca332b79bd96cb314294b864ae8d7eb3ee8e"
+            ],
+            "version": "==2.2.1"
+        },
         "cssutils": {
             "hashes": [
                 "sha256:a2fcf06467553038e98fea9cfe36af2bf14063eb147a70958cfcaa8f5786acaf",
@@ -176,6 +183,13 @@
             ],
             "index": "pypi",
             "version": "==1.11.13"
+        },
+        "django-celerybeat-status": {
+            "hashes": [
+                "sha256:2077aecc46997619a4d12aad0bcc53289cff2edced4c116f0c6b5593631ca707"
+            ],
+            "index": "pypi",
+            "version": "==0.0.10"
         },
         "django-autocomplete-light": {
             "hashes": [
@@ -498,6 +512,14 @@
             ],
             "index": "pypi",
             "version": "==2.18.4"
+        },
+        "responses": {
+            "hashes": [
+                "sha256:c6082710f4abfb60793899ca5f21e7ceb25aabf321560cc0726f8b59006811c9",
+                "sha256:f23a29dca18b815d9d64a516b4a0abb1fbdccff6141d988ad8100facb81cf7b3"
+            ],
+            "index": "pypi",
+            "version": "==0.9.0"
         },
         "simplegeneric": {
             "hashes": [

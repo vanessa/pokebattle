@@ -4,11 +4,19 @@ from django.conf import settings
 from django.test import TestCase
 
 import requests
+import responses
 from model_mommy import mommy
 
 from common.utils.tests import TestCaseUtils
-from pokemons.helpers import get_pokemon_attributes, init_pokemon, pokemon_stats_exceeds_limit
+from pokemons.helpers.api_wrapper import bulk_save_pokemon_from_api
+from pokemons.helpers.pokemon import (
+    get_pokemon_attributes, init_pokemon, pokemon_stats_exceeds_limit
+)
 from pokemons.models import Pokemon
+from pokemons.tests.mocks import (
+    POKEAPI_POKEMON_DATA_EXAMPLE_FIRST, POKEAPI_POKEMON_DATA_EXAMPLE_SECOND,
+    POKEAPI_POKEMON_LIST_EXAMPLE
+)
 
 
 class TestPokemonHelpers(TestCaseUtils, TestCase):
@@ -79,3 +87,37 @@ class TestPokemonHelpers(TestCaseUtils, TestCase):
             pokemon.save()
         stats = pokemon_stats_exceeds_limit(self.pokemon_list)
         self.assertTrue(stats)
+
+
+class TestAPIHelpers(TestCase):
+
+    @responses.activate
+    def test_access_api_helper_saves_pokemon(self):
+        responses.add(
+            responses.GET, 'https://pokeapi.co/api/v2/pokemon/?limit=802',
+            status=200, json=POKEAPI_POKEMON_LIST_EXAMPLE)
+        responses.add(
+            responses.GET, 'https://pokeapi.co/api/v2/pokemon/21/',
+            status=200, json=POKEAPI_POKEMON_DATA_EXAMPLE_FIRST)
+        responses.add(
+            responses.GET, 'https://pokeapi.co/api/v2/pokemon/22/',
+            status=200, json=POKEAPI_POKEMON_DATA_EXAMPLE_SECOND)
+        bulk_save_pokemon_from_api()
+        pokemon_count = Pokemon.objects.count()
+        self.assertEqual(pokemon_count, 2)
+
+    @responses.activate
+    def test_access_api_helper_doesnt_save_duplicate(self):
+        mommy.make('pokemons.Pokemon', name='fearow')
+        responses.add(
+            responses.GET, 'https://pokeapi.co/api/v2/pokemon/?limit=802',
+            status=200, json=POKEAPI_POKEMON_LIST_EXAMPLE)
+        responses.add(
+            responses.GET, 'https://pokeapi.co/api/v2/pokemon/21/',
+            status=200, json=POKEAPI_POKEMON_DATA_EXAMPLE_FIRST)
+        responses.add(
+            responses.GET, 'https://pokeapi.co/api/v2/pokemon/22/',
+            status=200, json=POKEAPI_POKEMON_DATA_EXAMPLE_SECOND)
+        bulk_save_pokemon_from_api()
+        pokemon_count = Pokemon.objects.count()
+        self.assertEqual(pokemon_count, 2)
