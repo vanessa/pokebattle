@@ -3,9 +3,7 @@ from django import forms
 from dal import autocomplete
 
 from battles.helpers.battle import can_teams_battle
-from pokemons.helpers.pokemon import (
-    has_team_duplicate_pokemon, init_pokemon, pokemon_stats_exceeds_limit
-)
+from pokemons.helpers.pokemon import has_team_duplicate_pokemon, pokemon_stats_exceeds_limit
 from pokemons.models import Pokemon
 from users.models import User
 
