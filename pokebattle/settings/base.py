@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'django_inlinecss',
     'templated_email',
     'celerybeat_status',
+    'social_django',
 
     'common',
     'users',
@@ -125,7 +126,6 @@ STATICFILES_DIRS = (
 )
 
 # social-auth
-INSTALLED_APPS += ['social_django', ]
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
     'django.contrib.auth.backends.ModelBackend',
