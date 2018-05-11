@@ -58,7 +58,7 @@ class TestCreateBattleView(TestCaseUtils, TestCase):
         response = self.auth_client.post(self.view_url, self.battle_params)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(len(mail.outbox), 1)
-        self.assertEqual(mail.outbox[0].to, self.user_opponent.email)
+        self.assertEqual(mail.outbox[0].to[0], self.user_opponent.email)
 
 
 class TestBattleDetailView(TestCaseUtils, TestCase):
