@@ -20,6 +20,7 @@ class TestCreateBattleView(TestCaseUtils, TestCase):
         self.battle = mommy.make('battles.Battle')
         self.view_class = CreateBattleView()
         self.battle_params = {
+            'id': 2,
             'creator': self.user.id,
             'opponent': self.user_opponent.id
         }
@@ -57,7 +58,7 @@ class TestCreateBattleView(TestCaseUtils, TestCase):
         response = self.auth_client.post(self.view_url, self.battle_params)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(len(mail.outbox), 1)
-        self.assertEqual(mail.outbox[0].subject, 'user has invited you to battle!')
+        self.assertEqual(mail.outbox[0].to, self.user_opponent.email)
 
 
 class TestBattleDetailView(TestCaseUtils, TestCase):
