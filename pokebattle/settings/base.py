@@ -16,6 +16,7 @@ def base_dir_join(*args):
 # PokeAPI
 POKEAPI_URL = 'http://pokeapi.co/api/v2'
 POKEAPI_POKEMON_URL = '{pokeapi}/pokemon'.format(pokeapi=POKEAPI_URL)
+DOMAIN = config('DOMAIN', default='')
 
 
 LOGIN_URL = '/login'

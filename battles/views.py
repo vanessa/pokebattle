@@ -8,6 +8,7 @@ from django.views import generic
 from dal import autocomplete
 
 from battles.helpers.battle import run_battle
+from battles.helpers.emails import send_battle_invite_email
 from pokemons.models import Pokemon
 
 from .forms import ChooseTeamForm, CreateBattleForm
@@ -44,6 +45,7 @@ class CreateBattleView(LoginRequiredMixin, generic.CreateView):
         self.object = form.save(commit=False)
         self.object.creator = self.request.user
         self.object.save()
+        send_battle_invite_email(self.object)
         return super().form_valid(form)
 
 
