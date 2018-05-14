@@ -15,8 +15,11 @@
             {% endif %}
             <section class="battle-fields">
                 <div class="opponent-submit">
-                    <em>Choose your opponent:</em>
+                    <em>Choose your opponent</em>
                     {% render_field form.opponent %}
+                    <span class="middle">or</span>
+                    <em>Invite them by e-mail</em>
+                    {% render_field form.email_invite placeholder=form.email_invite.label %}
                     <div style="display: none;">
                         {% render_field form.creator %}
                     </div>

@@ -37,25 +37,38 @@
     .battle-creation-form {
         width: 50%;
 
-        input {
+        input, select {
             font-size: 1.2rem;
-            margin: 10px 0;
+            margin: 10px auto;
             border: 1px solid #ccc;
             position: relative;
             display: block;
-            width: 100%;
+            text-align: center;
+        }
+
+        .middle {
+            display: block;
+            margin: 15px 0 0;
         }
     
         input[type="submit"] {
             display: block;
             background: $default-color;
-            font-size: 1.2rem;
+            font-size: 1.8rem;
             color: $bright-font-color;
-            padding: 4px 12px;
+            padding: 5px 20px;
             border: 0;
             border-radius: $default-border-radius;
-            margin: 15px auto;
+            margin: 30px auto;
             cursor: pointer;
+
+            &:hover {
+                background: lighten($default-color, 8%);
+            }
+
+            &:active {
+                background: $default-color;
+            }
         }
     }
     
