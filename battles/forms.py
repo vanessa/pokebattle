@@ -19,36 +19,6 @@ class CreateBattleForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         users = User.objects.exclude(id=self.initial['creator'])
         self.fields['opponent'].queryset = users
-        self.fields['opponent'].required = False
-
-    email_invite = forms.EmailField(label='example@email.com', required=False)
-
-    def clean_email_invite(self):
-        email = self.cleaned_data.get('email_invite')
-        user_exists = User.objects.filter(email=email).exists()
-        creator = User.objects.get(id=self.initial.get('creator'))
-
-        if email == creator.email:
-            raise forms.ValidationError(
-                'You cannot battle with yourself.'
-            )
-
-        if user_exists:
-            raise forms.ValidationError(
-                'A user with this e-mail already exists. Select them on the dropdown above.'
-            )
-
-        return email
-
-    def clean(self):
-        cleaned_data = super().clean()
-        opponent = cleaned_data.get('opponent')
-        email_invite = cleaned_data.get('email_invite')
-
-        if opponent is None and email_invite == '':
-            raise forms.ValidationError('You have to specify an opponent or invite one by e-mail.')
-
-        return cleaned_data
 
 
 class ChooseTeamForm(forms.ModelForm):

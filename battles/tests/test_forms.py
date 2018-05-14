@@ -14,12 +14,23 @@ class TestCreateBattleForm(TestCaseUtils, TestCase):
                 'creator': self.user.id
             },
             'data': {
-                'opponent': None,
-                'email_invite': None
+                'opponent': None
             }
         }
         form = CreateBattleForm(**params)
         self.assertFalse(form.is_valid())
+
+    def test_battle_form_valid_with_opponent(self):
+        params = {
+            'initial': {
+                'creator': self.user.id
+            },
+            'data': {
+                'opponent': mommy.make('users.User').id
+            }
+        }
+        form = CreateBattleForm(**params)
+        self.assertTrue(form.is_valid())
 
     def test_battle_form_valid(self):
         params = {
@@ -32,48 +43,6 @@ class TestCreateBattleForm(TestCaseUtils, TestCase):
         }
         form = CreateBattleForm(**params)
         self.assertTrue(form.is_valid())
-
-    def test_battle_form_invalid_if_inviting_already_registered_user(self):
-        test_user = mommy.make('users.User', email='user@example.com')
-        params = {
-            'initial': {
-                'creator': self.user.id
-            },
-            'data': {
-                'opponent': None,
-                'email_invite': test_user.email
-            }
-        }
-        form = CreateBattleForm(**params)
-        self.assertFalse(form.is_valid())
-        self.assertIn('email_invite', form.errors)
-
-    def test_battle_form_valid_when_inviting_nonexistent_user_by_email(self):
-        params = {
-            'initial': {
-                'creator': self.user.id
-            },
-            'data': {
-                'opponent': None,
-                'email_invite': 'whatever@email.com'
-            }
-        }
-        form = CreateBattleForm(**params)
-        self.assertTrue(form.is_valid())
-
-    def test_user_cannot_invite_themself(self):
-        params = {
-            'initial': {
-                'creator': self.user.id
-            },
-            'data': {
-                'opponent': None,
-                'email_invite': self.user.email
-            }
-        }
-        form = CreateBattleForm(**params)
-        self.assertFalse(form.is_valid())
-        self.assertIn('email_invite', form.errors)
 
 
 class TestChooseTeamForm(TestCaseUtils, TestCase):

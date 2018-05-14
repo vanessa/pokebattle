@@ -6,6 +6,14 @@ from templated_email import send_templated_mail
 from battles.models import BattleTeam
 
 
+def _generate_battle_url(battle):
+    battle_url = '{domain}{battle_details}'.format(
+        domain=settings.DOMAIN,
+        battle_details=reverse_lazy('battles:details', args={battle.pk})
+    )
+    return battle_url
+
+
 def _send_battle_result_email(user, battle):
     relative_opponent = battle.creator if battle.creator != user else battle.opponent
     kwargs = dict(
@@ -32,10 +40,7 @@ def send_email_when_battle_finishes(battle):
 
 
 def send_battle_invite_email(battle):
-    battle_url = '{domain}{battle_details}'.format(
-        domain=settings.DOMAIN,
-        battle_details=reverse_lazy('battles:details', args={battle.pk})
-    )
+    battle_url = _generate_battle_url(battle)
     kwargs = dict(
         template_name='battle_invite',
         from_email=settings.SERVER_EMAIL,
