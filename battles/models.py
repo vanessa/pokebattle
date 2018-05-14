@@ -40,7 +40,7 @@ class BattleTeam(models.Model):
         )
 
 
-class Invite(IndexedTimeStampedModel, models.Model):
+class Invite(IndexedTimeStampedModel):
     inviter = models.ForeignKey(User, related_name='invites')
     invitee = models.EmailField()
 

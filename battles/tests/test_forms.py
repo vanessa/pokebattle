@@ -2,7 +2,7 @@ from django.test import TestCase
 
 from model_mommy import mommy
 
-from battles.forms import ChooseTeamForm, CreateBattleForm
+from battles.forms import ChooseTeamForm, CreateBattleForm, InviteForm
 from common.utils.tests import TestCaseUtils
 
 
@@ -258,3 +258,16 @@ class TestChooseTeamForm(TestCaseUtils, TestCase):
                    )
         form = ChooseTeamForm(**params)
         self.assertTrue(form.is_valid())
+
+
+class TestInviteForm(TestCaseUtils):
+    def test_inviting_existent_user(self):
+        params = {
+            'data': {
+                'inviter': self.user,
+                'invitee': mommy.make('users.User').email
+            }
+        }
+        form = InviteForm(**params)
+        self.assertFalse(form.is_valid())
+        self.assertIn('invitee', form.errors)

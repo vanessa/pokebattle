@@ -11,7 +11,7 @@ from battles.helpers.battle import run_battle
 from battles.helpers.emails import send_battle_invite_email
 from pokemons.models import Pokemon
 
-from .forms import ChooseTeamForm, CreateBattleForm
+from .forms import ChooseTeamForm, CreateBattleForm, InviteForm
 from .models import Battle, BattleTeam
 
 
@@ -122,3 +122,15 @@ class ChoosePokemonTeamView(LoginRequiredMixin, generic.CreateView):
         battle_team = form.save()
         run_battle(battle_team.battle_related)
         return HttpResponseRedirect(self.get_success_url())
+
+
+class InviteView(generic.CreateView):
+    form_class = InviteForm
+    template_name = 'battles/invite.html'
+
+    def get_initial(self):
+        return {'inviter': self.request.user}
+
+    def form_valid(self, form):
+        print(form)
+        return super().form_valid(form)

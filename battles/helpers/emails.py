@@ -52,3 +52,16 @@ def send_battle_invite_email(battle):
         }
     )
     return send_templated_mail(**kwargs)
+
+
+def send_pokebattle_invite_email(battle, email):
+    kwargs = dict(
+        template_name='new_user_battle_invite',
+        from_email=settings.SERVER_EMAIL,
+        recipient_list=[email],
+        context={
+            'signup_url': reverse_lazy('auth:signup'),
+            'inviter': battle.creator
+        }
+    )
+    return send_templated_mail(**kwargs)

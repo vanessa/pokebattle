@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}PokeBattle &middot; Battle with someone{% endblock %}
+
+{% block body %}
+    <div class="pokebattle-container battle">
+        <h2>Invite a user!</h2>
+        <form method="POST" class="battle-creation-form">
+            {% csrf_token %}
+            {% if form.errors %}
+            <div class="message">
+                {{ form.errors }}
+            </div>
+            {% endif %}
+            <section class="battle-fields">
+                <div class="opponent-submit">
+                    {% render_field form.invitee placeholder='example@email.com' %}
+                    <input type="submit" value="Invite">
+                </div>
+            </section>
+        </form>
+    </div>
+{% endblock %}

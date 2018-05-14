@@ -43,7 +43,7 @@ class TestCreateBattleView(TestCaseUtils, TestCase):
     def test_if_redirects_non_logged(self):
         response = self.client.get(self.view_url)
         self.assertRedirects(
-            response, expected_url='/login?next=/battles/create')
+            response, expected_url='/login?next=/battles/create/')
 
     def test_battle_was_created_in_db(self):
         response = self.client.post(self.view_url, self.battle_params)
@@ -134,3 +134,9 @@ class TestChooseTeamView(TestCaseUtils, TestCase):
                    pokemons=second_team_pokemons, trainer=self.battle.opponent)
         self.auth_client.post(self.view_url)
         self.assertTrue(run_battle(self.battle))
+
+
+class TestInviteView(TestCaseUtils):
+    def setUp(self):
+        super().setUp()
+        self.view_url = reverse_lazy('battles:invite')
