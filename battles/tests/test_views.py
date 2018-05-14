@@ -1,3 +1,4 @@
+from django.core import mail
 from django.test import TestCase
 from django.urls import resolve, reverse_lazy
 
@@ -19,6 +20,7 @@ class TestCreateBattleView(TestCaseUtils, TestCase):
         self.battle = mommy.make('battles.Battle')
         self.view_class = CreateBattleView()
         self.battle_params = {
+            'id': 2,
             'creator': self.user.id,
             'opponent': self.user_opponent.id
         }
@@ -51,6 +53,12 @@ class TestCreateBattleView(TestCaseUtils, TestCase):
 
     def test_create_battle_view_form(self):
         self.assertEqual(self.view_class.get_form_class(), CreateBattleForm)
+
+    def test_creating_a_battle_sends_invite_email(self):
+        response = self.auth_client.post(self.view_url, self.battle_params)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].to[0], self.user_opponent.email)
 
 
 class TestBattleDetailView(TestCaseUtils, TestCase):
