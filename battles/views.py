@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse_lazy
 from django.http.response import HttpResponseRedirect
 from django.utils.html import format_html
 from django.views import generic
@@ -39,7 +39,7 @@ class CreateBattleView(LoginRequiredMixin, generic.CreateView):
         return {'creator': self.request.user.id}
 
     def get_success_url(self):
-        return reverse('battles:details', kwargs={'pk': self.object.pk})
+        return reverse_lazy('battles:details', kwargs={'pk': self.object.pk})
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -96,7 +96,7 @@ class ChoosePokemonTeamView(LoginRequiredMixin, generic.CreateView):
     form_class = ChooseTeamForm
 
     def get_success_url(self):
-        return reverse('battles:details', kwargs={'pk': self.kwargs['pk']})
+        return reverse_lazy('battles:details', kwargs={'pk': self.kwargs['pk']})
 
     def get(self, request, *args, **kwargs):
         battle_pk = kwargs['pk']
@@ -104,7 +104,7 @@ class ChoosePokemonTeamView(LoginRequiredMixin, generic.CreateView):
             battle_related__pk=battle_pk, trainer=request.user)
         if battle_team.exists():
             messages.error(request, 'You already chose a team!')
-            return HttpResponseRedirect(reverse('battles:details', kwargs={'pk': battle_pk}))
+            return HttpResponseRedirect(reverse_lazy('battles:details', kwargs={'pk': battle_pk}))
         return super().get(request, *args, **kwargs)
 
     def get_initial(self):
@@ -124,9 +124,16 @@ class ChoosePokemonTeamView(LoginRequiredMixin, generic.CreateView):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class InviteView(generic.CreateView):
+class InviteView(LoginRequiredMixin, generic.CreateView):
     form_class = InviteForm
     template_name = 'battles/invite.html'
+    success_url = reverse_lazy('battles:invite')
 
     def get_initial(self):
         return {'inviter': self.request.user}
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.inviter = self.request.user
+        self.object.save()
+        return super().form_valid(form)

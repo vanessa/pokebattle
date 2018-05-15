@@ -145,13 +145,18 @@ class TestInviteView(TestCaseUtils):
         response = self.auth_client.post(self.view_url)
         self.assertEqual(response.status_code, 200)
 
+    def test_view_redirects_non_logged_user(self):
+        response = self.client.get(self.view_url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, expected_url='/login?next=/battles/invite/')
+
     def test_invite_was_created_in_db(self):
         params = {
-            'id': 4,
+            'id': 1,
             'inviter': self.user,
             'invitee': 'example@user.com'
         }
-        response = self.auth_client.post(self.view_url)
+        response = self.auth_client.post(self.view_url, params)
         invite = Invite.objects.filter(id=params['id']).exists()
-        self.assertEqual(response.status_code, 200)
+        self.assertRedirects(response, expected_url=reverse_lazy('battles:invite'))
         self.assertTrue(invite)
