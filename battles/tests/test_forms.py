@@ -263,11 +263,25 @@ class TestChooseTeamForm(TestCaseUtils, TestCase):
 class TestInviteForm(TestCaseUtils):
     def test_inviting_existent_user(self):
         params = {
+            'initial': {
+                'inviter': self.user
+            },
             'data': {
-                'inviter': self.user,
                 'invitee': mommy.make('users.User').email
             }
         }
         form = InviteForm(**params)
         self.assertFalse(form.is_valid())
         self.assertIn('invitee', form.errors)
+
+    def test_inviting_nonexistent_user(self):
+        params = {
+            'initial': {
+                'inviter': self.user
+            },
+            'data': {
+                'invitee': 'example@hello.com'
+            }
+        }
+        form = InviteForm(**params)
+        self.assertTrue(form.is_valid())

@@ -130,7 +130,3 @@ class InviteView(generic.CreateView):
 
     def get_initial(self):
         return {'inviter': self.request.user}
-
-    def form_valid(self, form):
-        print(form)
-        return super().form_valid(form)

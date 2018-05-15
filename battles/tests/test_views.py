@@ -6,7 +6,7 @@ from model_mommy import mommy
 
 from battles.forms import CreateBattleForm
 from battles.helpers.battle import run_battle
-from battles.models import Battle
+from battles.models import Battle, Invite
 from battles.views import BattleView, CreateBattleView
 from common.utils.tests import TestCaseUtils
 
@@ -140,3 +140,18 @@ class TestInviteView(TestCaseUtils):
     def setUp(self):
         super().setUp()
         self.view_url = reverse_lazy('battles:invite')
+
+    def test_response_status_200(self):
+        response = self.auth_client.post(self.view_url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_invite_was_created_in_db(self):
+        params = {
+            'id': 4,
+            'inviter': self.user,
+            'invitee': 'example@user.com'
+        }
+        response = self.auth_client.post(self.view_url)
+        invite = Invite.objects.filter(id=params['id']).exists()
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(invite)
