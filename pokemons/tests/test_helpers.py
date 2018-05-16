@@ -1,5 +1,4 @@
 from django.conf import settings
-from django.test import TestCase
 
 import requests
 import responses
@@ -17,7 +16,7 @@ from pokemons.tests.mocks import (
 )
 
 
-class TestPokemonHelpers(TestCaseUtils, TestCase):
+class TestPokemonHelpers(TestCaseUtils):
 
     def setUp(self):
         super().setUp()
@@ -58,7 +57,7 @@ class TestPokemonHelpers(TestCaseUtils, TestCase):
         )
         responses.add(responses.GET, url, status=200, headers={'Content-Type': 'application/json'})
         response = requests.get(url)
-        self.assertEqual(response.status_code, 200)
+        self.assertResponse200(response)
         self.assertEqual(response.headers['Content-Type'], 'application/json')
 
     @responses.activate
@@ -69,13 +68,14 @@ class TestPokemonHelpers(TestCaseUtils, TestCase):
         )
         responses.add(responses.GET, url, status=200, headers={'Content-Type': 'application/json'},
                       json=POKEAPI_POKEMON_DATA_EXAMPLE_FIRST)
-        response = requests.get(url).json()
-        attributes_dict = get_pokemon_attributes(response)
+        response = requests.get(url)
+        attributes_dict = get_pokemon_attributes(response.json())
         expected_dict = dict(
             defense=30,
             attack=60,
             hp=40
         )
+        self.assertResponse200(response)
         self.assertDictEqual(expected_dict, attributes_dict)
 
     def test_pokemon_with_stats_higher_than_limit_is_invalid(self):
@@ -88,7 +88,7 @@ class TestPokemonHelpers(TestCaseUtils, TestCase):
         self.assertTrue(stats)
 
 
-class TestAPIHelpers(TestCase):
+class TestAPIHelpers(TestCaseUtils):
 
     @responses.activate
     def test_access_api_helper_saves_pokemon(self):
