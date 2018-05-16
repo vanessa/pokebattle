@@ -1,7 +1,4 @@
-import json
-
 from django.conf import settings
-from django.test import TestCase
 
 import requests
 import responses
@@ -17,7 +14,7 @@ from pokemons.tests.mocks import (
 )
 
 
-class TestPokemonHelpers(TestCaseUtils, TestCase):
+class TestPokemonHelpers(TestCaseUtils):
 
     def setUp(self):
         super().setUp()
@@ -28,14 +25,6 @@ class TestPokemonHelpers(TestCaseUtils, TestCase):
             'pokemons.Pokemon', name='Opponentpokemon')
         self.pokemon_list = mommy.make(
             'pokemons.Pokemon', _quantity=3
-        )
-
-    def example_request(self):
-        return requests.get(
-            '{pokeapi}/pokemon/{pokemon_id}'.format(
-                pokeapi=settings.POKEAPI_URL,
-                pokemon_id=self.creator_pokemon.id
-            )
         )
 
     def test_pokeapi_url_is_correct(self):
@@ -54,19 +43,33 @@ class TestPokemonHelpers(TestCaseUtils, TestCase):
         is_within_limit = 1 <= self.creator_pokemon.id <= 802
         self.assertFalse(is_within_limit)
 
+    @responses.activate
     def test_request_response_is_a_dict(self):
-        response = self.example_request()
-        self.assertEqual(response.status_code, 200)
+        url = '{pokeapi}/pokemon/{pokemon_id}'.format(
+            pokeapi=settings.POKEAPI_URL,
+            pokemon_id=self.creator_pokemon.id
+        )
+        responses.add(responses.GET, url, status=200, headers={'Content-Type': 'application/json'})
+        response = requests.get(url)
+        self.assertResponse200(response)
         self.assertEqual(response.headers['Content-Type'], 'application/json')
 
+    @responses.activate
     def test_pokemon_attributes_is_a_valid_dict(self):
-        response = json.loads(self.example_request().text)
-        attributes_dict = get_pokemon_attributes(response)
-        expected_dict = dict(
-            defense=58,
-            attack=64,
-            hp=58
+        url = '{pokeapi}/pokemon/{pokemon_id}'.format(
+            pokeapi=settings.POKEAPI_URL,
+            pokemon_id=self.creator_pokemon.id
         )
+        responses.add(responses.GET, url, status=200, headers={'Content-Type': 'application/json'},
+                      json=POKEAPI_POKEMON_DATA_EXAMPLE_FIRST)
+        response = requests.get(url)
+        attributes_dict = get_pokemon_attributes(response.json())
+        expected_dict = dict(
+            defense=30,
+            attack=60,
+            hp=40
+        )
+        self.assertResponse200(response)
         self.assertDictEqual(expected_dict, attributes_dict)
 
     def test_pokemon_with_stats_higher_than_limit_is_invalid(self):
@@ -79,7 +82,7 @@ class TestPokemonHelpers(TestCaseUtils, TestCase):
         self.assertTrue(stats)
 
 
-class TestAPIHelpers(TestCase):
+class TestAPIHelpers(TestCaseUtils):
 
     @responses.activate
     def test_access_api_helper_saves_pokemon(self):
