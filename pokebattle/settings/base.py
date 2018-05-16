@@ -56,6 +56,7 @@ INSTALLED_APPS = [
     'django_inlinecss',
     'templated_email',
     'celerybeat_status',
+    'social_django',
 
     'common',
     'users',
@@ -87,6 +88,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -122,6 +125,14 @@ USE_TZ = True
 STATICFILES_DIRS = (
     base_dir_join('assets'),
 )
+
+# social-auth
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY', default='')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET', default='')
 
 # Webpack
 WEBPACK_LOADER = {
