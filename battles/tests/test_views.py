@@ -170,3 +170,14 @@ class TestInviteView(TestCaseUtils):
         response = self.auth_client.post(self.view_url, params, follow=True)
         message = list(response.context['messages'])[0]
         self.assertEqual(message.extra_tags, 'user-invite')
+
+    def test_creating_invite_generates_key(self):
+        params = {
+            'id': 1,
+            'inviter': self.user,
+            'invitee': 'example@user.com'
+        }
+        response = self.auth_client.post(self.view_url, params, follow=True)
+        invite = Invite.objects.get(id=params['id'])
+        self.assertResponse200(response)
+        self.assertTrue(invite.key is not None)

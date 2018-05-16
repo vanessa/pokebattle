@@ -9,6 +9,7 @@ from dal import autocomplete
 
 from battles.helpers.battle import run_battle
 from battles.helpers.emails import send_battle_invite_email, send_pokebattle_invite_email
+from battles.helpers.invites import create_invite_key
 from pokemons.models import Pokemon
 
 from .forms import ChooseTeamForm, CreateBattleForm, InviteForm
@@ -135,6 +136,7 @@ class InviteView(LoginRequiredMixin, generic.CreateView):
     def form_valid(self, form):
         self.object = form.save(commit=False)
         self.object.inviter = self.request.user
+        self.object.key = create_invite_key()
         self.object.save()
         messages.success(
             self.request,

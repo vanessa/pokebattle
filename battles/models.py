@@ -43,6 +43,7 @@ class BattleTeam(models.Model):
 class Invite(IndexedTimeStampedModel):
     inviter = models.ForeignKey(User, related_name='invites')
     invitee = models.EmailField()
+    key = models.CharField('Invitation key', max_length=12, blank=True, null=True)
 
     def __str__(self):
         return 'from {inviter} to {invitee}'.format(
