@@ -20,8 +20,7 @@
                 </span>
                 <a href="{% url 'auth:logout' %}">Logout</a>
             {% else %}
-                <a href="{% url 'auth:login' %}">Login</a>
-                <a href="{% url 'auth:signup' %}">Signup</a>
+                <a href="{% url 'auth:login' %}">Login/Signup</a>
             {% endif %}
         </div>
     </nav>

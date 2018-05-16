@@ -39,9 +39,10 @@ django-widget-tweaks = "*"
 django-inlinecss = "*"
 django-templated-email = "*"
 pycodestyle = "==2.3.1"
+social-auth-app-django = "*"
+django-autocomplete-light = "*"
 responses = "*"
 django-celerybeat-status = "*"
-django-autocomplete-light = "*"
 
 [requires]
 python_version = "3.6"

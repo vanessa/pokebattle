@@ -1,9 +1,11 @@
 {% extends "base.html" %}
-{% block page_title %}Pokebattle &middot; Login{% endblock %}
+
+{% block title %}Pokebattle &middot; Login{% endblock %}
 
 {% block body %}
-<div class="pokebattle-container">
-    <form method="POST" name="login-form">
+<div class="pokebattle-container login-page">
+    {% include 'common/buttons/login-google.html' %}
+    <form method="POST" name="login_form" class="login-form">
         {% csrf_token %}
         {{ form.as_p }}
         <input type="submit" value="Login">
