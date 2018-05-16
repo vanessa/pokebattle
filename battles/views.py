@@ -8,7 +8,7 @@ from django.views import generic
 from dal import autocomplete
 
 from battles.helpers.battle import run_battle
-from battles.helpers.emails import send_battle_invite_email
+from battles.helpers.emails import send_battle_invite_email, send_pokebattle_invite_email
 from pokemons.models import Pokemon
 
 from .forms import ChooseTeamForm, CreateBattleForm, InviteForm
@@ -136,4 +136,11 @@ class InviteView(LoginRequiredMixin, generic.CreateView):
         self.object = form.save(commit=False)
         self.object.inviter = self.request.user
         self.object.save()
+        messages.success(
+            self.request,
+            'Thanks for inviting someone, {user}. A battle with you will be created as soon as '
+            'they sign up.'.format(user=self.request.user.get_short_name()),
+            extra_tags='user-invite'
+        )
+        send_pokebattle_invite_email(self.object)
         return super().form_valid(form)

@@ -160,3 +160,13 @@ class TestInviteView(TestCaseUtils):
         invite = Invite.objects.filter(id=params['id']).exists()
         self.assertRedirects(response, expected_url=reverse_lazy('battles:invite'))
         self.assertTrue(invite)
+
+    def test_inviting_user_shows_message(self):
+        params = {
+            'id': 1,
+            'inviter': self.user,
+            'invitee': 'example@user.com'
+        }
+        response = self.auth_client.post(self.view_url, params, follow=True)
+        message = list(response.context['messages'])[0]
+        self.assertEqual(message.extra_tags, 'user-invite')

@@ -6,6 +6,7 @@
 {% block body %}
     <div class="pokebattle-container battle">
         <h2>Invite a user!</h2>
+        {% include 'common/generic_message.html' %}
         <form method="POST" class="battle-creation-form">
             {% csrf_token %}
             {% if form.errors %}
