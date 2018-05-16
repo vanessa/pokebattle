@@ -9,9 +9,7 @@ from model_mommy import mommy
 
 from common.utils.tests import TestCaseUtils
 from pokemons.helpers.api_wrapper import bulk_save_pokemon_from_api
-from pokemons.helpers.pokemon import (
-    get_pokemon_attributes, init_pokemon, pokemon_stats_exceeds_limit
-)
+from pokemons.helpers.pokemon import get_pokemon_attributes, pokemon_stats_exceeds_limit
 from pokemons.models import Pokemon
 from pokemons.tests.mocks import (
     POKEAPI_POKEMON_DATA_EXAMPLE_FIRST, POKEAPI_POKEMON_DATA_EXAMPLE_SECOND,
@@ -39,14 +37,6 @@ class TestPokemonHelpers(TestCaseUtils, TestCase):
                 pokemon_id=self.creator_pokemon.id
             )
         )
-
-    def test_function_returns_a_pokemon_if_existent(self):
-        pokemon = init_pokemon(self.creator_pokemon.id)
-        self.assertIsInstance(pokemon, Pokemon)
-
-    def test_function_returns_a_pokemon_if_non_existent(self):
-        pokemon = init_pokemon(15)
-        self.assertIsInstance(pokemon, Pokemon)
 
     def test_pokeapi_url_is_correct(self):
         url = settings.POKEAPI_URL

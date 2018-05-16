@@ -1,5 +1,5 @@
 from django.core import mail
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse
 
 from model_mommy import mommy
@@ -33,4 +33,12 @@ class TestPokebattleInviteEmail(TestCase):
 
     def test_email_sent_to_correct_recipient(self):
         send_pokebattle_invite_email(self.invite)
-        self.assertEqual(mail.outbox[0].recipient, self.invite.recipient)
+        recipient = mail.outbox[0].recipients()[0]
+        self.assertEqual(recipient, self.invite.invitee)
+
+    @override_settings(DOMAIN='https://pokebattle.com')
+    def test_email_sent_with_correct_url(self):
+        send_pokebattle_invite_email(self.invite)
+        correct_url = 'https://pokebattle.com/signup/'
+        mail_body = mail.outbox[0].body
+        self.assertTrue(correct_url in mail_body)

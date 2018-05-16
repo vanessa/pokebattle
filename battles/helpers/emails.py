@@ -55,12 +55,16 @@ def send_battle_invite_email(battle):
 
 
 def send_pokebattle_invite_email(invite):
+    signup_url = '{domain}{signup}'.format(
+        domain=settings.DOMAIN,
+        signup=reverse_lazy('auth:signup')
+    )
     kwargs = dict(
         template_name='new_user_invite',
         from_email=settings.SERVER_EMAIL,
         recipient_list=[invite.invitee],
         context={
-            'signup_url': reverse_lazy('auth:signup'),
+            'signup_url': signup_url,
             'inviter': invite.inviter.get_short_name()
         }
     )
