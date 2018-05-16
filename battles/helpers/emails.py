@@ -1,11 +1,12 @@
 from django.conf import settings
+from django.urls import reverse_lazy
 
 from templated_email import send_templated_mail
 
 from battles.models import BattleTeam
 
 
-def send_battle_result_email(user, battle):
+def _send_battle_result_email(user, battle):
     relative_opponent = battle.creator if battle.creator != user else battle.opponent
     kwargs = dict(
         template_name='battle_result',
@@ -27,4 +28,22 @@ def send_battle_result_email(user, battle):
 
 def send_email_when_battle_finishes(battle):
     for trainer in [battle.creator, battle.opponent]:
-        send_battle_result_email(trainer, battle)
+        _send_battle_result_email(trainer, battle)
+
+
+def send_battle_invite_email(battle):
+    battle_url = '{domain}{battle_details}'.format(
+        domain=settings.DOMAIN,
+        battle_details=reverse_lazy('battles:details', args={battle.pk})
+    )
+    kwargs = dict(
+        template_name='battle_invite',
+        from_email=settings.SERVER_EMAIL,
+        recipient_list=[battle.opponent.email],
+        context={
+            'username': battle.opponent.get_short_name(),
+            'inviter': battle.creator.get_short_name(),
+            'battle_url': battle_url
+        }
+    )
+    return send_templated_mail(**kwargs)

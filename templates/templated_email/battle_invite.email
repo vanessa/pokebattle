@@ -1,0 +1,23 @@
+{% block subject %}{{ inviter }} has invited you to battle!{% endblock %}
+
+{% block plain %}
+    Hey {{ username }}!
+
+    I invited you to battle on Pokebattle.
+
+    Go here to see its details: {{ battle_url }}
+
+    Sincerely,
+    {{ inviter }}
+{% endblock %}
+
+{% block html %}
+    Hey {{ username }}!
+
+    I invited you to battle on Pokebattle.
+
+    Click <a href="{{ battle_url }}">here</a> to see its details.
+
+    Sincerely,
+    {{ inviter }}   
+{% endblock %}
