@@ -1,5 +1,4 @@
 from django.core import mail
-from django.test import TestCase
 from django.urls import resolve, reverse_lazy
 
 from model_mommy import mommy
@@ -11,7 +10,7 @@ from battles.views import BattleView, CreateBattleView
 from common.utils.tests import TestCaseUtils
 
 
-class TestCreateBattleView(TestCaseUtils, TestCase):
+class TestCreateBattleView(TestCaseUtils):
 
     def setUp(self):
         super().setUp()
@@ -61,7 +60,7 @@ class TestCreateBattleView(TestCaseUtils, TestCase):
         self.assertEqual(mail.outbox[0].to[0], self.user_opponent.email)
 
 
-class TestBattleDetailView(TestCaseUtils, TestCase):
+class TestBattleDetailView(TestCaseUtils):
 
     def setUp(self):
         super().setUp()
@@ -95,7 +94,7 @@ class TestBattleDetailView(TestCaseUtils, TestCase):
             response, expected_url='/login?next=/battles/details/{0}'.format(self.battle.id))
 
 
-class TestChooseTeamView(TestCaseUtils, TestCase):
+class TestChooseTeamView(TestCaseUtils):
 
     def setUp(self):
         super().setUp()

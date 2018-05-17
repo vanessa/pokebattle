@@ -25,9 +25,7 @@ class BattlesListView(LoginRequiredMixin, generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['battles_invited'] = Battle.objects.filter(
-            opponent=self.request.user
-        )
+        context['battles_invited'] = Battle.objects.filter(opponent=self.request.user)
         return context
 
 

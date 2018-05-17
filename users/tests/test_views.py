@@ -1,4 +1,3 @@
-from django.test import TestCase
 from django.urls import resolve, reverse_lazy
 
 from model_mommy import mommy  # noqa
@@ -8,7 +7,7 @@ from users.forms import UserSignupForm
 from users.views import UserSignupView
 
 
-class TestUserSignupView(TestCaseUtils, TestCase):
+class TestUserSignupView(TestCaseUtils):
 
     def setUp(self):
         super().setUp()
