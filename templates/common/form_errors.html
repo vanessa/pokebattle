@@ -1,0 +1,7 @@
+{% if form.errors %}
+<section class="form-errors">
+    {% if form.non_field_errors %}
+        {{ form.non_field_errors }}
+    {% endif %}
+</section>
+{% endif %}

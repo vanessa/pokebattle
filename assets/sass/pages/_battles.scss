@@ -40,7 +40,8 @@
         input, select {
             font-size: 1.2rem;
             margin: 10px auto;
-            border: 1px solid #ccc;
+            border-width: 1px;
+            border-style: solid;
             position: relative;
             display: block;
             text-align: center;

@@ -18,4 +18,5 @@ def create_invite_battle(strategy, details, backend, user=None, *args, **kwargs)
 
     invite = Invite.objects.get(key=invite_key, invitee=user.email)
     Battle.objects.create(creator=invite.inviter, opponent=user)
+    invite.delete()
     return

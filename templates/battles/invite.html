@@ -9,13 +9,12 @@
         {% include 'common/generic_message.html' %}
         <form method="POST" class="battle-creation-form">
             {% csrf_token %}
-            {% if form.errors %}
-            <div class="message">
-                {{ form.errors }}
-            </div>
-            {% endif %}
+            {% include 'common/form_errors.html' %}
             <section class="battle-fields">
-                <div class="opponent-submit">
+                <div class="opponent-submit {% if form.invitee.errors %}has-error{% endif %}">
+                    {% for error in form.invitee.errors %}
+                        <div class="small-error">{{ error }}</div>
+                    {% endfor %}
                     {% render_field form.invitee placeholder='example@email.com' %}
                     <input type="submit" value="Invite">
                 </div>

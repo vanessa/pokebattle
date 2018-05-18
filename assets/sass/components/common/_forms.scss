@@ -6,12 +6,12 @@ label {
 }
 
 input[type="text"],
-input[type="password"] {
+input[type="password"],
+input[type="email"] {
     display: block;
     border: 0;
     border-radius: 3px;
     border: 1px solid lighten($gray, 30%);
-    width: 100%;
 }
 
 input[type="submit"] {
@@ -75,3 +75,15 @@ input[type="submit"] {
     height: 50px !important;
 }
 
+// Errors
+
+.small-error {
+    color: $red;
+}
+
+.has-error {
+    input[type=text],
+    input[type=email] {
+        border-color: $red;
+    }
+}

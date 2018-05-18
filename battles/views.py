@@ -138,7 +138,7 @@ class InviteView(LoginRequiredMixin, generic.CreateView):
         self.object.save()
         messages.success(
             self.request,
-            'Thanks for inviting someone, {user}. A battle with you will be created as soon as '
+            'Thanks for inviting someone, {user}! A battle with you will be created as soon as '
             'they sign up.'.format(user=self.request.user.get_short_name()),
             extra_tags='user-invite'
         )

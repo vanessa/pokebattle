@@ -12,7 +12,7 @@
             <strong>{{ battle.winner.get_short_name }}</strong> won!
         </div>
         {% endif %}
-        {% include 'common/message.html' %}
+        {% include 'common/generic_message.html' %}
         <section class="pick-team">
             {% if not user_has_chosen_a_team %}
                 <a href="{% url 'battles:team' battle.pk %}">Pick my team</a>
