@@ -285,3 +285,17 @@ class TestInviteForm(TestCaseUtils):
         }
         form = InviteForm(**params)
         self.assertTrue(form.is_valid())
+
+    def test_inviting_already_invited_user(self):
+        mommy.make('battles.Invite', invitee='already_invited@example.com')
+        params = {
+            'initial': {
+                'inviter': self.user
+            },
+            'data': {
+                'invitee': 'already_invited@example.com'
+            }
+        }
+        form = InviteForm(**params)
+        self.assertFalse(form.is_valid())
+        self.assertIn('invitee', form.errors)

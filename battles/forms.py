@@ -124,4 +124,9 @@ class InviteForm(forms.ModelForm):
         user_exists = User.objects.filter(email=email).exists()
         if user_exists:
             raise forms.ValidationError('This user already exists.')
+
+        invite_exists = Invite.objects.filter(invitee=email).exists()
+        if invite_exists:
+            raise forms.ValidationError('This person has already been invited!')
+
         return email
