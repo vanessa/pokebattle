@@ -25,7 +25,7 @@ class TestBattleInviteEmail(TestCase):
 class TestPokebattleInviteEmail(TestCase):
     def setUp(self):
         super().setUp()
-        self.invite = mommy.make('battles.Invite')
+        self.invite = mommy.make('battles.Invite', key=123)
 
     def test_email_is_sent(self):
         send_pokebattle_invite_email(self.invite)
@@ -39,6 +39,6 @@ class TestPokebattleInviteEmail(TestCase):
     @override_settings(DOMAIN='https://pokebattle.com')
     def test_email_sent_with_correct_url(self):
         send_pokebattle_invite_email(self.invite)
-        correct_url = 'https://pokebattle.com/login'
+        correct_url = 'https://pokebattle.com/login?key=123'
         mail_body = mail.outbox[0].body
         self.assertTrue(correct_url in mail_body)
