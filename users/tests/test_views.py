@@ -1,7 +1,5 @@
 from django.urls import resolve, reverse_lazy
 
-from model_mommy import mommy  # noqa
-
 from common.utils.tests import TestCaseUtils
 from users.forms import UserSignupForm
 from users.views import UserSignupView
