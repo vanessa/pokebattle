@@ -43,6 +43,7 @@ social-auth-app-django = "*"
 django-autocomplete-light = "*"
 responses = "*"
 django-celerybeat-status = "*"
+newrelic = "*"
 
 [requires]
 python_version = "3.6"
