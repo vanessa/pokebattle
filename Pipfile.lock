@@ -337,13 +337,6 @@
             ],
             "version": "==2.0.0"
         },
-        "newrelic": {
-            "hashes": [
-                "sha256:e60204f6d6b41741021d078ad5145414c759ff2482e2136ce22c9957654d9ca7"
-            ],
-            "index": "pypi",
-            "version": "==3.2.1.93"
-        },
         "oauthlib": {
             "hashes": [
                 "sha256:09d438bcac8f004ae348e721e9d8a7792a9e23cd574634e973173344046287f5",
