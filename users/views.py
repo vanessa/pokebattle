@@ -53,11 +53,13 @@ class UserInvitedProcessView(generic.RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
         invite_key = self.request.session.get('invite_key')
+
+        if not invite_key:
+            return super().get_redirect_url(*args, **kwargs)
+
         user = self.request.user
         invite = Invite.objects.get(invitee=user.email, key=invite_key)
         battle = Battle.objects.get(creator=invite.inviter, opponent=user)
-        if not invite_key:
-            return super().get_redirect_url(*args, **kwargs)
         messages.success(
             self.request,
             'Thanks for joining, {0}! How about you pick the Pokemon for your very first'

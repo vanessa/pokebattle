@@ -90,6 +90,13 @@ class TestUserSignupInvite(TestCaseUtils):
         messages = FallbackStorage(request)
         setattr(request, '_messages', messages)
 
+        battle_details_url = reverse('battles:details', kwargs={'pk': battle.pk})
         response = UserInvitedProcessView.as_view()(request)
         self.assertResponse302(response)
-        self.assertEqual(response.url, reverse('battles:details', kwargs={'pk': battle.pk}))
+        self.assertEqual(response.url, battle_details_url)
+
+    def test_user_signup_redirection_without_invite(self):
+        response = self.auth_client.get(self.view_url)
+        battles_list_url = reverse('battles:list')
+        self.assertResponse302(response)
+        self.assertEqual(response.url, battles_list_url)
