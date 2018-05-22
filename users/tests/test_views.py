@@ -92,8 +92,10 @@ class TestUserSignupInvite(TestCaseUtils):
 
         battle_details_url = reverse('battles:details', kwargs={'pk': battle.pk})
         response = UserInvitedProcessView.as_view()(request)
+        invite.refresh_from_db()
         self.assertResponse302(response)
         self.assertEqual(response.url, battle_details_url)
+        self.assertTrue(invite.accepted)
 
     def test_user_signup_redirection_without_invite(self):
         response = self.auth_client.get(self.view_url)

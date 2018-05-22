@@ -65,4 +65,6 @@ class UserInvitedProcessView(generic.RedirectView):
             'Thanks for joining, {0}! How about you pick the Pokemon for your very first'
             ' battle against {1}?'.format(user.get_short_name(), battle.creator.get_short_name())
         )
+        invite.accepted = True
+        invite.save()
         return reverse('battles:details', args=[battle.pk])
