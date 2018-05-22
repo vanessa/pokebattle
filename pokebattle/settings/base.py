@@ -146,7 +146,7 @@ SOCIAL_AUTH_PIPELINE = (
     'users.auth_pipeline.validate_invite_key',
     'users.auth_pipeline.create_invite_battle',
 )
-SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/invite/validate'
+SOCIAL_AUTH_NEW_USER_REDIRECT_URL = 'auth:validate-invite'
 
 # Webpack
 WEBPACK_LOADER = {
