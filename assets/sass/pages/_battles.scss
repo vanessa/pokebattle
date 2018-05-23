@@ -95,11 +95,15 @@
 }
 
 .battle-result-label {
-    background: $green;
+    background: $red;
     padding: 2px 10px;
     color: #fff;
     border-radius: $default-border-radius;
     margin-bottom: 10px;
+}
+
+.battle-result-label.user-won {
+    background: $green;
 }
 
 .empty-card {
