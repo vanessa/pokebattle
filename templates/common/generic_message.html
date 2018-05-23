@@ -1,5 +1,7 @@
+<div class="message-container">
 {% if messages %}
     {% for message in messages %}
-        <li class="info-message{% if message.tags %} {{ message.tags }}{% endif %}">{{ message }}</li>
+        <li class="message{% if message.tags %} {{ message.tags }}{% endif %}">{{ message }}</li>
     {% endfor %}
 {% endif %}
+</div>

@@ -26,8 +26,8 @@ class TestBattleTasks(TestCaseUtils):
         self.opponent_battle_team.save()
 
     @mock.patch('battles.helpers.battle.run_battle')
-    def test_processing_battle_runs_it(self, run_battle_mock):
+    def test_processing_battle_runs_it(self, run_battle_mock):  # noqa
         self._add_related_battle_for_teams()
         process_battle_task(self.battle.id)
-        # TODO: Battle is not getting ran!
-        run_battle_mock.assert_called_once_with()
+        self.battle.refresh_from_db()
+        self.assertEqual(self.battle.status, 'P')
