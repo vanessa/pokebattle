@@ -95,7 +95,7 @@ class ChoosePokemonTeamView(LoginRequiredMixin, generic.CreateView):
     form_class = ChooseTeamForm
 
     def get_success_url(self):
-        return reverse_lazy('battles:details', kwargs={'pk': self.kwargs['pk']})
+        return reverse_lazy('battles:list')
 
     def get(self, request, *args, **kwargs):
         battle_pk = kwargs['pk']
