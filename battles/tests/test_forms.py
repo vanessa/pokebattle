@@ -2,24 +2,35 @@ from django.test import TestCase
 
 from model_mommy import mommy
 
-from battles.forms import ChooseTeamForm, CreateBattleForm
+from battles.forms import ChooseTeamForm, CreateBattleForm, InviteForm
 from common.utils.tests import TestCaseUtils
 
 
 class TestCreateBattleForm(TestCaseUtils, TestCase):
 
-    def test_battle_empty_opponent(self):
+    def test_battle_empty_opponent_is_invalid(self):
         params = {
             'initial': {
                 'creator': self.user.id
             },
             'data': {
-                'opponent': ""
+                'opponent': None
             }
         }
         form = CreateBattleForm(**params)
         self.assertFalse(form.is_valid())
-        self.assertIn('opponent', form.errors)
+
+    def test_battle_form_valid_with_opponent(self):
+        params = {
+            'initial': {
+                'creator': self.user.id
+            },
+            'data': {
+                'opponent': mommy.make('users.User').id
+            }
+        }
+        form = CreateBattleForm(**params)
+        self.assertTrue(form.is_valid())
 
     def test_battle_form_valid(self):
         params = {
@@ -247,3 +258,44 @@ class TestChooseTeamForm(TestCaseUtils, TestCase):
                    )
         form = ChooseTeamForm(**params)
         self.assertTrue(form.is_valid())
+
+
+class TestInviteForm(TestCaseUtils):
+    def test_inviting_existent_user(self):
+        params = {
+            'initial': {
+                'inviter': self.user
+            },
+            'data': {
+                'invitee': mommy.make('users.User').email
+            }
+        }
+        form = InviteForm(**params)
+        self.assertFalse(form.is_valid())
+        self.assertIn('invitee', form.errors)
+
+    def test_inviting_nonexistent_user(self):
+        params = {
+            'initial': {
+                'inviter': self.user
+            },
+            'data': {
+                'invitee': 'example@hello.com'
+            }
+        }
+        form = InviteForm(**params)
+        self.assertTrue(form.is_valid())
+
+    def test_inviting_already_invited_user(self):
+        mommy.make('battles.Invite', invitee='already_invited@example.com')
+        params = {
+            'initial': {
+                'inviter': self.user
+            },
+            'data': {
+                'invitee': 'already_invited@example.com'
+            }
+        }
+        form = InviteForm(**params)
+        self.assertFalse(form.is_valid())
+        self.assertIn('invitee', form.errors)

@@ -1,0 +1,25 @@
+{% block subject %}{{ inviter }} has invited you to Pokebattle!{% endblock %}
+
+{% block plain %}
+    Hey!
+
+    I invited you to join me on Pokebattle.
+    It's a system where you can battle against your friends with plenty of Pokemon.
+
+    Go here to join me: {{ signup_url }}
+
+    Sincerely,
+    {{ inviter }}
+{% endblock %}
+
+{% block html %}
+    Hey!
+
+    I invited you to join me on Pokebattle. It's a system where you can battle against your friends
+    with plenty of Pokemon.
+
+    Click <a href="{{ signup_url }}">here</a> to join me!
+
+    Sincerely,
+    {{ inviter }}
+{% endblock %}

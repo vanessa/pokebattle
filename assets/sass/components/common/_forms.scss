@@ -6,7 +6,8 @@ label {
 }
 
 input[type="text"],
-input[type="password"] {
+input[type="password"],
+input[type="email"] {
     display: block;
     border: 0;
     border-radius: 3px;
@@ -33,6 +34,7 @@ input[type="submit"] {
     padding-left: 0;
     text-align: center;
 }
+
 .battle-creation-form {
     .select2-container {
         display: block !important;
@@ -75,3 +77,15 @@ input[type="submit"] {
     height: 50px !important;
 }
 
+// Errors
+
+.small-error {
+    color: $red;
+}
+
+.has-error {
+    input[type=text],
+    input[type=email] {
+        border-color: $red;
+    }
+}

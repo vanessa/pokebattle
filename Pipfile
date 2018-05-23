@@ -42,6 +42,7 @@ social-auth-app-django = "*"
 django-autocomplete-light = "*"
 responses = "*"
 django-celerybeat-status = "*"
+django-extensions = "*"
 
 [requires]
 python_version = "3.6"
