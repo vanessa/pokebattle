@@ -7,9 +7,10 @@ from django.views import generic
 
 from dal import autocomplete
 
-from battles.helpers.battle import run_battle
+from battles.helpers.battle import process_battle
 from battles.helpers.emails import send_battle_invite_email, send_pokebattle_invite_email
 from battles.helpers.invites import create_invite_key
+from battles.tasks.battle import process_battle_task
 from pokemons.models import Pokemon
 
 from .forms import ChooseTeamForm, CreateBattleForm, InviteForm
@@ -119,7 +120,9 @@ class ChoosePokemonTeamView(LoginRequiredMixin, generic.CreateView):
 
     def form_valid(self, form):
         battle_team = form.save()
-        run_battle(battle_team.battle_related)
+        battle = battle_team.battle_related
+        process_battle(battle)
+        process_battle_task.delay(battle)
         return HttpResponseRedirect(self.get_success_url())
 
 

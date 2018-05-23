@@ -20,6 +20,7 @@ class Battle(models.Model):
             self.opponent.get_short_name()
         )
 
+    @property
     def get_status_label(self):
         return self.get_status_display().lower()
 
