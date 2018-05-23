@@ -92,7 +92,7 @@ class TestUserSignupInvite(TestCaseUtils):
 
         battle_details_url = reverse('battles:details', kwargs={'pk': battle.pk})
         response = UserInvitedProcessView.as_view()(request)
-        invite.refresh_from_db()
+        invite.refresh_from_db()  # Adding because of the invite.accepted = True on views
         self.assertResponse302(response)
         self.assertEqual(response.url, battle_details_url)
         self.assertTrue(invite.accepted)
