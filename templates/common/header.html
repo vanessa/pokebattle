@@ -7,10 +7,13 @@
         <div class="menu">
             {% if user.is_authenticated %}
                 <a href="{% url 'battles:list' %}">
-                    My Battles
+                    My battles
                 </a>
                 <a href="{% url 'battles:create-battle' %}">
-                    Battle with Someone
+                    Battle with someone
+                </a>
+                <a href="{% url 'battles:invite' %}">
+                    Invite a user
                 </a>
                 <span class="name">
                     Hello, <strong>{{ user.get_short_name }}</strong>!

@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse_lazy
 from django.http.response import HttpResponseRedirect
 from django.utils.html import format_html
 from django.views import generic
@@ -8,10 +8,11 @@ from django.views import generic
 from dal import autocomplete
 
 from battles.helpers.battle import run_battle
-from battles.helpers.emails import send_battle_invite_email
+from battles.helpers.emails import send_battle_invite_email, send_pokebattle_invite_email
+from battles.helpers.invites import create_invite_key
 from pokemons.models import Pokemon
 
-from .forms import ChooseTeamForm, CreateBattleForm
+from .forms import ChooseTeamForm, CreateBattleForm, InviteForm
 from .models import Battle, BattleTeam
 
 
@@ -24,9 +25,7 @@ class BattlesListView(LoginRequiredMixin, generic.ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['battles_invited'] = Battle.objects.filter(
-            opponent=self.request.user
-        )
+        context['battles_invited'] = Battle.objects.filter(opponent=self.request.user)
         return context
 
 
@@ -39,7 +38,7 @@ class CreateBattleView(LoginRequiredMixin, generic.CreateView):
         return {'creator': self.request.user.id}
 
     def get_success_url(self):
-        return reverse('battles:details', kwargs={'pk': self.object.pk})
+        return reverse_lazy('battles:details', kwargs={'pk': self.object.pk})
 
     def form_valid(self, form):
         self.object = form.save(commit=False)
@@ -96,7 +95,7 @@ class ChoosePokemonTeamView(LoginRequiredMixin, generic.CreateView):
     form_class = ChooseTeamForm
 
     def get_success_url(self):
-        return reverse('battles:details', kwargs={'pk': self.kwargs['pk']})
+        return reverse_lazy('battles:details', kwargs={'pk': self.kwargs['pk']})
 
     def get(self, request, *args, **kwargs):
         battle_pk = kwargs['pk']
@@ -104,7 +103,7 @@ class ChoosePokemonTeamView(LoginRequiredMixin, generic.CreateView):
             battle_related__pk=battle_pk, trainer=request.user)
         if battle_team.exists():
             messages.error(request, 'You already chose a team!')
-            return HttpResponseRedirect(reverse('battles:details', kwargs={'pk': battle_pk}))
+            return HttpResponseRedirect(reverse_lazy('battles:details', kwargs={'pk': battle_pk}))
         return super().get(request, *args, **kwargs)
 
     def get_initial(self):
@@ -122,3 +121,26 @@ class ChoosePokemonTeamView(LoginRequiredMixin, generic.CreateView):
         battle_team = form.save()
         run_battle(battle_team.battle_related)
         return HttpResponseRedirect(self.get_success_url())
+
+
+class InviteView(LoginRequiredMixin, generic.CreateView):
+    form_class = InviteForm
+    template_name = 'battles/invite.html'
+    success_url = reverse_lazy('battles:invite')
+
+    def get_initial(self):
+        return {'inviter': self.request.user}
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        self.object.inviter = self.request.user
+        self.object.key = create_invite_key()
+        self.object.save()
+        messages.success(
+            self.request,
+            'Thanks for inviting someone, {user}! A battle with you will be created as soon as '
+            'they sign up.'.format(user=self.request.user.get_short_name()),
+            extra_tags='user-invite'
+        )
+        send_pokebattle_invite_email(self.object)
+        return super().form_valid(form)

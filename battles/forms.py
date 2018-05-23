@@ -7,7 +7,7 @@ from pokemons.helpers.pokemon import has_team_duplicate_pokemon, pokemon_stats_e
 from pokemons.models import Pokemon
 from users.models import User
 
-from .models import Battle, BattleTeam
+from .models import Battle, BattleTeam, Invite
 
 
 class CreateBattleForm(forms.ModelForm):
@@ -112,3 +112,21 @@ class ChooseTeamForm(forms.ModelForm):
         )
         new_team.pokemons.add(*team)
         return new_team
+
+
+class InviteForm(forms.ModelForm):
+    class Meta:
+        model = Invite
+        fields = ['invitee']
+
+    def clean_invitee(self):
+        email = self.cleaned_data.get('invitee')
+        user_exists = User.objects.filter(email=email).exists()
+        if user_exists:
+            raise forms.ValidationError('This user already exists.')
+
+        invite_exists = Invite.objects.filter(invitee=email).exists()
+        if invite_exists:
+            raise forms.ValidationError('This person has already been invited!')
+
+        return email

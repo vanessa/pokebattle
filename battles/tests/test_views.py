@@ -1,17 +1,16 @@
 from django.core import mail
-from django.test import TestCase
 from django.urls import resolve, reverse_lazy
 
 from model_mommy import mommy
 
 from battles.forms import CreateBattleForm
 from battles.helpers.battle import run_battle
-from battles.models import Battle
+from battles.models import Battle, Invite
 from battles.views import BattleView, CreateBattleView
 from common.utils.tests import TestCaseUtils
 
 
-class TestCreateBattleView(TestCaseUtils, TestCase):
+class TestCreateBattleView(TestCaseUtils):
 
     def setUp(self):
         super().setUp()
@@ -43,7 +42,7 @@ class TestCreateBattleView(TestCaseUtils, TestCase):
     def test_if_redirects_non_logged(self):
         response = self.client.get(self.view_url)
         self.assertRedirects(
-            response, expected_url='/login?next=/battles/create')
+            response, expected_url='/login?next=/battles/create/')
 
     def test_battle_was_created_in_db(self):
         response = self.client.post(self.view_url, self.battle_params)
@@ -61,7 +60,7 @@ class TestCreateBattleView(TestCaseUtils, TestCase):
         self.assertEqual(mail.outbox[0].to[0], self.user_opponent.email)
 
 
-class TestBattleDetailView(TestCaseUtils, TestCase):
+class TestBattleDetailView(TestCaseUtils):
 
     def setUp(self):
         super().setUp()
@@ -95,7 +94,7 @@ class TestBattleDetailView(TestCaseUtils, TestCase):
             response, expected_url='/login?next=/battles/details/{0}'.format(self.battle.id))
 
 
-class TestChooseTeamView(TestCaseUtils, TestCase):
+class TestChooseTeamView(TestCaseUtils):
 
     def setUp(self):
         super().setUp()
@@ -134,3 +133,50 @@ class TestChooseTeamView(TestCaseUtils, TestCase):
                    pokemons=second_team_pokemons, trainer=self.battle.opponent)
         self.auth_client.post(self.view_url)
         self.assertTrue(run_battle(self.battle))
+
+
+class TestInviteView(TestCaseUtils):
+    def setUp(self):
+        super().setUp()
+        self.view_url = reverse_lazy('battles:invite')
+
+    def test_response_status_200(self):
+        response = self.auth_client.post(self.view_url)
+        self.assertEqual(response.status_code, 200)
+
+    def test_view_redirects_non_logged_user(self):
+        response = self.client.get(self.view_url)
+        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(response, expected_url='/login?next=/battles/invite/')
+
+    def test_invite_was_created_in_db(self):
+        params = {
+            'id': 1,
+            'inviter': self.user,
+            'invitee': 'example@user.com'
+        }
+        response = self.auth_client.post(self.view_url, params)
+        invite = Invite.objects.filter(id=params['id']).exists()
+        self.assertRedirects(response, expected_url=reverse_lazy('battles:invite'))
+        self.assertTrue(invite)
+
+    def test_inviting_user_shows_message(self):
+        params = {
+            'id': 1,
+            'inviter': self.user,
+            'invitee': 'example@user.com'
+        }
+        response = self.auth_client.post(self.view_url, params, follow=True)
+        message = list(response.context['messages'])[0]
+        self.assertEqual(message.extra_tags, 'user-invite')
+
+    def test_creating_invite_generates_key(self):
+        params = {
+            'id': 1,
+            'inviter': self.user,
+            'invitee': 'example@user.com'
+        }
+        response = self.auth_client.post(self.view_url, params, follow=True)
+        invite = Invite.objects.get(id=params['id'])
+        self.assertResponse200(response)
+        self.assertTrue(invite.key is not None)

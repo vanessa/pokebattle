@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load widget_tweaks %}
+
+{% block title %}PokeBattle &middot; Battle with someone{% endblock %}
+
+{% block body %}
+    <div class="pokebattle-container battle">
+        <h2>Invite a user!</h2>
+        {% include 'common/generic_message.html' %}
+        <form method="POST" class="battle-creation-form">
+            {% csrf_token %}
+            {% include 'common/form_errors.html' %}
+            <section class="battle-fields">
+                <div class="opponent-submit {% if form.invitee.errors %}has-error{% endif %}">
+                    {% for error in form.invitee.errors %}
+                        <div class="small-error">{{ error }}</div>
+                    {% endfor %}
+                    {% render_field form.invitee placeholder='example@email.com' %}
+                    <input type="submit" value="Invite">
+                </div>
+            </section>
+        </form>
+    </div>
+{% endblock %}
