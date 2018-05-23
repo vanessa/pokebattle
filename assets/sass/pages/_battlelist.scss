@@ -54,7 +54,18 @@
 
 .battles-list a.finished:after {
     content: 'Finished';
+    background: $red;
+}
+
+.battles-list a.finished.user-won:after {
+    content: 'Finished';
     background: $green;
+}
+
+.battles-list a.processing:after {
+    content: 'Processing';
+    background: $purple;
+    @include animation-opacity-pulse;
 }
 
 .battle-id {
