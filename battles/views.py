@@ -50,7 +50,7 @@ class CreateBattleView(LoginRequiredMixin, generic.CreateView):
         return super().form_valid(form)
 
 
-class BattleView(UserIsPartOfBattleMixin, LoginRequiredMixin, generic.DetailView):
+class BattleView(LoginRequiredMixin, UserIsPartOfBattleMixin, generic.DetailView):
     model = Battle
     template_name = 'battles/battle.html'
     context_object_name = 'battle'
@@ -92,7 +92,7 @@ class PokemonListAPIView(autocomplete.Select2QuerySetView):
         return format_html('<img src="{}"> {}', item.sprite, item.name)
 
 
-class ChoosePokemonTeamView(UserIsPartOfBattleMixin, LoginRequiredMixin, generic.CreateView):
+class ChoosePokemonTeamView(LoginRequiredMixin, UserIsPartOfBattleMixin, generic.CreateView):
     template_name = 'battles/choose_team.html'
     form_class = ChooseTeamForm
     model = Battle  # due to UserIsPartOfBattleMixin.test_func.get_object

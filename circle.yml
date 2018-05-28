@@ -46,7 +46,7 @@ test:
       ALLOWED_HOSTS='.example.org'
       SENDGRID_USERNAME='test'
       SENDGRID_PASSWORD='test'
-      RABBITMQ_URL='amqp://'
+      RABBITMQ_BIGWIG_URL='amqp://'
       pipenv run python manage.py check --deploy
     - pipenv run coverage run manage.py test
     - npm run test
