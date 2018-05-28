@@ -74,8 +74,7 @@ class TestBattleDetailView(TestCaseUtils):
                                                battle_related=self.battle,
                                                pokemons=self.pokemons,
                                                trainer=self.battle.opponent)
-        self.view_url = reverse_lazy('battles:details',
-                                     kwargs={'pk': self.battle.id})
+        self.view_url = reverse_lazy('battles:details', kwargs={'pk': self.battle.id})
 
     def test_response_status_200(self):
         self.battle = mommy.make('battles.Battle', creator=self.user)
@@ -98,8 +97,7 @@ class TestBattleDetailView(TestCaseUtils):
 
     def test_redirects_user_not_in_battle(self):
         self.battle = mommy.make('battles.Battle')
-        self.view_url = reverse_lazy('battles:details',
-                                     kwargs={'pk': self.battle.id})
+        self.view_url = reverse_lazy('battles:details', kwargs={'pk': self.battle.id})
         response = self.client.get(self.view_url)
         self.assertResponse302(response)
         self.assertRedirects(response, expected_url='/battles/', status_code=302,
@@ -111,8 +109,7 @@ class TestChooseTeamView(TestCaseUtils):
     def setUp(self):
         super().setUp()
         self.battle = mommy.make('battles.Battle')
-        self.view_url = reverse_lazy(
-            'battles:team', kwargs={'pk': self.battle.id})
+        self.view_url = reverse_lazy('battles:team', kwargs={'pk': self.battle.id})
         self.battle_team_params = {
             'battle_related': self.battle,
             'trainer': self.user,
@@ -151,6 +148,14 @@ class TestChooseTeamView(TestCaseUtils):
                    pokemons=second_team_pokemons, trainer=self.battle.opponent)
         self.auth_client.post(self.view_url)
         self.assertTrue(can_run_battle(self.battle))
+
+    def test_redirects_user_not_in_battle(self):
+        self.battle = mommy.make('battles.Battle')
+        self.view_url = reverse_lazy('battles:team', kwargs={'pk': self.battle.id})
+        response = self.client.get(self.view_url)
+        self.assertResponse302(response)
+        self.assertRedirects(response, expected_url='/battles/', status_code=302,
+                             target_status_code=302)
 
 
 class TestInviteView(TestCaseUtils):
