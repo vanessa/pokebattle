@@ -110,7 +110,7 @@ class TestChooseTeamView(TestCaseUtils):
 
     def setUp(self):
         super().setUp()
-        self.battle = mommy.make('battles.Battle', opponent=self.user)
+        self.battle = mommy.make('battles.Battle')
         self.view_url = reverse_lazy(
             'battles:team', kwargs={'pk': self.battle.id})
         self.battle_team_params = {
@@ -122,7 +122,15 @@ class TestChooseTeamView(TestCaseUtils):
         }
 
     def test_pokemon_is_chosen(self):
-        response = self.auth_client.post(self.view_url, self.battle_team_params)
+        self.battle = mommy.make('battles.Battle', opponent=self.user)
+        battle_team_params = {
+            'battle_related': self.battle,
+            'trainer': self.user,
+            'first_pokemon': mommy.make('pokemons.Pokemon', id=1, hp=1, attack=1, defense=1).id,
+            'second_pokemon': mommy.make('pokemons.Pokemon', id=2, hp=1, attack=1, defense=1).id,
+            'third_pokemon': mommy.make('pokemons.Pokemon', id=3, hp=1, attack=1, defense=1).id
+        }
+        response = self.auth_client.post(self.view_url, battle_team_params)
         self.assertEqual(response.status_code, 302)
 
     def test_choosing_a_team_redirects_to_the_right_page(self):

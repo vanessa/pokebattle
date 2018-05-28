@@ -70,3 +70,8 @@ class TestBattle(TestCaseUtils):
         random_pokemon = mommy.make('pokemons.Pokemon', _quantity=3)
         result = can_teams_battle(example_existent_pokemon, random_pokemon)
         self.assertFalse(result)
+
+    def test_just_one_team_doesnt_run_task(self):
+        self.creator_battle_team.battle_related = self.battle
+        self.creator_battle_team.save()
+        self.assertFalse(run_battle(self.battle))

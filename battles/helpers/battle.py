@@ -50,11 +50,14 @@ def process_battle(battle):
 
 
 def run_battle(battle):
+    if not can_run_battle(battle):
+        return False
     winner = get_battle_winner(battle)
     battle.winner = winner
     battle.status = 'F'
     battle.save()
     send_email_when_battle_finishes(battle)
+    return True
 
 
 def can_teams_battle(first_team, second_team):
