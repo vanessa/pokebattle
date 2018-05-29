@@ -12,12 +12,9 @@
 {% endblock %}
 
 {% block html %}
-    Hey {{ username }}!
-
-    I invited you to battle on Pokebattle.
-
-    Click <a href="{{ battle_url }}">here</a> to see its details.
-
-    Sincerely,
-    {{ inviter }}   
+    <p>Hey {{ username }}!</p>
+    <p>I invited you to battle on Pokebattle.</p>
+    <p>Click <a href="{{ battle_url }}">here</a> to see its details.</p>
+    <p>Sincerely,
+    {{ inviter }}</p>
 {% endblock %}

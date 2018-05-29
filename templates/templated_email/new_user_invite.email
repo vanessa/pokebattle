@@ -13,13 +13,10 @@
 {% endblock %}
 
 {% block html %}
-    Hey!
-
-    I invited you to join me on Pokebattle. It's a system where you can battle against your friends
-    with plenty of Pokemon.
-
-    Click <a href="{{ signup_url }}">here</a> to join me!
-
-    Sincerely,
-    {{ inviter }}
+    <p>Hey!</p>
+    <p>I invited you to join me on Pokebattle. It's a system where you can battle against your friends
+    with plenty of Pokemon.</p>
+    <p>Click <a href="{{ signup_url }}">here</a> to join me!</p>
+    <p>Sincerely,
+    {{ inviter }}</p>
 {% endblock %}
