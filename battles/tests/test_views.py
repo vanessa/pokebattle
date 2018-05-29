@@ -77,9 +77,8 @@ class TestBattleDetailView(TestCaseUtils):
         self.view_url = reverse_lazy('battles:details', kwargs={'pk': self.battle.id})
 
     def test_response_status_200(self):
-        self.battle = mommy.make('battles.Battle', creator=self.user)
-        self.view_url = reverse_lazy('battles:details',
-                                     kwargs={'pk': self.battle.id})
+        self.battle.creator = self.user
+        self.battle.save()
         response = self.auth_client.get(self.view_url)
         self.assertEqual(response.status_code, 200)
 
@@ -96,8 +95,6 @@ class TestBattleDetailView(TestCaseUtils):
                              target_status_code=302)
 
     def test_redirects_user_not_in_battle(self):
-        self.battle = mommy.make('battles.Battle')
-        self.view_url = reverse_lazy('battles:details', kwargs={'pk': self.battle.id})
         response = self.client.get(self.view_url)
         self.assertResponse302(response)
         self.assertRedirects(response, expected_url='/battles/', status_code=302,

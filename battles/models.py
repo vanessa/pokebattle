@@ -21,7 +21,7 @@ class Battle(models.Model):
         )
 
     @property
-    def get_status_label(self):
+    def status_label(self):
         return self.get_status_display().lower()
 
 

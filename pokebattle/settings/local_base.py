@@ -26,7 +26,7 @@ STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 AUTH_PASSWORD_VALIDATORS = []  # allow easy passwords only on local
 
 # Celery
-CELERY_TASK_ALWAYS_EAGER = False
+CELERY_TASK_ALWAYS_EAGER = True
 
 # Email
 INSTALLED_APPS += ('naomi',)
