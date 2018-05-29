@@ -1,5 +1,5 @@
 <li>
-    <a href="{% url 'battles:details' battle.id %}" class="{{ battle.get_status_label }}{% if battle.winner %} battle-finished{% endif %}{% if battle.winner == request.user %} user-won{% endif %}">
+    <a href="{% url 'battles:details' battle.id %}" class="{{ battle.status_label }}{% if battle.winner %} battle-finished{% endif %}{% if battle.winner == request.user %} user-won{% endif %}">
         <span class="battle-id">{{ battle.id }}</span>
         <span>{{ battle }}</span>
     </a>
