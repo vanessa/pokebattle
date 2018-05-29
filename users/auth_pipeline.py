@@ -1,3 +1,5 @@
+from social_core.pipeline import partial
+
 from battles.models import Battle, Invite
 
 
@@ -18,4 +20,9 @@ def create_invite_battle(strategy, details, backend, user=None, *args, **kwargs)
         return
     invite = Invite.objects.get(key=invite_key, invitee=user.email)
     Battle.objects.create(creator=invite.inviter, opponent=user)
-    return
+    return {'invite': invite}
+
+
+@partial
+def send_inviter_email_when_battle_ready(strategy, details, backend, social, user=None, *args, **kwargs):  # noqa
+    social.extra_data.get('invite')

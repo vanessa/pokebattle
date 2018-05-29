@@ -70,3 +70,17 @@ def send_pokebattle_invite_email(invite):
         }
     )
     return send_templated_mail(**kwargs)
+
+
+def send_inviter_email_when_invitee_chooses_team(battle):
+    kwargs = dict(
+        template_name='user_accepted_invite',
+        from_email=settings.SERVER_EMAIL,
+        recipient_list=[battle.creator.email],
+        context={
+            'battle_url': _generate_battle_url(battle),
+            'inviter': battle.creator,
+            'invitee': battle.opponent
+        }
+    )
+    return send_templated_mail(**kwargs)
