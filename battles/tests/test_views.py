@@ -4,7 +4,7 @@ from django.urls import resolve, reverse_lazy
 from model_mommy import mommy
 
 from battles.forms import CreateBattleForm
-from battles.helpers.battle import run_battle
+from battles.helpers.battle import can_run_battle
 from battles.models import Battle, Invite
 from battles.views import BattleView, CreateBattleView
 from common.utils.tests import TestCaseUtils
@@ -74,10 +74,11 @@ class TestBattleDetailView(TestCaseUtils):
                                                battle_related=self.battle,
                                                pokemons=self.pokemons,
                                                trainer=self.battle.opponent)
-        self.view_url = reverse_lazy('battles:details',
-                                     kwargs={'pk': self.battle.id})
+        self.view_url = reverse_lazy('battles:details', kwargs={'pk': self.battle.id})
 
     def test_response_status_200(self):
+        self.battle.creator = self.user
+        self.battle.save()
         response = self.auth_client.get(self.view_url)
         self.assertEqual(response.status_code, 200)
 
@@ -87,11 +88,17 @@ class TestBattleDetailView(TestCaseUtils):
             BattleView.as_view().__name__
         )
 
-    def test_if_redirects_non_logged(self):
+    def test_redirects_non_logged(self):
         response = self.client.get(self.view_url)
         self.assertEqual(response.status_code, 302)
-        self.assertRedirects(
-            response, expected_url='/login?next=/battles/details/{0}'.format(self.battle.id))
+        self.assertRedirects(response, expected_url='/battles/', status_code=302,
+                             target_status_code=302)
+
+    def test_redirects_user_not_in_battle(self):
+        response = self.client.get(self.view_url)
+        self.assertResponse302(response)
+        self.assertRedirects(response, expected_url='/battles/', status_code=302,
+                             target_status_code=302)
 
 
 class TestChooseTeamView(TestCaseUtils):
@@ -99,30 +106,35 @@ class TestChooseTeamView(TestCaseUtils):
     def setUp(self):
         super().setUp()
         self.battle = mommy.make('battles.Battle')
-        self.view_url = reverse_lazy(
-            'battles:team', kwargs={'pk': self.battle.id})
-        self.battle_details_url = reverse_lazy(
-            'battles:details', kwargs={'pk': self.battle.id}
-        )
+        self.view_url = reverse_lazy('battles:team', kwargs={'pk': self.battle.id})
         self.battle_team_params = {
             'battle_related': self.battle,
+            'trainer': self.user,
             'first_pokemon': mommy.make('pokemons.Pokemon', id=1, hp=1, attack=1, defense=1).id,
             'second_pokemon': mommy.make('pokemons.Pokemon', id=2, hp=1, attack=1, defense=1).id,
             'third_pokemon': mommy.make('pokemons.Pokemon', id=3, hp=1, attack=1, defense=1).id
         }
 
     def test_pokemon_is_chosen(self):
-        response = self.auth_client.post(self.view_url, self.battle_team_params)
+        self.battle = mommy.make('battles.Battle', opponent=self.user)
+        battle_team_params = {
+            'battle_related': self.battle,
+            'trainer': self.user,
+            'first_pokemon': mommy.make('pokemons.Pokemon', id=1, hp=1, attack=1, defense=1).id,
+            'second_pokemon': mommy.make('pokemons.Pokemon', id=2, hp=1, attack=1, defense=1).id,
+            'third_pokemon': mommy.make('pokemons.Pokemon', id=3, hp=1, attack=1, defense=1).id
+        }
+        response = self.auth_client.post(self.view_url, battle_team_params)
         self.assertEqual(response.status_code, 302)
 
     def test_choosing_a_team_redirects_to_the_right_page(self):
         response = self.auth_client.post(self.view_url, self.battle_team_params)
-        self.assertEqual(response.url, self.battle_details_url)
+        self.assertEqual(response.url, '/battles/')
 
     def test_picking_just_one_team_doesnt_run_the_battle(self):
         response = self.auth_client.post(self.view_url, self.battle_team_params)
         self.assertEqual(response.status_code, 302)
-        self.assertFalse(run_battle(self.battle))
+        self.assertFalse(can_run_battle(self.battle))
 
     def test_run_the_battle_when_it_has_two_teams(self):
         first_team_pokemons = mommy.make('pokemons.Pokemon', _quantity=3, attack=1, hp=1)
@@ -132,7 +144,15 @@ class TestChooseTeamView(TestCaseUtils):
         mommy.make('battles.BattleTeam', battle_related=self.battle,
                    pokemons=second_team_pokemons, trainer=self.battle.opponent)
         self.auth_client.post(self.view_url)
-        self.assertTrue(run_battle(self.battle))
+        self.assertTrue(can_run_battle(self.battle))
+
+    def test_redirects_user_not_in_battle(self):
+        self.battle = mommy.make('battles.Battle')
+        self.view_url = reverse_lazy('battles:team', kwargs={'pk': self.battle.id})
+        response = self.client.get(self.view_url)
+        self.assertResponse302(response)
+        self.assertRedirects(response, expected_url='/battles/', status_code=302,
+                             target_status_code=302)
 
 
 class TestInviteView(TestCaseUtils):

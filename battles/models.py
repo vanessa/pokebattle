@@ -11,7 +11,7 @@ class Battle(models.Model):
     creator = models.ForeignKey(User, related_name='battle_creator')
     opponent = models.ForeignKey(User, related_name='battle_opponent')
     date_created = models.DateTimeField(auto_now_add=True)
-    winner = models.ForeignKey(User, related_name='battle_winner', null=True)
+    winner = models.ForeignKey(User, related_name='battle_winner', blank=True, null=True)
     status = models.CharField(max_length=2, choices=BATTLE_STATUS, default='O')
 
     def __str__(self):
@@ -20,7 +20,8 @@ class Battle(models.Model):
             self.opponent.get_short_name()
         )
 
-    def get_status_label(self):
+    @property
+    def status_label(self):
         return self.get_status_display().lower()
 
 

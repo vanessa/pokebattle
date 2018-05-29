@@ -16,7 +16,7 @@
             {% for error in form.non_field_errors %}
                 <div class="form-error">{{ form.non_field_errors }}</div>
             {% endfor %}
-            {% for error in form.errors %}
+            {% for error in form.errors.all %}
                 <div class="form-error">{{ error }}</div>
             {% endfor %}
         {% endif %}

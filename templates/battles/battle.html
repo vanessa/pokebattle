@@ -8,7 +8,7 @@
         {% include 'battles/includes/battle_status.html' %}
         <h2><span class="battle-id">{{ battle.id }}</span> {{ battle.creator.get_short_name }} vs. {{ battle.opponent.get_short_name }}</h2>
         {% if battle.winner %}    
-        <div class="battle-result-label">
+        <div class="battle-result-label{% if battle.winner == request.user %} user-won{% endif %}">
             <strong>{{ battle.winner.get_short_name }}</strong> won!
         </div>
         {% endif %}

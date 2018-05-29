@@ -7,10 +7,12 @@ from django.views import generic
 
 from dal import autocomplete
 
-from battles.helpers.battle import run_battle
+from battles.helpers.battle import process_battle
 from battles.helpers.emails import send_battle_invite_email, send_pokebattle_invite_email
 from battles.helpers.invites import create_invite_key
+from battles.tasks.battle import run_battle_task
 from pokemons.models import Pokemon
+from users.mixins import UserIsPartOfBattleMixin
 
 from .forms import ChooseTeamForm, CreateBattleForm, InviteForm
 from .models import Battle, BattleTeam
@@ -48,7 +50,7 @@ class CreateBattleView(LoginRequiredMixin, generic.CreateView):
         return super().form_valid(form)
 
 
-class BattleView(LoginRequiredMixin, generic.DetailView):
+class BattleView(LoginRequiredMixin, UserIsPartOfBattleMixin, generic.DetailView):
     model = Battle
     template_name = 'battles/battle.html'
     context_object_name = 'battle'
@@ -90,12 +92,13 @@ class PokemonListAPIView(autocomplete.Select2QuerySetView):
         return format_html('<img src="{}"> {}', item.sprite, item.name)
 
 
-class ChoosePokemonTeamView(LoginRequiredMixin, generic.CreateView):
+class ChoosePokemonTeamView(LoginRequiredMixin, UserIsPartOfBattleMixin, generic.CreateView):
     template_name = 'battles/choose_team.html'
     form_class = ChooseTeamForm
+    model = Battle  # due to UserIsPartOfBattleMixin.test_func.get_object
 
     def get_success_url(self):
-        return reverse_lazy('battles:details', kwargs={'pk': self.kwargs['pk']})
+        return reverse_lazy('battles:list')
 
     def get(self, request, *args, **kwargs):
         battle_pk = kwargs['pk']
@@ -119,7 +122,9 @@ class ChoosePokemonTeamView(LoginRequiredMixin, generic.CreateView):
 
     def form_valid(self, form):
         battle_team = form.save()
-        run_battle(battle_team.battle_related)
+        battle = battle_team.battle_related
+        process_battle(battle)
+        run_battle_task.delay(battle.id)
         return HttpResponseRedirect(self.get_success_url())
 
 

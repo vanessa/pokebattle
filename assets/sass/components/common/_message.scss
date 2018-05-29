@@ -1,17 +1,27 @@
-.message.error {
+.message-container {
+    margin: 10px;
+    display: flex;
+    justify-content: center;
+    flex-flow: column nowrap;
+}
+
+.message {
+    list-style: none;
     padding: 5px 10px;
+    margin: 0 auto 5px;
+    width: auto;
+    text-align: center;
     border-radius: 5px;
-    font-size: .8em;
-    color: darkred;
+    box-shadow: 0 2px 5px transparentize($black, .85);
+}
+
+.message.error {
+    color: $white;
+    background: $red;
 }
 
 .message.info, .info-message {
     background: lightblue;
-    list-style: none;
-    padding: 5px 10px;
-    margin: 0 auto;
-    width: 50%;
-    text-align: center;
 }
 
 .message.success {

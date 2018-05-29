@@ -36,10 +36,17 @@ def get_battle_winner(battle):
     winner_list = get_winner_pokemon_list(battle)
     teams = BattleTeam.objects.filter(
         battle_related=battle, pokemons__in=winner_list)
-    winner_trainer_id = Counter(
-        [team.trainer.id for team in teams]).most_common()[0][0]
+    winner_trainer_id = Counter([team.trainer.id for team in teams]).most_common()[0][0]
     battle_winner = User.objects.get(id=winner_trainer_id)
     return battle_winner
+
+
+def process_battle(battle):
+    if not can_run_battle(battle):
+        return False
+    battle.status = 'P'
+    battle.save()
+    return True
 
 
 def run_battle(battle):

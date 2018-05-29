@@ -6,5 +6,6 @@ POKEMON_ORDER_CHOICES = (
 
 BATTLE_STATUS = (
     ('O', 'Ongoing'),
-    ('F', 'Finished')
+    ('F', 'Finished'),
+    ('P', 'Processing')
 )
