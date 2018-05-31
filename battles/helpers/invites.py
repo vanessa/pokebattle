@@ -1,6 +1,7 @@
-from django.http import HttpResponseRedirect
-from django.urls import reverse
 from django.utils.crypto import get_random_string
+
+from battles.helpers.emails import send_inviter_email_when_invitee_chooses_team
+from battles.models import Invite
 
 
 def create_invite_key():
@@ -8,9 +9,11 @@ def create_invite_key():
     return key
 
 
-def handle_invite_battle(user):
+def handle_invite_battle(user, battle):
     has_invite = getattr(user, 'has_invite', None)
     if not has_invite:
         return False
-    setattr(user, 'invitee_ready', True)
-    return HttpResponseRedirect(reverse('social:complete', args=('google-oauth2',)))
+    setattr(user, 'has_invite', False)
+    invite = Invite.objects.get(inviter=battle.creator, invitee=battle.opponent)
+    invite.delete()
+    return send_inviter_email_when_invitee_chooses_team(battle)

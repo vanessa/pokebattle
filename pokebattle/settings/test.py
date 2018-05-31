@@ -2,6 +2,7 @@ from .base import *  # noqa
 
 
 SECRET_KEY = 'test'
+DEBUG = False
 
 DATABASES = {
     'default': {

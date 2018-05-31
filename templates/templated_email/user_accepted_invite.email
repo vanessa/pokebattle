@@ -1,9 +1,9 @@
-{% block subject %}{{ inviter }} has invited you to battle!{% endblock %}
+{% block subject %}Hey {{ inviter }}, I've chosen my Pokemon!{% endblock %}
 
 {% block plain %}
     Hey {{ username }}!
 
-    Thanks for the invite! I've chosen my team, are you ready to battle?
+    Thanks for the invite! I've already chosen my team, are you ready to battle?
 
     Go here: {{ battle_url }}
 
@@ -13,7 +13,7 @@
 
 {% block html %}
     <p>Hey {{ inviter }}!</p>
-    <p>Thanks for the invite! I've chosen my team, are you ready to battle?</p>
+    <p>Thanks for the invite! I've already chosen my team, are you ready to battle?</p>
     <p>Click <a href="{{ battle_url }}">here</a>!</p>
     <p>Sincerely,<br>
     {{ invitee }}</p>
