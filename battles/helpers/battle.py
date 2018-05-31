@@ -42,9 +42,9 @@ def get_battle_winner(battle):
     return battle_winner
 
 
-def process_battle(user, battle):
+def process_battle(battle):
     if not can_run_battle(battle):
-        handle_invite_battle(user, battle)
+        handle_invite_battle(battle)
         return False
     battle.status = 'P'
     battle.save()

@@ -9,11 +9,11 @@ def create_invite_key():
     return key
 
 
-def handle_invite_battle(user, battle):
-    has_invite = getattr(user, 'has_invite', None)
-    if not has_invite:
+def handle_invite_battle(battle):
+    invite_exists = Invite.objects.filter(
+        invitee=battle.opponent.email, inviter=battle.creator).exists()
+    if not invite_exists:
         return False
-    setattr(user, 'has_invite', False)
     invite = Invite.objects.get(inviter=battle.creator, invitee=battle.opponent)
     invite.delete()
     return send_inviter_email_when_invitee_chooses_team(battle)

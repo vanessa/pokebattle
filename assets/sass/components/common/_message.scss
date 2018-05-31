@@ -13,11 +13,6 @@
     text-align: center;
     border-radius: 5px;
     box-shadow: 0 2px 5px transparentize($black, .8);
-    cursor: pointer;
-
-    &:hover {
-        opacity: .9;
-    }
 }
 
 .message.error {

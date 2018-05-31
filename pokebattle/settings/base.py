@@ -146,7 +146,6 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.user_details',
     'users.auth_pipeline.validate_invite_key',
     'users.auth_pipeline.create_invite_battle',
-    'users.auth_pipeline.send_inviter_email_when_battle_ready',
 )
 SOCIAL_AUTH_NEW_USER_REDIRECT_URL = 'auth:validate-invite'
 

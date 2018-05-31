@@ -12,9 +12,9 @@
 {% endblock %}
 
 {% block html %}
-    <p>Hey {{ inviter }}!</p>
+    <p>Hey <b>{{ inviter }}</b>!</p>
     <p>Thanks for the invite! I've already chosen my team, are you ready to battle?</p>
     <p>Click <a href="{{ battle_url }}">here</a>!</p>
     <p>Sincerely,<br>
-    {{ invitee }}</p>
+    <b>{{ invitee }}</b></p>
 {% endblock %}

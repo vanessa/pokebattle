@@ -79,8 +79,8 @@ def send_inviter_email_when_invitee_chooses_team(battle):
         recipient_list=[battle.creator.email],
         context={
             'battle_url': _generate_battle_url(battle),
-            'inviter': battle.creator,
-            'invitee': battle.opponent
+            'inviter': battle.creator.get_short_name(),
+            'invitee': battle.opponent.get_short_name()
         }
     )
     return send_templated_mail(**kwargs)

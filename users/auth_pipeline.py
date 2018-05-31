@@ -8,6 +8,7 @@ def validate_invite_key(strategy, details, backend, user=None, *args, **kwargs):
     if not invite.exists():
         return
     setattr(user, 'has_invite', True)
+    user.save()
     return
 
 

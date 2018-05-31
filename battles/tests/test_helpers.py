@@ -85,23 +85,27 @@ class TestInviteHelper(TestCaseUtils):
 
     def test_user_without_invite(self):
         battle = mommy.make('battles.Battle', opponent=self.user)
-        helper = handle_invite_battle(self.user, battle)
+        helper = handle_invite_battle(battle)
         self.assertFalse(helper)
 
-    def test_user_with_invite(self):
-        setattr(self.user, 'has_invite', True)
-
+    def test_user_with_invite_calls_handler(self):
         inviter_user = mommy.make('users.User')
         battle = mommy.make('battles.Battle', opponent=self.user, creator=inviter_user)
         mommy.make('battles.Invite', invitee=self.user.email, inviter=inviter_user)
 
-        handle_invite_battle(self.user, battle)
+        handle_invite_battle(battle)
 
         # Check if invite was deleted
         invite_queryset = Invite.objects.filter(
             invitee=self.user.email, inviter=inviter_user).count()
 
-        has_invite = getattr(self.user, 'has_invite', None)
         self.assertEqual(len(mail.outbox), 1)  # assert email is sent
-        self.assertFalse(has_invite)
         self.assertEqual(invite_queryset, 0)
+
+    def test_user_without_invite_doesnt_call_handler(self):
+        inviter_user = mommy.make('users.User')
+        battle = mommy.make('battles.Battle', opponent=self.user, creator=inviter_user)
+        mommy.make('battles.Invite', invitee=self.user.email, inviter=inviter_user)
+
+        handler = handle_invite_battle(battle)
+        self.assertFalse(handler)

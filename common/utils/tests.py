@@ -1,3 +1,5 @@
+from django.contrib.messages.storage.fallback import FallbackStorage
+from django.contrib.sessions.middleware import SessionMiddleware
 from django.test import Client, TestCase
 from django.urls import reverse
 
@@ -14,6 +16,18 @@ class TestCaseUtils(TestCase):
 
         self.auth_client = Client()
         self.auth_client.login(email=self.user.email, password=self._user_password)
+
+    def setup_request(self, request):
+        request.user = self.user
+
+        # Initializing SessionMiddleware because of the messages
+        session_middleware = SessionMiddleware()
+        session_middleware.process_request(request)
+
+        # Adding messages to request, since the view uses it
+        # otherwise you'd get a django.contrib.messages.api.MessageFailure
+        messages = FallbackStorage(request)
+        setattr(request, '_messages', messages)
 
     def reverse(self, name, *args, **kwargs):
         """ Reverse a url, convenience to avoid having to import reverse in tests """
