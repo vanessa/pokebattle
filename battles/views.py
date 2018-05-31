@@ -123,7 +123,7 @@ class ChoosePokemonTeamView(LoginRequiredMixin, UserIsPartOfBattleMixin, generic
     def form_valid(self, form):
         battle_team = form.save()
         battle = battle_team.battle_related
-        process_battle(battle)
+        process_battle(battle_team.trainer, battle)
         run_battle_task.delay(battle.id)
         return HttpResponseRedirect(self.get_success_url())
 

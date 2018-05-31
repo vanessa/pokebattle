@@ -2,6 +2,7 @@ from collections import Counter
 
 from battles.helpers.emails import send_email_when_battle_finishes
 from battles.helpers.fight import compare_two_pokemons
+from battles.helpers.invites import handle_invite_battle
 from battles.models import BattleTeam
 from users.models import User
 
@@ -41,8 +42,9 @@ def get_battle_winner(battle):
     return battle_winner
 
 
-def process_battle(battle):
+def process_battle(user, battle):
     if not can_run_battle(battle):
+        handle_invite_battle(user)
         return False
     battle.status = 'P'
     battle.save()

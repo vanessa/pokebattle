@@ -133,7 +133,7 @@ AUTHENTICATION_BACKENDS = (
 )
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY', default='')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET', default='')
-SOCIAL_AUTH_FIELDS_STORED_IN_SESSION = ['invite_key',]
+SOCIAL_AUTH_FIELDS_STORED_IN_SESSION = ['invite_key', ]
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
     'social_core.pipeline.social_auth.social_uid',
@@ -146,6 +146,7 @@ SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.user.user_details',
     'users.auth_pipeline.validate_invite_key',
     'users.auth_pipeline.create_invite_battle',
+    'users.auth_pipeline.send_inviter_email_when_battle_ready',
 )
 SOCIAL_AUTH_NEW_USER_REDIRECT_URL = 'auth:validate-invite'
 
@@ -155,7 +156,7 @@ WEBPACK_LOADER = {
         'CACHE': False,  # on DEBUG should be False
         'STATS_FILE': base_dir_join('webpack-stats.json'),
         'POLL_INTERVAL': 0.1,
-        'IGNORE': ['.+\.hot-update.js', '.+\.map']
+        'IGNORE': ['.+\.hot-update.js', '.+\.map']  # noqa
     },
     'JQUERY': {
         'BUNDLE_DIR_NAME': 'bundles/',
