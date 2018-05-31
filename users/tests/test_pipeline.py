@@ -1,4 +1,5 @@
 from django.core import mail
+from django.urls import reverse
 
 import mock
 from model_mommy import mommy
@@ -11,7 +12,7 @@ from users.auth_pipeline import (
 )
 
 
-class TestInviteSignup(TestCaseUtils):
+class TestInvitePipeline(TestCaseUtils):
 
     def setUp(self):
         super().setUp()
@@ -57,3 +58,24 @@ class TestInviteSignup(TestCaseUtils):
         self.assertEqual(mail.outbox[0].to[0], inviter_user.email)
         self.assertTrue(invitee_ready)
         self.assertTrue(has_invite)
+
+    @mock.patch('social_django.utils.load_strategy')
+    def test_user_without_invite_continues_pipeline(self, strategy):
+        strategy.session_get.return_value = None
+        step = send_inviter_email_when_battle_ready(user=self.user, strategy=strategy,
+                                                    backend=self.backend, details={},
+                                                    pipeline_index=1)
+        self.assertEqual(step, {})
+
+    @mock.patch('social_django.utils.load_strategy')
+    def test_new_user_with_invite_redirects_to_battle(self, strategy):
+        setattr(self.user, 'has_invite', True)
+        inviter_user = mommy.make('users.User')
+        battle = mommy.make('battles.Battle', opponent=self.user, creator=inviter_user)
+        mommy.make('battles.Invite', key=123, invitee=self.user.email, inviter=inviter_user)
+        strategy.session_get.return_value = '123'
+
+        step = send_inviter_email_when_battle_ready(user=self.user, strategy=strategy,
+                                                    backend=self.backend, details={},
+                                                    pipeline_index=1)
+        self.assertEqual(step.url, reverse('battles:details', args=(battle.pk,)))
