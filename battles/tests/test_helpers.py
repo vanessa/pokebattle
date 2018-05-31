@@ -98,9 +98,10 @@ class TestInviteHelper(TestCaseUtils):
         handle_invite_battle(self.user, battle)
 
         # Check if invite was deleted
-        invite = Invite.objects.filter(invitee=self.user.email, inviter=inviter_user).first()
+        invite_queryset = Invite.objects.filter(
+            invitee=self.user.email, inviter=inviter_user).count()
 
         has_invite = getattr(self.user, 'has_invite', None)
         self.assertEqual(len(mail.outbox), 1)  # assert email is sent
         self.assertFalse(has_invite)
-        self.assertIsNone(invite)
+        self.assertEqual(invite_queryset, 0)
