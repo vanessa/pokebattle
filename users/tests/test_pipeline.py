@@ -7,7 +7,7 @@ from common.utils.tests import TestCaseUtils
 from users.auth_pipeline import create_invite_battle, validate_invite_key
 
 
-class TestInviteSignup(TestCaseUtils):
+class TestInvitePipeline(TestCaseUtils):
 
     def setUp(self):
         super().setUp()

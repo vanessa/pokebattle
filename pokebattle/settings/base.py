@@ -133,12 +133,13 @@ AUTHENTICATION_BACKENDS = (
 )
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = config('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY', default='')
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = config('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET', default='')
-SOCIAL_AUTH_FIELDS_STORED_IN_SESSION = ['invite_key',]
+SOCIAL_AUTH_FIELDS_STORED_IN_SESSION = ['invite_key', ]
 SOCIAL_AUTH_PIPELINE = (
     'social_core.pipeline.social_auth.social_details',
     'social_core.pipeline.social_auth.social_uid',
     'social_core.pipeline.social_auth.social_user',
     'social_core.pipeline.user.get_username',
+    'social_core.pipeline.social_auth.associate_by_email',
     'social_core.pipeline.user.create_user',
     'social_core.pipeline.social_auth.associate_user',
     'social_core.pipeline.social_auth.load_extra_data',
@@ -154,7 +155,7 @@ WEBPACK_LOADER = {
         'CACHE': False,  # on DEBUG should be False
         'STATS_FILE': base_dir_join('webpack-stats.json'),
         'POLL_INTERVAL': 0.1,
-        'IGNORE': ['.+\.hot-update.js', '.+\.map']
+        'IGNORE': ['.+\.hot-update.js', '.+\.map']  # noqa
     },
     'JQUERY': {
         'BUNDLE_DIR_NAME': 'bundles/',

@@ -1,11 +1,12 @@
 from django.core import mail
-from django.urls import resolve, reverse_lazy
+from django.test import RequestFactory
+from django.urls import resolve, reverse
 
 from model_mommy import mommy
 
 from battles.forms import CreateBattleForm
 from battles.helpers.battle import can_run_battle
-from battles.models import Battle, Invite
+from battles.models import Battle, BattleTeam, Invite
 from battles.views import BattleView, CreateBattleView
 from common.utils.tests import TestCaseUtils
 
@@ -14,7 +15,7 @@ class TestCreateBattleView(TestCaseUtils):
 
     def setUp(self):
         super().setUp()
-        self.view_url = reverse_lazy('battles:create-battle')
+        self.view_url = reverse('battles:create-battle')
         self.user_opponent = mommy.make('users.User')
         self.battle = mommy.make('battles.Battle')
         self.view_class = CreateBattleView()
@@ -74,7 +75,7 @@ class TestBattleDetailView(TestCaseUtils):
                                                battle_related=self.battle,
                                                pokemons=self.pokemons,
                                                trainer=self.battle.opponent)
-        self.view_url = reverse_lazy('battles:details', kwargs={'pk': self.battle.id})
+        self.view_url = reverse('battles:details', kwargs={'pk': self.battle.id})
 
     def test_response_status_200(self):
         self.battle.creator = self.user
@@ -105,8 +106,9 @@ class TestChooseTeamView(TestCaseUtils):
 
     def setUp(self):
         super().setUp()
+        self.factory = RequestFactory()
         self.battle = mommy.make('battles.Battle')
-        self.view_url = reverse_lazy('battles:team', kwargs={'pk': self.battle.id})
+        self.view_url = reverse('battles:team', kwargs={'pk': self.battle.id})
         self.battle_team_params = {
             'battle_related': self.battle,
             'trainer': self.user,
@@ -148,17 +150,38 @@ class TestChooseTeamView(TestCaseUtils):
 
     def test_redirects_user_not_in_battle(self):
         self.battle = mommy.make('battles.Battle')
-        self.view_url = reverse_lazy('battles:team', kwargs={'pk': self.battle.id})
+        self.view_url = reverse('battles:team', kwargs={'pk': self.battle.id})
         response = self.client.get(self.view_url)
         self.assertResponse302(response)
         self.assertRedirects(response, expected_url='/battles/', status_code=302,
                              target_status_code=302)
 
+    def test_invitee_user_deletes_invite_when_choosing_for_the_first_time(self):
+        inviter_user = mommy.make('users.User', email='inviter@email.com')
+        mommy.make('battles.Invite', invitee=self.user.email, inviter=inviter_user)
+        battle = mommy.make('battles.Battle', creator=inviter_user, opponent=self.user)
+        view_url = reverse('battles:team', kwargs={'pk': battle.id})
+        battle_team_data = {
+            'battle_related': battle,
+            'trainer': self.user,
+            'first_pokemon': mommy.make('pokemons.Pokemon', id=1, hp=1, attack=1, defense=1).id,
+            'second_pokemon': mommy.make('pokemons.Pokemon', id=2, hp=1, attack=1, defense=1).id,
+            'third_pokemon': mommy.make('pokemons.Pokemon', id=3, hp=1, attack=1, defense=1).id
+        }
+        response = self.auth_client.post(view_url, battle_team_data)
+
+        new_battle_team = BattleTeam.objects.last()
+
+        self.assertResponse302(response)
+        self.assertIsNotNone(new_battle_team)
+        self.assertEqual(Invite.objects.count(), 0)
+        self.assertEqual(len(mail.outbox), 1)
+
 
 class TestInviteView(TestCaseUtils):
     def setUp(self):
         super().setUp()
-        self.view_url = reverse_lazy('battles:invite')
+        self.view_url = reverse('battles:invite')
 
     def test_response_status_200(self):
         response = self.auth_client.post(self.view_url)
@@ -177,7 +200,7 @@ class TestInviteView(TestCaseUtils):
         }
         response = self.auth_client.post(self.view_url, params)
         invite = Invite.objects.filter(id=params['id']).exists()
-        self.assertRedirects(response, expected_url=reverse_lazy('battles:invite'))
+        self.assertRedirects(response, expected_url=reverse('battles:invite'))
         self.assertTrue(invite)
 
     def test_inviting_user_shows_message(self):

@@ -1,5 +1,3 @@
-from django.contrib.messages.storage.fallback import FallbackStorage
-from django.contrib.sessions.middleware import SessionMiddleware
 from django.test import RequestFactory
 from django.urls import resolve, reverse
 
@@ -77,18 +75,11 @@ class TestUserSignupInvite(TestCaseUtils):
         battle = mommy.make('battles.Battle', creator=invite.inviter, opponent=self.user)
 
         request = self.factory.get(self.view_url)
-        request.user = self.user
+        self.setup_request(request)
 
         # Adding invite_key to session
-        session_middleware = SessionMiddleware()
-        session_middleware.process_request(request)
         request.session['invite_key'] = 123
         request.session.save()
-
-        # Adding messages to request, since the view uses it
-        # otherwise you'd get a django.contrib.messages.api.MessageFailure
-        messages = FallbackStorage(request)
-        setattr(request, '_messages', messages)
 
         battle_details_url = reverse('battles:details', kwargs={'pk': battle.pk})
         response = UserInvitedProcessView.as_view()(request)

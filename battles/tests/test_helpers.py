@@ -1,13 +1,17 @@
+from django.core import mail
+
 from model_mommy import mommy
 
 from battles.helpers.battle import can_run_battle, can_teams_battle, run_battle
 from battles.helpers.emails import send_email_when_battle_finishes
 from battles.helpers.fight import compare_attack_to_defense, compare_hp
+from battles.helpers.invites import handle_invite_battle
+from battles.models import Invite
 from common.utils.tests import TestCaseUtils
 from users.models import User
 
 
-class TestBattle(TestCaseUtils):
+class TestBattleHelper(TestCaseUtils):
 
     def setUp(self):
         super().setUp()
@@ -75,3 +79,33 @@ class TestBattle(TestCaseUtils):
         self.creator_battle_team.battle_related = self.battle
         self.creator_battle_team.save()
         self.assertFalse(run_battle(self.battle))
+
+
+class TestInviteHelper(TestCaseUtils):
+
+    def test_user_without_invite(self):
+        battle = mommy.make('battles.Battle', opponent=self.user)
+        helper = handle_invite_battle(battle)
+        self.assertFalse(helper)
+
+    def test_user_with_invite_calls_handler(self):
+        inviter_user = mommy.make('users.User')
+        battle = mommy.make('battles.Battle', opponent=self.user, creator=inviter_user)
+        mommy.make('battles.Invite', invitee=self.user.email, inviter=inviter_user)
+
+        handle_invite_battle(battle)
+
+        # Check if invite was deleted
+        invite_queryset = Invite.objects.filter(
+            invitee=self.user.email, inviter=inviter_user).count()
+
+        self.assertEqual(len(mail.outbox), 1)  # assert email is sent
+        self.assertEqual(invite_queryset, 0)
+
+    def test_user_without_invite_doesnt_call_handler(self):
+        inviter_user = mommy.make('users.User')
+        battle = mommy.make('battles.Battle', opponent=self.user, creator=inviter_user)
+        mommy.make('battles.Invite', invitee=self.user.email, inviter=inviter_user)
+
+        handler = handle_invite_battle(battle)
+        self.assertFalse(handler)

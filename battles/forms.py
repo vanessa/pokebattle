@@ -88,7 +88,7 @@ class ChooseTeamForm(forms.ModelForm):
         if existent_team_pokemon and can_teams_battle(
                 existent_team_pokemon.pokemons.all(), team):
             raise forms.ValidationError(
-                'Some of your Pokemon already exists in '
+                'Some of your Pokemon already exist in '
                 'the opponent\'s team, please pick other ones.'
             )
 

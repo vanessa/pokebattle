@@ -4,7 +4,10 @@ from django.urls import reverse
 
 from model_mommy import mommy
 
-from battles.helpers.emails import send_battle_invite_email, send_pokebattle_invite_email
+from battles.helpers.emails import (
+    send_battle_invite_email, send_inviter_email_when_invitee_chooses_team,
+    send_pokebattle_invite_email
+)
 
 
 class TestBattleInviteEmail(TestCase):
@@ -42,3 +45,16 @@ class TestPokebattleInviteEmail(TestCase):
         correct_url = 'https://pokebattle.com/login?key=123'
         mail_body = mail.outbox[0].body
         self.assertTrue(correct_url in mail_body)
+
+    @override_settings(DOMAIN='https://pokebattle.com')
+    def test_invitee_ready_to_battle_email(self):
+        battle = mommy.make('battles.Battle')
+        send_inviter_email_when_invitee_chooses_team(battle)
+
+        mail_body = mail.outbox[0].body
+        recipient = mail.outbox[0].to[0]
+        correct_url = 'https://pokebattle.com/battles/details/1'
+
+        self.assertTrue(correct_url in mail_body)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(recipient, battle.creator.email)

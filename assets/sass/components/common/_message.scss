@@ -12,7 +12,7 @@
     width: auto;
     text-align: center;
     border-radius: 5px;
-    box-shadow: 0 2px 5px transparentize($black, .85);
+    box-shadow: 0 2px 5px transparentize($black, .8);
 }
 
 .message.error {
@@ -25,16 +25,20 @@
 }
 
 .message.success {
-    background: lightgreen;
+    background: mediumseagreen;
     list-style: none;
+    color: $white;
     padding: 5px 10px;
     margin: 0 auto;
-    width: 50%;
     text-align: center;
 }
 
+.message.user-invite {
+    width: 80%;
+}
+
 @media (max-width: $md-screen-size) {
-    .info-message {
+    .message {
         width: 100%;
     }
 }
