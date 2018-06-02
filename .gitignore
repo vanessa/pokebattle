@@ -49,3 +49,6 @@ spritesmith.scss
 
 # templated email
 tmp_email/
+
+# Celery
+celerybeat-schedule.*
