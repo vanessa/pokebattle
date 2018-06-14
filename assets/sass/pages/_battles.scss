@@ -216,6 +216,7 @@
   justify-content: center;
   align-items: center;
   animation: opacity-pulse 2s ease-in-out infinite;
+  margin: 0 15px;
 
   &:after {
     content: 'Waiting for user to choose their team';
@@ -223,6 +224,7 @@
 }
 
 .battle-row {
+  margin-top: 20px;
   display: flex;
   align-items: center;
   justify-content: center;

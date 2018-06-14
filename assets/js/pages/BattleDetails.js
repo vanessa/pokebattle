@@ -148,6 +148,14 @@ class BattleDetails extends React.Component {
         <Container>
           <Title>Battle details</Title>
           <BattleTitle>{battle.creator.username} vs. {battle.opponent.username}</BattleTitle>
+          {!battle.winner &&
+            <a
+              style={{ textAlign: 'center', display: 'block' }}
+              href={window.Urls['battles:team'](this.props.match.params.pk)}
+            >
+              Choose team
+            </a>
+          }
           {battle.winner &&
             <WinnerContainer>
               <div className="battle-winner-label">The winner is {battle.winner}</div>
