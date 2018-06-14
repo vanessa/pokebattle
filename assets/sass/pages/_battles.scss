@@ -1,203 +1,246 @@
 .battle {
-    display: flex;
-    justify-content: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  padding: $default-vt-padding;
+
+  h2 {
+    font-size: 2.3rem;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .battle-fields {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-gap: 20px;
     align-items: center;
-    flex-direction: column;
-    padding: $default-vt-padding;
+    margin-top: 20px;
 
-    h2 {
-        font-size: 2.3rem;
+    @media (max-width: $md-screen-size) {
+      grid-template-columns: 1fr;
+    }
+
+    .opponent-submit {
+      text-align: center;
+
+      em {
+        display: block;
         font-weight: bold;
-        text-align: center;
+        margin: 15px 0;
+        font-style: normal;
+      }
+    }
+  }
+
+  .battle-creation-form {
+    width: 50%;
+
+    input,
+    select {
+      font-size: 1.2rem;
+      margin: 10px auto;
+      border-width: 1px;
+      border-style: solid;
+      position: relative;
+      display: block;
+      text-align: center;
     }
 
-    .battle-fields {
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-gap: 20px;
-        align-items: center;
-        margin-top: 20px;
-
-        @media (max-width: $md-screen-size) {
-            grid-template-columns: 1fr;
-        }
-
-        .opponent-submit {
-            text-align: center;
-
-            em {
-                display: block;
-                font-weight: bold;
-                margin: 15px 0;
-                font-style: normal;
-            }
-        }
+    .middle {
+      display: block;
+      margin: 15px 0 0;
     }
 
-    .battle-creation-form {
-        width: 50%;
+    input[type="submit"] {
+      display: block;
+      background: $default-color;
+      font-size: 1.8rem;
+      color: $bright-font-color;
+      padding: 5px 20px;
+      border: 0;
+      border-radius: $default-border-radius;
+      margin: 30px auto;
+      cursor: pointer;
 
-        input, select {
-            font-size: 1.2rem;
-            margin: 10px auto;
-            border-width: 1px;
-            border-style: solid;
-            position: relative;
-            display: block;
-            text-align: center;
-        }
+      &:hover {
+        background: lighten($default-color, 8%);
+      }
 
-        .middle {
-            display: block;
-            margin: 15px 0 0;
-        }
-    
-        input[type="submit"] {
-            display: block;
-            background: $default-color;
-            font-size: 1.8rem;
-            color: $bright-font-color;
-            padding: 5px 20px;
-            border: 0;
-            border-radius: $default-border-radius;
-            margin: 30px auto;
-            cursor: pointer;
-
-            &:hover {
-                background: lighten($default-color, 8%);
-            }
-
-            &:active {
-                background: $default-color;
-            }
-        }
+      &:active {
+        background: $default-color;
+      }
     }
-    
+  }
 
-    .status {
-        margin: 10px 0;
-        text-align: center;
+  .status {
+    margin: 10px 0;
+    text-align: center;
 
-        &.waiting {
-            background: $orange;
-            color: #fff;
-            font-weight: bold;
-            padding: 5px 12px;
-            border-radius: 5px;
-            @include animation-opacity-pulse;
-        }
+    &.waiting {
+      background: $orange;
+      color: #fff;
+      font-weight: bold;
+      padding: 5px 12px;
+      border-radius: 5px;
+      @include animation-opacity-pulse;
     }
+  }
 
-    .team-form-instruction {
-        margin: 10px 0;
-        color: #666;
-    }
+  .team-form-instruction {
+    margin: 10px 0;
+    color: #666;
+  }
 }
 
 .battle-result-label {
-    background: $red;
-    padding: 2px 10px;
-    color: #fff;
-    border-radius: $default-border-radius;
-    margin-bottom: 10px;
+  background: $red;
+  padding: 2px 10px;
+  color: #fff;
+  border-radius: $default-border-radius;
+  margin-bottom: 10px;
 }
 
 .battle-result-label.user-won {
-    background: $green;
+  background: $green;
 }
 
 .empty-card {
-    background: #f0f0f0;
-    padding: 15px;
-    font-size: 1.2rem;
-    border-radius: $default-border-radius;
-    text-align: center;
+  background: #f0f0f0;
+  padding: 15px;
+  font-size: 1.2rem;
+  border-radius: $default-border-radius;
+  text-align: center;
 }
 
 .battle-pokemons {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-gap: 20px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 20px;
 
-    .creators-pokemons {
-        order: 0;
-    }
+  .creators-pokemons {
+    order: 0;
+  }
 
-    .opponents-pokemons {
-        order: 1;
-    }
+  .opponents-pokemons {
+    order: 1;
+  }
 }
 
 .pokemon-card {
-    padding-right: 20px;
-    box-shadow: $default-box-shadow;
-    border-radius: $default-border-radius;
-    margin: 10px 0;
-    cursor: pointer;
-    position: relative;
-    transition: transform .15s ease-in-out;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    align-items: center;
+  padding-right: 20px;
+  box-shadow: $default-box-shadow;
+  border-radius: $default-border-radius;
+  margin: 10px 0;
+  cursor: pointer;
+  position: relative;
+  transition: transform .15s ease-in-out;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  align-items: center;
 
-    img {
-        max-width: 100px;
+  img {
+    max-width: 100px;
+  }
+
+  i {
+    font-style: normal;
+  }
+
+  .attributes {
+    font-size: .75rem;
+    font-weight: bold;
+    text-align: right;
+    color: lighten(grayscale($default-color), 30%);
+
+    span {
+      display: block;
+    }
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+
+  // Pokemon card inactive (when the user
+  // can't see the opponent's team)
+
+  &.inactive {
+    grid-gap: 15px;
+
+    .pokemon-pic {
+      width: 80px;
+      height: 80px;
+      margin: 5px 0 5px 15px;
+      border-radius: 50%;
     }
 
-    i {
-        font-style: normal;
+    .pokemon-name {
+      display: block;
+      width: 90px;
+      height: 25px;
     }
-    
+
     .attributes {
-        font-size: .75rem;
-        font-weight: bold;
-        text-align: right;
-        color: lighten(grayscale($default-color), 30%);
+      span {
+        display: block;
+        width: 100%;
+        height: 20px;
+        margin: 10px 0;
+      }
+    }
 
-        span {
-            display: block;
-        }
+    .placeholder-comp {
+      background: #f0f0f0;
+      @include animation-opacity-pulse;
     }
 
     &:hover {
-        transform: translateY(-2px);
+      transform: translateY(0);
     }
+  }
+}
 
-    // Pokemon card inactive (when the user
-    // can't see the opponent's team)
-    
-    &.inactive {
-        grid-gap: 15px; 
+// post-react
+// TODO: organize this!
 
-        .pokemon-pic {
-            width: 80px;
-            height: 80px;
-            margin: 5px 0 5px 15px;
-            border-radius: 50%;
-        }
+.placeholder-card {
+  width: 350px;
+  height: 100px;
+  color: #333;
+  font-weight: bold;
+  background: lighten(#ccc, 8%);
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: opacity-pulse 2s ease-in-out infinite;
 
-        .pokemon-name {
-            display: block;
-            width: 90px;
-            height: 25px;
-        }
+  &:after {
+    content: 'Waiting for user to choose their team';
+  }
+}
 
-        .attributes {
-            span {
-                display: block;
-                width: 100%;
-                height: 20px;
-                margin: 10px 0;
-            }
-        }
+.battle-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-        .placeholder-comp {
-            background: #f0f0f0;
-            @include animation-opacity-pulse;
-        }
+.battle-row.creator {
+  // The battle creator will always be in the first column
+  .team-column:first-of-type > div {
+    background: mix(#fff, palegreen, 40%);
+  }
+}
 
-        &:hover {
-            transform: translateY(0);
-        }
-    }
+.battle-winner-label {
+  background: limegreen;
+  display: inline-block;
+  margin: 10px auto;
+  padding: 3px 10px;
+  color: #fff;
+  border-radius: 5px;
+  font-weight: bold;
 }

@@ -43,6 +43,9 @@ django-autocomplete-light = "*"
 responses = "*"
 django-celerybeat-status = "*"
 django-extensions = "*"
+djangorestframework = "*"
+markdown = "*"
+django-filter = "*"
 
 [requires]
 python_version = "3.6"

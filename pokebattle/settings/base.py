@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'templated_email',
     'celerybeat_status',
     'social_django',
+    'rest_framework',
 
     'common',
     'users',
@@ -76,6 +77,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'pokebattle.urls'
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
 
 TEMPLATES = [
     {

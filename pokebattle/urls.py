@@ -20,8 +20,9 @@ urlpatterns = [
     url(r'^$', TemplateView.as_view(template_name='common/index.html'), name='home'),
     url(r'^battles/', include('battles.urls', namespace='battles')),
 
-    # api
+    # API
     url(r'^api/pokemon/$', PokemonListAPIView.as_view(), name='api-pokemon-list'),
+    url(r'api/', include('battles.endpoints_urls', namespace='api-battles'))
 ]
 
 if settings.DEBUG:
