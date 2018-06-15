@@ -102,9 +102,6 @@ TeamDetails.propTypes = {
         hp: PropTypes.number,
       })),
     }),
-    winner: PropTypes.string,
-    date_created: PropTypes.string.isRequired,
-    status: PropTypes.string.isRequired,
   })).isRequired,
 };
 
@@ -187,7 +184,7 @@ class BattleDetails extends React.Component {
 BattleDetails.propTypes = {
   match: PropTypes.shape({
     params: PropTypes.shape({
-      pk: PropTypes.number,
+      pk: PropTypes.string,
     }),
   }).isRequired,
 };
