@@ -208,6 +208,7 @@
 .placeholder-card {
   width: 350px;
   height: 100px;
+  padding: 15px;
   color: #333;
   font-weight: bold;
   background: lighten(#ccc, 8%);
@@ -215,12 +216,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  animation: opacity-pulse 2s ease-in-out infinite;
+  @include animation-opacity-pulse;
   margin: 0 15px;
-
-  &:after {
-    content: 'Waiting for user to choose their team';
-  }
+  text-align: center;
 }
 
 .battle-row {
@@ -245,4 +243,9 @@
   color: #fff;
   border-radius: 5px;
   font-weight: bold;
+}
+
+.pokemon-card {
+  background-color: #fff;
+  box-shadow: 0 0 transparent;
 }
