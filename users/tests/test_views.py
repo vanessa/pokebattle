@@ -4,7 +4,6 @@ from django.test import RequestFactory
 from django.urls import resolve, reverse
 
 from model_mommy import mommy
-from rest_framework.authtoken.models import Token
 
 from common.utils.tests import TestCaseUtils
 from users.forms import UserSignupForm
@@ -103,12 +102,3 @@ class TestUserSignupInvite(TestCaseUtils):
         battles_list_url = reverse('battles:list')
         self.assertResponse302(response)
         self.assertEqual(response.url, battles_list_url)
-
-    def test_user_token_is_created(self):
-        # It's `auth` because of the user has already
-        # been registered and this view is to validate
-        # if they have a valid invite or not
-        response = self.auth_client.post(self.view_url)
-        token = Token.objects.filter(user=self.user)
-        self.assertResponse302(response)
-        self.assertEqual(token.count(), 1)
