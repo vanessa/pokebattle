@@ -58,6 +58,7 @@ INSTALLED_APPS = [
     'celerybeat_status',
     'social_django',
     'rest_framework',
+    'rest_framework.authtoken',
 
     'common',
     'users',
@@ -128,6 +129,14 @@ USE_TZ = True
 STATICFILES_DIRS = (
     base_dir_join('assets'),
 )
+
+# Django Rest Framework
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+    )
+}
 
 # social-auth
 AUTHENTICATION_BACKENDS = (
