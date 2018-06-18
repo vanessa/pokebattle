@@ -4,6 +4,7 @@ from django.contrib import admin
 from django.views.generic import TemplateView
 
 import django_js_reverse.views
+from rest_framework.authtoken import views as drf_views
 
 from battles.views import PokemonListAPIView
 
@@ -22,6 +23,7 @@ urlpatterns = [
     # API
     url(r'^api/pokemon/$', PokemonListAPIView.as_view(), name='api-pokemon-list'),
     url(r'api/', include('battles.endpoints_urls', namespace='api-battles')),
+    url('api-token-auth/', drf_views.obtain_auth_token, name='obtain-auth-token')
 ]
 
 if settings.DEBUG:
