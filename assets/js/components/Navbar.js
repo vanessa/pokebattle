@@ -1,6 +1,6 @@
+import { NavLink } from 'react-router-dom';
 import React from 'react';
 import Urls from '../utils/urls';
-// import { NavLink } from 'react-router-dom';
 
 function Navbar() {
   return (
@@ -9,6 +9,9 @@ function Navbar() {
         <a href={Urls.home()}>PokeBattle</a>
       </div>
       <div className="menu">
+        <NavLink to="/login">
+          Login
+        </NavLink>
         <a href={Urls['battles:list']()}>
           My battles
         </a>
