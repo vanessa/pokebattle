@@ -37,7 +37,7 @@ class TestBattleDetailsEndpoint(TestCaseUtils):
         response = BattleDetailsEndpoint.as_view()(request, pk=battle.pk)
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
-    def test_unauthorized_for_not_logged_Users(self):
+    def test_unauthorized_for_not_logged_users(self):
         battle = mommy.make('battles.Battle')
         view_url = reverse('api-battles:battle-details', args=[battle.pk])
         request = self.factory.get(view_url)
