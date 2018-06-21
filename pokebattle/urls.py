@@ -22,6 +22,7 @@ urlpatterns = [
     # API
     url(r'^api/pokemon/$', PokemonListAPIView.as_view(), name='api-pokemon-list'),
     url(r'api/', include('battles.endpoints_urls', namespace='api-battles')),
+    url(r'api/', include('users.endpoints_urls', namespace='api-users')),
 ]
 
 if settings.DEBUG:

@@ -1,29 +1,36 @@
 import React from 'react';
 import Urls from '../utils/urls';
 // import { NavLink } from 'react-router-dom';
+// import Api from '../utils/api';
 
-function Navbar() {
-  return (
-    <div className="navbar">
-      <div className="header">
-        <a href={Urls.home()}>PokeBattle</a>
+class Navbar extends React.Component {
+  componentDidMount() {
+    //
+  }
+
+  render() {
+    return (
+      <div className="navbar">
+        <div className="header">
+          <a href={Urls.home()}>PokeBattle</a>
+        </div>
+        <div className="menu">
+          <a href={Urls['battles:list']()}>
+            My battles
+          </a>
+          <a href={Urls['battles:create-battle']()}>
+            Battle
+          </a>
+          <a href={Urls['battles:invite']()}>
+            Invite someone
+          </a>
+          <a href={Urls['auth:logout']()}>
+            Logout
+          </a>
+        </div>
       </div>
-      <div className="menu">
-        <a href={Urls['battles:list']()}>
-          My battles
-        </a>
-        <a href={Urls['battles:create-battle']()}>
-          Battle
-        </a>
-        <a href={Urls['battles:invite']()}>
-          Invite someone
-        </a>
-        <a href={Urls['auth:logout']()}>
-          Logout
-        </a>
-      </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default Navbar;

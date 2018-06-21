@@ -8,7 +8,7 @@ const getCookie = (name) => {
 
 const pokeWrapper = axios.create({
   params: {
-    session_id: getCookie('sessionid'),
+    session: getCookie('sessionid'),
   },
 });
 
@@ -16,7 +16,12 @@ export default class Api {
   static getBattleDetails(id) {
     const url = Urls['api-battles:battle-details'](id);
     return pokeWrapper.get(url)
-      .then(response => response.data)
-      .then(data => data);
+      .then(response => response.data);
+  }
+
+  static getUserInfo() {
+    const url = Urls['api-users:user-details']();
+    return pokeWrapper.get(url)
+      .then(response => response.data);
   }
 }
