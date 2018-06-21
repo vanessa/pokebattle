@@ -101,9 +101,9 @@ function PokemonInfo(props) {
 }
 
 function TeamDetails(props) {
-  const battleFinished = props.battleStatus === 'F';
-  const { team } = props;
-
+  const { battle } = props;
+  const battleFinished = battle.status === 'F';
+  // TODO: Check if the user has built their team
   if (!battleFinished) {
     return <PokemonInfoPlaceholder />;
   }
@@ -127,6 +127,12 @@ class BattleDetails extends React.Component {
           battle,
         });
       });
+    Api.getUserInfo()
+      .then((user) => {
+        this.setState({
+          user,
+        });
+      });
   }
 
   getWinnerPosition() {
@@ -139,7 +145,7 @@ class BattleDetails extends React.Component {
 
 
   render() {
-    const { battle } = this.state;
+    const { battle, user } = this.state;
 
     if (battle) {
       const creatorTeam = battle.creator.pokemons;
@@ -155,7 +161,7 @@ class BattleDetails extends React.Component {
               style={{ textAlign: 'center', display: 'block' }}
               href={window.Urls['battles:team'](battleId)}
             >
-              Choose team
+              Build team
             </a>
           }
           {battle.winner &&
@@ -168,20 +174,20 @@ class BattleDetails extends React.Component {
           >
             {!creatorTeam
               ? <PokemonLoading
-                content={`Waiting for ${battle.creator.username} to choose their team`}
+                content={`Waiting for ${battle.creator.username === user.username ? 'you' : battle.creator.username} to build the team`}
               />
               : <TeamDetails
-                battleStatus={battle.status}
-                team={creatorTeam}
+                battle={battle}
+                user={user}
               />
             }
             {!opponentTeam
               ? <PokemonLoading
-                content={`Waiting for ${battle.opponent.username} to choose their team`}
+                content={`Waiting for ${battle.opponent.username === user.username ? 'you' : battle.opponent.username} to build the team`}
               />
               : <TeamDetails
-                battleStatus={battle.status}
-                team={opponentTeam}
+                battle={battle}
+                user={user}
               />
             }
           </div>
@@ -204,34 +210,34 @@ PokemonLoading.propTypes = {
   content: PropTypes.string.isRequired,
 };
 
-TeamDetails.propTypes = {
-  team: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    creator: PropTypes.shape({
-      username: PropTypes.string.isRequired,
-      pokemons: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.number,
-        name: PropTypes.string,
-        sprite: PropTypes.string,
-        attack: PropTypes.number,
-        defense: PropTypes.number,
-        hp: PropTypes.number,
-      })),
-    }),
-    opponent: PropTypes.shape({
-      username: PropTypes.string.isRequired,
-      pokemons: PropTypes.arrayOf(PropTypes.shape({
-        id: PropTypes.number,
-        name: PropTypes.string,
-        sprite: PropTypes.string,
-        attack: PropTypes.number,
-        defense: PropTypes.number,
-        hp: PropTypes.number,
-      })),
-    }),
-  })).isRequired,
-  battleStatus: PropTypes.string.isRequired,
-};
+// TeamDetails.propTypes = {
+//   team: PropTypes.arrayOf(PropTypes.shape({
+//     id: PropTypes.number.isRequired,
+//     creator: PropTypes.shape({
+//       username: PropTypes.string.isRequired,
+//       pokemons: PropTypes.arrayOf(PropTypes.shape({
+//         id: PropTypes.number,
+//         name: PropTypes.string,
+//         sprite: PropTypes.string,
+//         attack: PropTypes.number,
+//         defense: PropTypes.number,
+//         hp: PropTypes.number,
+//       })),
+//     }),
+//     opponent: PropTypes.shape({
+//       username: PropTypes.string.isRequired,
+//       pokemons: PropTypes.arrayOf(PropTypes.shape({
+//         id: PropTypes.number,
+//         name: PropTypes.string,
+//         sprite: PropTypes.string,
+//         attack: PropTypes.number,
+//         defense: PropTypes.number,
+//         hp: PropTypes.number,
+//       })),
+//     }),
+//   })).isRequired,
+//   battleStatus: PropTypes.string.isRequired,
+// };
 
 PokemonInfo.propTypes = {
   team: PropTypes.arrayOf(PropTypes.shape({
