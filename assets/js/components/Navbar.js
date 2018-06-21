@@ -1,14 +1,27 @@
 import React from 'react';
 import Urls from '../utils/urls';
-// import { NavLink } from 'react-router-dom';
-// import Api from '../utils/api';
+import Api from '../utils/api';
 
 class Navbar extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      username: '',
+    };
+  }
+
   componentDidMount() {
-    //
+    Api.getUserInfo()
+      .then((response) => {
+        this.setState({
+          username: response.username,
+        });
+      });
   }
 
   render() {
+    const { username } = this.state;
+
     return (
       <div className="navbar">
         <div className="header">
@@ -24,6 +37,10 @@ class Navbar extends React.Component {
           <a href={Urls['battles:invite']()}>
             Invite someone
           </a>
+          <span>
+            {username &&
+              `Hello, ${username}!`}
+          </span>
           <a href={Urls['auth:logout']()}>
             Logout
           </a>
