@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Navbar from './components/Navbar';
-import BattleDetails from './pages/BattleDetails';
+import { BattleDetails } from './pages/BattleDetails';
 
 function App() {
   return (

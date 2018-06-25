@@ -212,7 +212,7 @@ PokemonLoading.propTypes = {
 };
 
 TeamDetails.propTypes = {
-  battle: PropTypes.arrayOf(PropTypes.shape({
+  battle: PropTypes.shape({
     id: PropTypes.number.isRequired,
     creator: PropTypes.shape({
       username: PropTypes.string.isRequired,
@@ -236,15 +236,15 @@ TeamDetails.propTypes = {
         hp: PropTypes.number,
       })),
     }),
-  })).isRequired,
-  user: PropTypes.arrayOf(PropTypes.shape({
+  }).isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.number,
+    username: PropTypes.string.isRequired,
+  }).isRequired,
+  currentUser: PropTypes.shape({
     id: PropTypes.number.isRequired,
     username: PropTypes.string.isRequired,
-  })).isRequired,
-  currentUser: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    username: PropTypes.string.isRequired,
-  })).isRequired,
+  }).isRequired,
 };
 
 PokemonInfo.propTypes = {
