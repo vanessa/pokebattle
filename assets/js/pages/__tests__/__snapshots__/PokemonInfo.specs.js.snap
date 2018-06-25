@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`PokemonInfo renders 1`] = `
+<div
+  className="team-column"
+>
+  <div
+    className="sc-ifAKCX gKzMIj"
+  >
+    <img
+      className="sc-bZQynM jwmuud"
+      src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png"
+    />
+    <div
+      className="sc-EHOje jmSCZW"
+    >
+      Test Pokemon
+    </div>
+    <ul
+      className="sc-gzVnrw wtYmY"
+    >
+      <li>
+        Attack: 
+        2
+      </li>
+      <li>
+        Defense: 
+        2
+      </li>
+      <li>
+        HP: 
+        2
+      </li>
+    </ul>
+  </div>
+</div>
+`;

@@ -275,4 +275,7 @@ PokemonInfo.propTypes = {
   })).isRequired,
 };
 
-export default BattleDetails;
+export {
+  BattleDetails,
+  PokemonInfo,
+};
