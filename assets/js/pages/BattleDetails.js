@@ -103,8 +103,7 @@ function PokemonInfo(props) {
 
 function TeamDetails(props) {
   const { battle, user, currentUser } = props;
-  const battleFinished = battle.status === 'F';
-  if (!battleFinished && !BattleHelpers.userHasChosenTeam(battle, currentUser)) {
+  if (!BattleHelpers.userHasChosenTeam(battle, currentUser)) {
     return <PokemonInfoPlaceholder />;
   }
   return <PokemonInfo team={BattleHelpers.getUserTeam(battle, user)} />;
@@ -156,7 +155,7 @@ class BattleDetails extends React.Component {
         <Container>
           <Title>Battle details</Title>
           <BattleTitle>{battle.creator.username} vs. {battle.opponent.username}</BattleTitle>
-          {!battle.winner &&
+          {!BattleHelpers.userHasChosenTeam(battle, user) &&
             <a
               style={{ textAlign: 'center', display: 'block' }}
               href={window.Urls['battles:team'](battleId)}
