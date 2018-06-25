@@ -1,7 +1,11 @@
-// const userHasChosenTeam = (battle) => {
-//
-// }
+export default class BattleHelpers {
+  static userHasChosenTeam(battle, user) {
+    const creatorOrOpponent = battle.creator.username === user.username ? 'creator' : 'opponent';
+    return Array.isArray(battle[creatorOrOpponent].pokemons);
+  }
 
-// export {
-//   userHasChosenTeam,
-// }
+  static getUserTeam(battle, user) {
+    const creatorOrOpponent = battle.creator.username === user.username ? 'creator' : 'opponent';
+    return battle[creatorOrOpponent].pokemons;
+  }
+}

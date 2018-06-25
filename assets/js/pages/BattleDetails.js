@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import '../../css/transitions.css';
 import Loading from '../components/Loading';
 import Api from '../utils/api';
+import BattleHelpers from '../utils/battle';
 
 const Title = styled.h1`
     text-align: center;
@@ -101,13 +102,12 @@ function PokemonInfo(props) {
 }
 
 function TeamDetails(props) {
-  const { battle } = props;
+  const { battle, user, currentUser } = props;
   const battleFinished = battle.status === 'F';
-  // TODO: Check if the user has built their team
-  if (!battleFinished) {
+  if (!battleFinished && !BattleHelpers.userHasChosenTeam(battle, currentUser)) {
     return <PokemonInfoPlaceholder />;
   }
-  return <PokemonInfo team={team} />;
+  return <PokemonInfo team={BattleHelpers.getUserTeam(battle, user)} />;
 }
 
 class BattleDetails extends React.Component {
@@ -178,7 +178,8 @@ class BattleDetails extends React.Component {
               />
               : <TeamDetails
                 battle={battle}
-                user={user}
+                user={battle.creator}
+                currentUser={user}
               />
             }
             {!opponentTeam
@@ -187,7 +188,8 @@ class BattleDetails extends React.Component {
               />
               : <TeamDetails
                 battle={battle}
-                user={user}
+                user={battle.opponent}
+                currentUser={user}
               />
             }
           </div>
@@ -210,34 +212,41 @@ PokemonLoading.propTypes = {
   content: PropTypes.string.isRequired,
 };
 
-// TeamDetails.propTypes = {
-//   team: PropTypes.arrayOf(PropTypes.shape({
-//     id: PropTypes.number.isRequired,
-//     creator: PropTypes.shape({
-//       username: PropTypes.string.isRequired,
-//       pokemons: PropTypes.arrayOf(PropTypes.shape({
-//         id: PropTypes.number,
-//         name: PropTypes.string,
-//         sprite: PropTypes.string,
-//         attack: PropTypes.number,
-//         defense: PropTypes.number,
-//         hp: PropTypes.number,
-//       })),
-//     }),
-//     opponent: PropTypes.shape({
-//       username: PropTypes.string.isRequired,
-//       pokemons: PropTypes.arrayOf(PropTypes.shape({
-//         id: PropTypes.number,
-//         name: PropTypes.string,
-//         sprite: PropTypes.string,
-//         attack: PropTypes.number,
-//         defense: PropTypes.number,
-//         hp: PropTypes.number,
-//       })),
-//     }),
-//   })).isRequired,
-//   battleStatus: PropTypes.string.isRequired,
-// };
+TeamDetails.propTypes = {
+  battle: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    creator: PropTypes.shape({
+      username: PropTypes.string.isRequired,
+      pokemons: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number,
+        name: PropTypes.string,
+        sprite: PropTypes.string,
+        attack: PropTypes.number,
+        defense: PropTypes.number,
+        hp: PropTypes.number,
+      })),
+    }),
+    opponent: PropTypes.shape({
+      username: PropTypes.string.isRequired,
+      pokemons: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number,
+        name: PropTypes.string,
+        sprite: PropTypes.string,
+        attack: PropTypes.number,
+        defense: PropTypes.number,
+        hp: PropTypes.number,
+      })),
+    }),
+  })).isRequired,
+  user: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    username: PropTypes.string.isRequired,
+  })).isRequired,
+  currentUser: PropTypes.arrayOf(PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    username: PropTypes.string.isRequired,
+  })).isRequired,
+};
 
 PokemonInfo.propTypes = {
   team: PropTypes.arrayOf(PropTypes.shape({
