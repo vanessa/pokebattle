@@ -10,8 +10,12 @@ class TestBattleDetailsEndpoint(TestCaseUtils):
     def test_fetch_correct_battle(self):
         battle = mommy.make('battles.Battle', creator=self.user)
         view_url = reverse('api-battles:battle-details', args=[battle.pk])
-        response = self.auth_client.get(view_url)
-        data = response.json()
+        # Adding session_key as a query param because of IsSessionAuthenticated permission
+        session_key = self.auth_client.cookies['sessionid'].value
+        response = self.auth_client.get('{url}?session={key}'.format(
+            url=view_url, key=session_key)
+        )
+        data = response.data
 
         self.assertEqual(data['creator']['username'], battle.creator.get_short_name())
         self.assertEqual(data['id'], battle.id)
@@ -23,4 +27,4 @@ class TestBattleDetailsEndpoint(TestCaseUtils):
         view_url = reverse('api-battles:battle-details', args=[battle.pk])
         response = self.client.get(view_url)
 
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
