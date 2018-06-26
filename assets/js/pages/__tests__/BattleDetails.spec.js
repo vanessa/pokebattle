@@ -98,4 +98,26 @@ describe('BattleDetails', () => {
     Component.setState(params);
     expect(Component.find('#buildTeamLink')).toHaveLength(0);
   });
+
+  test('if opponent has built their team, battle creator cannot see it until they have built too', () => {
+    const params = {
+      battle: battleMock,
+      user: {
+        username: 'vanessa.freitasb',
+        id: 1,
+      },
+    };
+    Component = mount((
+      <BattleDetails
+        match={{
+          params: {
+            pk: '1',
+          },
+        }}
+      />
+    ));
+    Component.setState(params);
+    expect(Component.find('.pokemon-card.inactive')).toHaveLength(3);
+    expect(Component.find('.placeholder-card')).toHaveLength(1);
+  });
 });
