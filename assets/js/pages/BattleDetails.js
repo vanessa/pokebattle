@@ -160,6 +160,7 @@ class BattleDetails extends React.Component {
             <a
               style={{ textAlign: 'center', display: 'block' }}
               href={Urls['battles:team'](battleId)}
+              id="buildTeamLink"
             >
               Build team
             </a>
