@@ -5,6 +5,7 @@ import '../../css/transitions.css';
 import Loading from '../components/Loading';
 import Api from '../utils/api';
 import BattleHelpers from '../utils/battle';
+import Urls from '../utils/urls';
 
 const Title = styled.h1`
     text-align: center;
@@ -158,7 +159,7 @@ class BattleDetails extends React.Component {
           {!BattleHelpers.userHasChosenTeam(battle, user) &&
             <a
               style={{ textAlign: 'center', display: 'block' }}
-              href={window.Urls['battles:team'](battleId)}
+              href={Urls['battles:team'](battleId)}
             >
               Build team
             </a>

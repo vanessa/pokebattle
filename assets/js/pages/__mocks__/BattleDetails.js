@@ -1,74 +1,40 @@
 const battleMock = {
-  pk: 2,
-  creator: 'Vanessa',
-  opponent: 'Amanda',
-  winner: 'Vanessa',
+  id: 14,
+  creator: {
+    pokemons: [
+      {
+        id: 1,
+        name: 'bulbasaur',
+        sprite: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png',
+        attack: 49,
+        defense: 49,
+        hp: 45,
+      },
+      {
+        id: 2,
+        name: 'ivysaur',
+        sprite: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png',
+        attack: 62,
+        defense: 63,
+        hp: 60,
+      },
+      {
+        id: 5,
+        name: 'charmeleon',
+        sprite: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/5.png',
+        attack: 64,
+        defense: 58,
+        hp: 58,
+      },
+    ],
+    username: 'vanessa',
+  },
+  opponent: {
+    username: 'vanessa.freitasb',
+  },
+  winner: null,
+  date_created: '2018-06-14T22:49:10.648928Z',
+  status: 'O',
 };
 
-const creatorPokemonTeam = {
-  battle_related: 'Vanessa vs. Amanda',
-  trainer: 'Vanessa',
-  pokemons: [
-    {
-      pk: 517,
-      name: 'munna',
-      sprite: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/517.png',
-      attack: 55,
-      defense: 45,
-      hp: 76,
-    },
-    {
-      pk: 1,
-      name: 'bulbasaur',
-      sprite: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png',
-      attack: 49,
-      defense: 49,
-      hp: 45,
-    },
-    {
-      pk: 4,
-      name: 'charmander',
-      sprite: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/4.png',
-      attack: 52,
-      defense: 43,
-      hp: 39,
-    },
-  ],
-};
-
-const opponentPokemonTeam = {
-  battle_related: 'Vanessa vs. Amanda',
-  trainer: 'Amanda',
-  pokemons: [
-    {
-      pk: 506,
-      name: 'lillipup',
-      sprite: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/506.png',
-      attack: 25,
-      defense: 45,
-      hp: 76,
-    },
-    {
-      pk: 516,
-      name: 'simipour',
-      sprite: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/516.png',
-      attack: 98,
-      defense: 63,
-      hp: 75,
-    },
-    {
-      pk: 312,
-      name: 'minun',
-      sprite: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/312.png',
-      attack: 40,
-      defense: 50,
-      hp: 60,
-    },
-  ],
-};
-
-export {
-  battleMock,
-  creatorPokemonTeam,
-  opponentPokemonTeam,
-};
+export default battleMock;

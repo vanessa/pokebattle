@@ -36,7 +36,8 @@
       "assets",
       "assets/js",
       "assets/js/app"
-    ]
+    ],
+    "setupTestFrameworkScriptFile": "./assets/js/setupTests.js"
   },
   "dependencies": {
     "ajv": "^6.5.1",
@@ -80,10 +81,11 @@
     "webpack-bundle-tracker": "^0.2.0",
     "webpack-dev-server": "^2.5.0",
     "webpack-spritesmith": "^0.3.3",
-    "whatwg-fetch": "^2.0.4"
+    "whatwg-fetch": "^2.0.4",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-15": "^1.0.5"
   },
   "devDependencies": {
-    "enzyme": "^3.3.0",
     "eslint": "^3.19.0",
     "eslint-config-airbnb": "^15.0.1",
     "eslint-import-resolver-webpack": "^0.8.3",
