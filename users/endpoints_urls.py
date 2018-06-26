@@ -4,5 +4,5 @@ from users.endpoints import UserDetailsEndpoint
 
 
 urlpatterns = [
-    url(r'^user-details$', UserDetailsEndpoint.as_view(), name='user-details')
+    url(r'^users/(?P<pk>[\w-]+)$', UserDetailsEndpoint.as_view(), name='user-details')
 ]
