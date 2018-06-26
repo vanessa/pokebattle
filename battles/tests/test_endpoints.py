@@ -16,7 +16,6 @@ class TestBattleDetailsEndpoint(TestCaseUtils):
             url=view_url, key=session_key)
         )
         data = response.data
-
         self.assertEqual(data['creator']['username'], battle.creator.get_short_name())
         self.assertEqual(data['id'], battle.id)
         self.assertEqual(data['status'], battle.status)
@@ -26,5 +25,4 @@ class TestBattleDetailsEndpoint(TestCaseUtils):
         battle = mommy.make('battles.Battle')
         view_url = reverse('api-battles:battle-details', args=[battle.pk])
         response = self.client.get(view_url)
-
-        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertResponse403(response)
