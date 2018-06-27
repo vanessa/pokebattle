@@ -58,7 +58,6 @@ INSTALLED_APPS = [
     'celerybeat_status',
     'social_django',
     'rest_framework',
-    'rest_framework.authtoken',
 
     'common',
     'users',

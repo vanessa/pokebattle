@@ -10,11 +10,7 @@ class TestBattleDetailsEndpoint(TestCaseUtils):
     def test_fetch_correct_battle(self):
         battle = mommy.make('battles.Battle', creator=self.user)
         view_url = reverse('api-battles:battle-details', args=[battle.pk])
-        # Adding session_key as a query param because of IsSessionAuthenticated permission
-        session_key = self.auth_client.cookies['sessionid'].value
-        response = self.auth_client.get('{url}?session={key}'.format(
-            url=view_url, key=session_key)
-        )
+        response = self.auth_client.get(view_url)
         data = response.data
         self.assertEqual(data['creator']['username'], battle.creator.get_short_name())
         self.assertEqual(data['id'], battle.id)

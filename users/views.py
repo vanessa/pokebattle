@@ -5,8 +5,6 @@ from django.http.response import HttpResponseRedirect
 from django.urls import reverse, reverse_lazy
 from django.views import generic
 
-from rest_framework.authtoken.models import Token
-
 from battles.models import Battle, Invite
 
 from .forms import UserSignupForm
@@ -56,8 +54,6 @@ class UserInvitedProcessView(generic.RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         invite_key = self.request.session.get('invite_key')
         user = self.request.user
-        # Create the token for DRF TokenAuthentication
-        Token.objects.create(user=user)
 
         if not invite_key:
             return super().get_redirect_url(*args, **kwargs)
