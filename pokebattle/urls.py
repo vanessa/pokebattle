@@ -15,13 +15,14 @@ urlpatterns = [
     url(r'^social/', include('social_django.urls', namespace='social')),
 
     # Pokebattle
-
     url(r'^', include('users.urls', namespace='auth')),
     url(r'^$', TemplateView.as_view(template_name='common/index.html'), name='home'),
     url(r'^battles/', include('battles.urls', namespace='battles')),
 
-    # api
+    # API
     url(r'^api/pokemon/$', PokemonListAPIView.as_view(), name='api-pokemon-list'),
+    url(r'api/', include('battles.endpoints_urls', namespace='api-battles')),
+    url(r'api/', include('users.endpoints_urls', namespace='api-users')),
 ]
 
 if settings.DEBUG:

@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'templated_email',
     'celerybeat_status',
     'social_django',
+    'rest_framework',
 
     'common',
     'users',
@@ -76,6 +77,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'pokebattle.urls'
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.cookie.CookieStorage'
 
 TEMPLATES = [
     {
@@ -126,6 +129,13 @@ STATICFILES_DIRS = (
     base_dir_join('assets'),
 )
 
+# Django Rest Framework
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+    )
+}
+
 # social-auth
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.google.GoogleOAuth2',
@@ -167,3 +177,6 @@ WEBPACK_LOADER = {
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.signed_cookies'
+SESSION_COOKIE_HTTPONLY = False

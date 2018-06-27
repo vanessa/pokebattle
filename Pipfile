@@ -16,6 +16,7 @@ pre-commit = "*"
 prospector = {git = "https://github.com/vintasoftware/prospector.git", ref="0a63f2b", extras = ["with-vulture"]}
 pylint = "*"
 safety = "*"
+pylint-django = "*"
 
 [packages]
 django = ">=1.11,<2"
@@ -43,6 +44,9 @@ django-autocomplete-light = "*"
 responses = "*"
 django-celerybeat-status = "*"
 django-extensions = "*"
+djangorestframework = "*"
+markdown = "*"
+django-filter = "*"
 
 [requires]
 python_version = "3.6"

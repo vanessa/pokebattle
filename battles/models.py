@@ -26,9 +26,9 @@ class Battle(models.Model):
 
 
 class BattleTeam(models.Model):
-    battle_related = models.ForeignKey(Battle, related_name='chosen_pokemons')
+    battle_related = models.ForeignKey(Battle, related_name='team')
     pokemons = models.ManyToManyField(Pokemon, related_name='battle_team')
-    trainer = models.ForeignKey(User, related_name='trainer')
+    trainer = models.ForeignKey(User, related_name='battle_team')
 
     class Meta:
         ordering = ['battle_related']

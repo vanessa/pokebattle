@@ -52,7 +52,8 @@ class CreateBattleView(LoginRequiredMixin, generic.CreateView):
 
 class BattleView(LoginRequiredMixin, UserIsPartOfBattleMixin, generic.DetailView):
     model = Battle
-    template_name = 'battles/battle.html'
+    # template_name = 'battles/battle.html'
+    template_name = 'battles/battle_react.html'
     context_object_name = 'battle'
 
     def get_context_data(self, **kwargs):

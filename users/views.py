@@ -53,11 +53,11 @@ class UserInvitedProcessView(generic.RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
         invite_key = self.request.session.get('invite_key')
+        user = self.request.user
 
         if not invite_key:
             return super().get_redirect_url(*args, **kwargs)
 
-        user = self.request.user
         invite = Invite.objects.get(invitee=user.email, key=invite_key)
         battle = Battle.objects.get(creator=invite.inviter, opponent=user)
         messages.success(

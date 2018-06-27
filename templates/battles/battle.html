@@ -4,35 +4,35 @@
 {% block title %}PokeBattle &middot; {{ battle.creator.get_short_name }} vs. {{ battle.opponent.get_short_name }}{% endblock %}
 
 {% block body %}
-    <div class="pokebattle-container battle">
-        {% include 'battles/includes/battle_status.html' %}
-        <h2><span class="battle-id">{{ battle.id }}</span> {{ battle.creator.get_short_name }} vs. {{ battle.opponent.get_short_name }}</h2>
-        {% if battle.winner %}    
-        <div class="battle-result-label{% if battle.winner == request.user %} user-won{% endif %}">
-            <strong>{{ battle.winner.get_short_name }}</strong> won!
-        </div>
-        {% endif %}
-        {% include 'common/generic_message.html' %}
-        <section class="pick-team">
-            {% if not user_has_chosen_a_team %}
-                <a href="{% url 'battles:team' battle.pk %}">Pick my team</a>
-            {% endif %}
-        </section>
-        <section class="battle-pokemons">
-            <div class="column creators-pokemons">
-            {% if creators_pokemons %}
-                {% for pokemon in creators_pokemons %}
-                    {% include 'battles/includes/pokemon_card.html' %}
-                {% endfor %}
-            {% endif %}
-            </div>
-            <div class="column opponents-pokemons">
-            {% if opponents_pokemons %}
-                {% for pokemon in opponents_pokemons %}
-                    {% include 'battles/includes/pokemon_card.html' %}
-                {% endfor %}
-            {% endif %}
-            </div>
-        </section>
+<div class="pokebattle-container battle">
+    {% include 'battles/includes/battle_status.html' %}
+    <h2><span class="battle-id">{{ battle.id }}</span> {{ battle.creator.get_short_name }} vs. {{ battle.opponent.get_short_name }}</h2>
+    {% if battle.winner %}    
+    <div class="battle-result-label{% if battle.winner == request.user %} user-won{% endif %}">
+        <strong>{{ battle.winner.get_short_name }}</strong> won!
     </div>
+    {% endif %}
+    {% include 'common/generic_message.html' %}
+    <section class="pick-team">
+        {% if not user_has_chosen_a_team %}
+            <a href="{% url 'battles:team' battle.pk %}">Pick my team</a>
+        {% endif %}
+    </section>
+    <section class="battle-pokemons">
+        <div class="column creators-pokemons">
+        {% if creators_pokemons %}
+            {% for pokemon in creators_pokemons %}
+                {% include 'battles/includes/pokemon_card.html' %}
+            {% endfor %}
+        {% endif %}
+        </div>
+        <div class="column opponents-pokemons">
+        {% if opponents_pokemons %}
+            {% for pokemon in opponents_pokemons %}
+                {% include 'battles/includes/pokemon_card.html' %}
+            {% endfor %}
+        {% endif %}
+        </div>
+    </section>
+</div>
 {% endblock %}

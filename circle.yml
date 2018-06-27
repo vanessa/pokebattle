@@ -30,7 +30,6 @@ test:
     - pipenv run prospector
     # security checks
     - pipenv run bandit -r .
-    - pipenv install pip==9.0.3
     - pipenv check
     # imports check
     - pipenv run isort **/*.py --check-only
@@ -52,4 +51,3 @@ test:
     - npm run test
   post:
     - pipenv run coverage html -d $CIRCLE_ARTIFACTS
-    
