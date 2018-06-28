@@ -1,4 +1,5 @@
 import React from 'react';
+import { NavLink } from 'react-router-dom';
 import Urls from '../utils/urls';
 import Api from '../utils/api';
 
@@ -28,12 +29,16 @@ class Navbar extends React.Component {
           <a href={Urls.home()}>PokeBattle</a>
         </div>
         <div className="menu">
-          <a href={Urls['battles:list']()}>
+          <NavLink
+            to={Urls['battles:list']()}
+          >
             My battles
-          </a>
-          <a href={Urls['battles:create-battle']()}>
-            Battle
-          </a>
+          </NavLink>
+          <NavLink
+            to={Urls['battles:create-battle']()}
+          >
+            Create a battle
+          </NavLink>
           <a href={Urls['battles:invite']()}>
             Invite someone
           </a>
