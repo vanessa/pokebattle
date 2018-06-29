@@ -60,9 +60,20 @@ const WinnerContainer = styled.div`
 `;
 
 function PokemonLoading(props) {
+  const { currentUserActive, battleId, content } = props;
+  if (currentUserActive) {
+    return (
+      <a href={Urls['battles:team'](battleId)} className="active-build-team">
+        <div className="placeholder-card">
+          {content}
+        </div>
+      </a>
+    );
+  }
+
   return (
     <div className="placeholder-card">
-      {props.content}
+      {content}
     </div>
   );
 }
@@ -157,15 +168,6 @@ class BattleDetails extends React.Component {
         <Container>
           <Title>Battle details</Title>
           <BattleTitle>{battle.creator.username} vs. {battle.opponent.username}</BattleTitle>
-          {!BattleHelpers.userHasChosenTeam(battle, user) &&
-            <a
-              style={{ textAlign: 'center', display: 'block' }}
-              href={Urls['battles:team'](battleId)}
-              id="buildTeamLink"
-            >
-              Build team
-            </a>
-          }
           {battle.winner &&
             <WinnerContainer>
               <div className="battle-winner-label">The winner is {battle.winner}</div>
@@ -176,6 +178,8 @@ class BattleDetails extends React.Component {
           >
             {!creatorTeam
               ? <PokemonLoading
+                battleId={battleId}
+                currentUserActive={battle.creator.username === user.username}
                 content={`Waiting for ${battle.creator.username === user.username ? 'you' : battle.creator.username} to build the team`}
               />
               : <TeamDetails
@@ -186,6 +190,8 @@ class BattleDetails extends React.Component {
             }
             {!opponentTeam
               ? <PokemonLoading
+                battleId={battleId}
+                currentUserActive={battle.opponent.username === user.username}
                 content={`Waiting for ${battle.opponent.username === user.username ? 'you' : battle.opponent.username} to build the team`}
               />
               : <TeamDetails
@@ -219,6 +225,8 @@ BattleDetails.defaultProps = {
 
 PokemonLoading.propTypes = {
   content: PropTypes.string.isRequired,
+  battleId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+  currentUserActive: PropTypes.bool.isRequired,
 };
 
 TeamDetails.propTypes = {

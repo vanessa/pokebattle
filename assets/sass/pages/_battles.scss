@@ -211,7 +211,7 @@
   padding: 15px;
   color: #333;
   font-weight: bold;
-  background: lighten(#ccc, 8%);
+  border: 2px dashed lighten(#ccc, 8%);
   border-radius: 5px;
   display: flex;
   justify-content: center;
@@ -219,6 +219,26 @@
   @include animation-opacity-pulse;
   margin: 0 15px;
   text-align: center;
+}
+
+.active-build-team {
+  $color: darken(#f0f0f0, 5%);
+  .placeholder-card {
+    animation: unset;
+    background: $color;
+    color: #333;
+    transition: all .1s ease-in-out;
+    border: 2px dashed darken($color, 10%);
+  }
+
+  &:hover {
+    text-decoration: none;
+
+    .placeholder-card {
+      transform: translateY(-2px);
+      background: lighten($color, 4%);
+    }
+  }
 }
 
 .battle-row {
