@@ -75,7 +75,7 @@ describe('BattleDetails', () => {
       />
     ));
     Component.setState(params);
-    expect(Component.find('#buildTeamLink')).toHaveLength(1);
+    expect(Component.find('.active-build-team')).toHaveLength(1);
   });
 
   test('if user has built their team, "Build team" link will be hidden', () => {
@@ -96,7 +96,7 @@ describe('BattleDetails', () => {
       />
     ));
     Component.setState(params);
-    expect(Component.find('#buildTeamLink')).toHaveLength(0);
+    expect(Component.find('.active-build-team')).toHaveLength(0);
   });
 
   test('if opponent has built their team, battle creator cannot see it until they have built too', () => {
