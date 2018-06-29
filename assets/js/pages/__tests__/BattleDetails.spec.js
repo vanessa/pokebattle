@@ -35,6 +35,7 @@ describe('BattleDetails', () => {
     expect(Component.props().battle[1].winner).toBeNull();
     expect(Component.contains('WinnerContainer')).toBeFalsy();
     expect(Component.find('.battle-winner-label')).toHaveLength(0);
+    expect(Component.find('#buildTeamLink')).toHaveLength(1);
   });
 
   test('finished battle shows the winner label', () => {

@@ -1,5 +1,5 @@
 const battleMock = {
-  id: 14,
+  id: 1,
   creator: {
     pokemons: [
       {
