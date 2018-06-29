@@ -215,7 +215,10 @@ BattleDetails.propTypes = {
     }),
   }).isRequired,
   loadBattle: PropTypes.func.isRequired,
-  battle: PropTypes.any.isRequired,  // eslint-disable-line
+  battle: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+  ]).isRequired,
 };
 
 BattleDetails.defaultProps = {
