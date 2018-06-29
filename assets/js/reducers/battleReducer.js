@@ -7,9 +7,7 @@ const battle = (state = [], action) => {
     case BATTLE_SET_DETAILS:
       return {
         ...state,
-        battles: [
-          action.battle,
-        ],
+        [action.battle.id]: action.battle,
       };
     default:
       return state;

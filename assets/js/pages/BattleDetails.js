@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { battleSetDetails } from '../actions';
+import battleSetDetails from '../actions';
 import '../../css/transitions.css';
 import Loading from '../components/Loading';
 import Api from '../utils/api';
@@ -115,14 +115,13 @@ function TeamDetails(props) {
 class BattleDetails extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      battle: null,
+      battleId: props.match.params.pk,
     };
   }
 
   componentDidMount() {
-    const battleId = this.props.match.params.pk;
+    const { battleId } = this.state;
     Api.getBattleDetails(battleId)
       .then((battle) => {
         this.props.loadBattle(battle);
@@ -136,7 +135,9 @@ class BattleDetails extends React.Component {
   }
 
   getWinnerPosition() {
-    const battle = this.state.battle;
+    const { battleId } = this.state;
+    const battle = this.props.battle[battleId];
+
     if (!battle.winner) {
       return null;
     }
@@ -145,12 +146,12 @@ class BattleDetails extends React.Component {
 
 
   render() {
-    const { battle, user } = this.state;
+    const { user, battleId } = this.state;
+    const battle = this.props.battle[battleId];
 
     if (battle) {
       const creatorTeam = battle.creator.pokemons;
       const opponentTeam = battle.opponent.pokemons;
-      const battleId = this.props.match.params.pk;
 
       return (
         <Container>
@@ -208,6 +209,11 @@ BattleDetails.propTypes = {
     }),
   }).isRequired,
   loadBattle: PropTypes.func.isRequired,
+  battle: PropTypes.node,
+};
+
+BattleDetails.defaultProps = {
+  battle: '',
 };
 
 PokemonLoading.propTypes = {
@@ -283,12 +289,12 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = state => ({
-  battle: state.battles[0],
+  battle: state.battle,
 });
 
 export default connect(
-  mapDispatchToProps,
   mapStateToProps,
+  mapDispatchToProps,
 )(BattleDetails);
 
 export {

@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux';
-import battle from './battle';
+import battle from './battleReducer';
 
 const pokebattleReducer = combineReducers({
   battle,

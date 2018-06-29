@@ -7,6 +7,4 @@ const battleSetDetails = battle => ({
   battle,
 });
 
-export default {
-  battleSetDetails,
-};
+export default battleSetDetails;
