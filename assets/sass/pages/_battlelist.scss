@@ -117,3 +117,11 @@
   padding: 10px;
   box-shadow: 0 4px 15px transparentize(#000, .9);
 }
+
+.battles-grid-column .battle-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 10px 0;
+  padding: 5px;
+}

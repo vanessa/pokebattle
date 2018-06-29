@@ -1,12 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
+import battleList from '../mocks/battlesMocks';
+import Urls from '../utils/urls';
+
+const BattleLabel = ({ status }) => <div className="battle-label">{status}</div>;
 
 const BattlesColumn = ({ title }) => (
   <div className="battles-grid-column">
     <h3>{title}</h3>
     <div className="battle-list">
       {
-        [1, 2, 3, 4].map(battle => <div key={battle}>{battle}</div>)
+        battleList.map(battle => (
+          <Link
+            key={battle.id}
+            to={Urls['battles:details'](battle.id)}
+            className="battle-item"
+          >
+            <div className="battle-id">{battle.id}</div>
+            {battle.creator.username} vs {battle.opponent.username}
+            <BattleLabel status={battle.status} />
+          </Link>
+        ),
+        )
       }
     </div>
   </div>
@@ -32,6 +48,10 @@ BattlesColumn.propTypes = {
 
 BattlesColumn.defaultProps = {
   title: '',
+};
+
+BattleLabel.propTypes = {
+  status: PropTypes.string.isRequired,
 };
 
 export default BattleList;

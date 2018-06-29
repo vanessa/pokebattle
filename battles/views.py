@@ -18,8 +18,12 @@ from .forms import ChooseTeamForm, CreateBattleForm, InviteForm
 from .models import Battle, BattleTeam
 
 
+# TODO: Remove these old not-React templates
+
+
 class BattlesListView(LoginRequiredMixin, generic.ListView):
-    template_name = 'battles/battles_list.html'
+    # template_name = 'battles/battles_list.html'
+    template_name = 'battles/battles_list_react.html'
     context_object_name = 'battles_created'
 
     def get_queryset(self):
