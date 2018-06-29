@@ -209,11 +209,12 @@ BattleDetails.propTypes = {
     }),
   }).isRequired,
   loadBattle: PropTypes.func.isRequired,
-  battle: PropTypes.node,
+  battle: PropTypes.any.isRequired,  // eslint-disable-line
 };
 
 BattleDetails.defaultProps = {
-  battle: '',
+  battle: {},
+  loadBattle: () => {},
 };
 
 PokemonLoading.propTypes = {
@@ -298,5 +299,6 @@ export default connect(
 )(BattleDetails);
 
 export {
+  BattleDetails as NotConnectedBattleDetails,
   PokemonInfo,
 };
