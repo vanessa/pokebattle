@@ -88,3 +88,32 @@
         grid-gap: 10px;
     }
 }
+
+// post-react
+// TODO: organize this!
+
+.battle-list-container {
+  text-align: center;
+  padding: 20px;
+  width: 950px;
+  margin: 0 auto;
+}
+
+// "My battles" header
+.battle-list-container > h2 {
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.battles-grid {
+  display: grid;
+  grid-gap: 50px;
+  grid-template-columns: 1fr 1fr;
+}
+
+.battles-grid .battles-grid-column {
+  background: #fff;
+  border-radius: 5px;
+  padding: 10px;
+  box-shadow: 0 4px 15px transparentize(#000, .9);
+}
