@@ -249,23 +249,104 @@
 }
 
 .battle-row.creator {
+  .team-column {
+    margin-right: 15px;
+  }
+
   // The battle creator will always be in the first column
   .team-column:first-of-type > div {
-    background: mix(#fff, palegreen, 40%);
+    background: #fff; // remove this later!
   }
 }
 
 .battle-winner-label {
-  background: limegreen;
+  @include pg-green-gradient;
   display: inline-block;
   margin: 10px auto;
-  padding: 3px 10px;
+  padding: 10px 20px;
   color: #fff;
-  border-radius: 5px;
-  font-weight: bold;
+  border-radius: 100px;
+  letter-spacing: 1px;
 }
 
 .pokemon-card {
   background-color: #fff;
   box-shadow: 0 0 transparent;
+}
+
+.battle-details-container {
+  padding: 15px;
+  background: #fff;
+  margin: 0 auto;
+  width: 850px;
+  border-radius: 5px;
+  box-shadow: 0 5px 20px transparentize($black, .8);
+}
+
+.battle-pokemon-card {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  width: 350px;
+  align-items: center;
+  border-bottom: 1px solid transparentize(#ccc, .5);
+  padding-bottom: 15px;
+  margin: 0 0 10px;
+
+  .pokemon-pic {
+    height: 100px;
+    background-position: center;
+    background-repeat: no-repeat;
+    grid-row: 1 / 3;
+  }
+
+  .pokemon-name {
+    grid-column: 2 / 5;
+    grid-row: 1 / 2;
+    text-align: center;
+    font-size: 1.2em;
+    font-weight: bold;
+
+    .pokemon-health-bar {
+      width: 50%;
+      margin: 5px auto;
+      height: 5px;
+      border-radius: 100px;
+      background: #70efba;
+    }
+
+    .pokemon-health {
+      font-weight: normal;
+      font-size: .8em;
+    }
+  }
+
+  .pokemon-stats {
+    grid-column: span 3;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    list-style: none;
+    margin-top: 5px;
+    padding: 0;
+    text-align: center;
+    font-size: .9em;
+
+    > li {
+      padding: 5px 8px;
+      display: flex;
+      flex-flow: column;
+
+      &:not(:last-of-type) {
+        border-right: 1px solid transparentize(#ccc, .5);
+      }
+
+      .value {
+        font-size: 1.3em;
+      }
+
+      .stat-name {
+        font-size: .9em;
+      }
+    }
+  }
 }

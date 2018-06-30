@@ -1,9 +1,10 @@
 body {
-    background: #f7f7f7;
+    background: linear-gradient(to right, #05588f, #1694a6);
     font-family: $default-font-family;
+    color: $pg-font-color;
 }
 
-input { 
+input {
     padding: 4px;
     box-sizing: border-box;
 }

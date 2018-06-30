@@ -45,7 +45,6 @@ baseConfig[1].plugins = [
         image: path.resolve(__dirname, 'assets/images/spritesmith-generated/sprite.png'),
         css: path.resolve(__dirname, 'assets/sass/vendor/spritesmith.scss')
       },
-      retina: '@2x'
   }),
   new BundleTracker({
     filename: './webpack-stats.json'

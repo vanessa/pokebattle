@@ -1,3 +1,8 @@
 @mixin animation-opacity-pulse() {
     animation: opacity-pulse ease-in-out infinite 1.5s;
 }
+
+@mixin pg-green-gradient() {
+  background: linear-gradient(100deg, $pg-bright-green, $pg-dark-green);
+}
+

@@ -1,12 +1,24 @@
 .navbar {
-    background: $navbar-color;
-    padding: 0 $default-hr-padding;
+    background: $navbar-background;
+    padding: 2px $default-hr-padding 0;
     height: $navbar-height;
-    color: $bright-font-color;
+    color: $navbar-font-color;
+    position: relative;
+
+    &:before {
+      content: '';
+      width: 100%;
+      height: 3px;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      @include pg-green-gradient;
+    }
 
     .header {
         font-weight: bold;
-        color: $bright-font-color;
+        color: $navbar-font-color;
+        font-size: 1.2em;
     }
 
     .menu {
@@ -16,19 +28,42 @@
             padding-left: 10px;
         }
     }
-    
+
     a {
         height: $navbar-height;
-        color: $bright-font-color;
+        color: $navbar-font-color;
         display: inline-block;
         line-height: $navbar-height;
         padding: 0 15px;
 
         &:hover {
-            background: darken($navbar-color, 10%);
-            color: $bright-font-color;
             text-decoration: none;
+            background: transparentize(#fff, .65);
         }
+
+        &.active {
+          background: transparentize(#fff, .4);
+        }
+    }
+
+    .hello-user {
+      padding: 0 10px;
+      height: $navbar-height;
+      line-height: $navbar-height;
+    }
+
+    .mini-ash {
+      width: 19px;
+      height: 19px;
+      background-image: url('../../../images/ash.png');
+      display: inline-block;
+      background-size: contain;
+      background-position: center;
+      background-repeat: no-repeat;
+      transform: translateY(4px);
+      margin-right: 5px;
+      background-color: #fff;
+      border-radius: 50%;
     }
 }
 

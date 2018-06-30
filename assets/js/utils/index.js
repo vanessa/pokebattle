@@ -1,5 +1,7 @@
 import Urls from './urls';
+import capitalizeFirst from './text';
 
 export {
-  Urls, // eslint-disable-line import/prefer-default-export
+  Urls,
+  capitalizeFirst,
 };

@@ -42,7 +42,10 @@ class Navbar extends React.Component {
           <a href={Urls['battles:invite']()}>
             Invite someone
           </a>
-          <span>
+          <span
+            className="hello-user"
+          >
+            <div className="mini-ash" />
             {username &&
               `Hello, ${username}!`}
           </span>

@@ -5,50 +5,17 @@ import '../../css/transitions.css';
 import Loading from '../components/Loading';
 import Api from '../utils/api';
 import BattleHelpers from '../utils/battle';
-import Urls from '../utils/urls';
+import { capitalizeFirst, Urls } from '../utils';
 
-const Title = styled.h1`
+const Title = styled.h2`
     text-align: center;
     font-weight: bold;
-`;
-
-const Container = styled.div`
-    padding: 15px;
+    margin: 30px 0 20px;
+    color: #fff;
 `;
 
 const BattleTitle = styled.h3`
     text-align: center;
-`;
-
-const PokemonCard = styled.div`
-    width: 350px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #fff;
-    padding: 15px;
-    border-radius: 5px;
-    transition: box-shadow .1s ease-in-out;
-    cursor: pointer;
-    margin: 10px 50px;
-`;
-
-const PokemonName = styled.div`
-    font-size: 1.3em;
-    font-weight: bold;
-    text-align: center;
-    display: block;
-    position: relative;
-`;
-
-const PokemonPic = styled.img`
-    width: 90px;
-`;
-
-const PokemonStats = styled.ul`
-    list-style-type: none;
-    font-size: .8em;
-    padding: 0;
 `;
 
 const WinnerContainer = styled.div`
@@ -99,15 +66,32 @@ function PokemonInfo(props) {
   return (
     <div className="team-column">
       {props.team.map(pokemon => (
-        <PokemonCard key={pokemon.name}>
-          <PokemonPic src={pokemon.sprite} />
-          <PokemonName>{pokemon.name}</PokemonName>
-          <PokemonStats>
-            <li>Attack: {pokemon.attack}</li>
-            <li>Defense: {pokemon.defense}</li>
-            <li>HP: {pokemon.hp}</li>
-          </PokemonStats>
-        </PokemonCard>
+        <div
+          key={pokemon.name}
+          className="battle-pokemon-card"
+        >
+          <div
+            className="pokemon-pic"
+            style={{
+              backgroundImage: `url(${pokemon.sprite})`,
+            }}
+          />
+          <div className="pokemon-name">
+            {capitalizeFirst(pokemon.name)}
+            <div className="pokemon-health-bar" />
+            <div className="pokemon-health">HP{pokemon.hp}/{pokemon.hp}</div>
+          </div>
+          <div className="pokemon-stats">
+            <li>
+              <span className="value">{pokemon.attack}</span>
+              <span className="stat-name">Attack</span>
+            </li>
+            <li>
+              <span className="value">{pokemon.defense}</span>
+              <span className="stat-name">Defense</span>
+            </li>
+          </div>
+        </div>
       ))}
     </div>
   );
@@ -164,43 +148,46 @@ class BattleDetails extends React.Component {
       const battleId = this.props.match.params.pk;
 
       return (
-        <Container>
+        <div className="battle-details">
           <Title>Battle details</Title>
-          <BattleTitle>{battle.creator.username} vs. {battle.opponent.username}</BattleTitle>
-          {battle.winner &&
-            <WinnerContainer>
-              <div className="battle-winner-label">The winner is {battle.winner}</div>
-            </WinnerContainer>
-          }
-          <div
-            className={`battle-row ${this.getWinnerPosition()}`}
-          >
-            {!creatorTeam
-              ? <PokemonLoading
-                battleId={battleId}
-                currentUserActive={battle.creator.username === user.username}
-                content={`Waiting for ${battle.creator.username === user.username ? 'you' : battle.creator.username} to build the team`}
-              />
-              : <TeamDetails
-                battle={battle}
-                user={battle.creator}
-                currentUser={user}
-              />
+
+          <div className="battle-details-container">
+            <BattleTitle>{battle.creator.username} vs. {battle.opponent.username}</BattleTitle>
+            {battle.winner &&
+              <WinnerContainer>
+                <div className="battle-winner-label">The winner is {battle.winner}</div>
+              </WinnerContainer>
             }
-            {!opponentTeam
-              ? <PokemonLoading
-                battleId={battleId}
-                currentUserActive={battle.opponent.username === user.username}
-                content={`Waiting for ${battle.opponent.username === user.username ? 'you' : battle.opponent.username} to build the team`}
-              />
-              : <TeamDetails
-                battle={battle}
-                user={battle.opponent}
-                currentUser={user}
-              />
-            }
+            <div
+              className={`battle-row ${this.getWinnerPosition()}`}
+            >
+              {!creatorTeam
+                ? <PokemonLoading
+                  battleId={battleId}
+                  currentUserActive={battle.creator.username === user.username}
+                  content={`Waiting for ${battle.creator.username === user.username ? 'you' : battle.creator.username} to build the team`}
+                />
+                : <TeamDetails
+                  battle={battle}
+                  user={battle.creator}
+                  currentUser={user}
+                />
+              }
+              {!opponentTeam
+                ? <PokemonLoading
+                  battleId={battleId}
+                  currentUserActive={battle.opponent.username === user.username}
+                  content={`Waiting for ${battle.opponent.username === user.username ? 'you' : battle.opponent.username} to build the team`}
+                />
+                : <TeamDetails
+                  battle={battle}
+                  user={battle.opponent}
+                  currentUser={user}
+                />
+              }
+            </div>
           </div>
-        </Container>
+        </div>
       );
     }
     return <Loading />;
