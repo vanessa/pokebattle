@@ -124,4 +124,8 @@
   justify-content: space-between;
   margin: 10px 0;
   padding: 5px;
+
+  &:nth-child(even) {
+    background: #f0f0f0;
+  }
 }

@@ -62,6 +62,7 @@ const battleList = [
     winner: 'vanessa',
     date_created: '2018-05-29T18:24:30.108381Z',
     status: 'F',
+    status_label: 'finished',
   },
   {
     id: 13,
@@ -126,6 +127,7 @@ const battleList = [
     winner: 'vanessa.freitasb',
     date_created: '2018-05-31T18:53:48.512791Z',
     status: 'F',
+    status_label: 'finished',
   },
   {
     id: 14,
@@ -164,6 +166,7 @@ const battleList = [
     winner: null,
     date_created: '2018-06-14T22:49:10.648928Z',
     status: 'O',
+    status_label: 'ongoing',
   },
   {
     id: 15,
@@ -227,7 +230,8 @@ const battleList = [
     },
     winner: 'vanessa',
     date_created: '2018-06-19T21:45:13.225519Z',
-    status: 'F',
+    status: 'P',
+    status_label: 'processing',
   },
   {
     id: 16,
@@ -266,6 +270,7 @@ const battleList = [
     winner: null,
     date_created: '2018-06-19T21:50:26.525315Z',
     status: 'O',
+    status_label: 'ongoing',
   },
   {
     id: 17,
@@ -316,6 +321,7 @@ const battleList = [
     winner: null,
     date_created: '2018-06-29T17:48:45.838525Z',
     status: 'O',
+    status_label: 'ongoing',
   },
 ];
 

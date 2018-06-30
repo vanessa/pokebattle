@@ -4,7 +4,24 @@ import { Link } from 'react-router-dom';
 import battleList from '../mocks/battlesMocks';
 import Urls from '../utils/urls';
 
-const BattleLabel = ({ status }) => <div className="battle-label">{status}</div>;
+const BattleLabel = ({ battle }) => {
+  // Had to use snake case here due to API response
+  const { status, status_label } = battle;
+
+  // Transform to string because for some reason it's not originally
+  const StatusLabel = String(status_label);
+
+  const label = {
+    class: status === 'F' ? 'battle-finished' : 'ongoing',
+    displayText: StatusLabel.charAt(0).toUpperCase() + StatusLabel.substring(1),
+  };
+
+  return (
+    <div className={label.class}>
+      {label.displayText}
+    </div>
+  );
+};
 
 const BattlesColumn = ({ title }) => (
   <div className="battles-grid-column">
@@ -19,7 +36,9 @@ const BattlesColumn = ({ title }) => (
           >
             <div className="battle-id">{battle.id}</div>
             {battle.creator.username} vs {battle.opponent.username}
-            <BattleLabel status={battle.status} />
+            <BattleLabel
+              battle={battle}
+            />
           </Link>
         ),
         )
@@ -51,7 +70,7 @@ BattlesColumn.defaultProps = {
 };
 
 BattleLabel.propTypes = {
-  status: PropTypes.string.isRequired,
+  battle: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 export default BattleList;

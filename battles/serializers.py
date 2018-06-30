@@ -26,6 +26,7 @@ class BattleSerializer(serializers.ModelSerializer):
     creator = serializers.SerializerMethodField()
     opponent = serializers.SerializerMethodField()
     winner = serializers.SerializerMethodField()
+    status_label = serializers.ReadOnlyField()
 
     class Meta:
         model = Battle
