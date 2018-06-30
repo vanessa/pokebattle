@@ -252,21 +252,20 @@
   .team-column {
     margin-right: 15px;
   }
-
-  // The battle creator will always be in the first column
-  .team-column:first-of-type > div {
-    background: #fff; // remove this later!
-  }
 }
 
 .battle-winner-label {
-  @include pg-green-gradient;
   display: inline-block;
   margin: 10px auto;
-  padding: 10px 20px;
+  padding: 8px 20px;
   color: #fff;
   border-radius: 100px;
   letter-spacing: 1px;
+  background: darken($pg-pink, 5%);
+
+  &.user-won {
+    @include pg-green-gradient;
+  }
 }
 
 .pokemon-card {

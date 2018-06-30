@@ -130,15 +130,6 @@ class BattleDetails extends React.Component {
       });
   }
 
-  getWinnerPosition() {
-    const battle = this.state.battle;
-    if (!battle.winner) {
-      return null;
-    }
-    return battle.winner === battle.creator.username ? 'creator' : 'opponent';
-  }
-
-
   render() {
     const { battle, user } = this.state;
 
@@ -155,12 +146,12 @@ class BattleDetails extends React.Component {
             <BattleTitle>{battle.creator.username} vs. {battle.opponent.username}</BattleTitle>
             {battle.winner &&
               <WinnerContainer>
-                <div className="battle-winner-label">The winner is {battle.winner}</div>
+                <div
+                  className={`battle-winner-label${battle.winner === user.username ? ' user-won' : ''}`}
+                >The winner is {battle.winner}</div>
               </WinnerContainer>
             }
-            <div
-              className={`battle-row ${this.getWinnerPosition()}`}
-            >
+            <div className="battle-row">
               {!creatorTeam
                 ? <PokemonLoading
                   battleId={battleId}
