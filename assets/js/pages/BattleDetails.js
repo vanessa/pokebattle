@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
+import battleSetDetails from '../actions';
 import '../../css/transitions.css';
 import Loading from '../components/Loading';
 import Api from '../utils/api';
@@ -124,9 +126,8 @@ function TeamDetails(props) {
 class BattleDetails extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
-      battle: null,
+      user: {},
     };
   }
 
@@ -134,9 +135,7 @@ class BattleDetails extends React.Component {
     const battleId = this.props.match.params.pk;
     Api.getBattleDetails(battleId)
       .then((battle) => {
-        this.setState({
-          battle,
-        });
+        this.props.loadBattle(battle);
       });
     Api.getUserInfo()
       .then((user) => {
@@ -147,7 +146,9 @@ class BattleDetails extends React.Component {
   }
 
   getWinnerPosition() {
-    const battle = this.state.battle;
+    const battleId = this.props.match.params.pk;
+    const battle = this.props.battle[battleId];
+
     if (!battle.winner) {
       return null;
     }
@@ -156,12 +157,13 @@ class BattleDetails extends React.Component {
 
 
   render() {
-    const { battle, user } = this.state;
+    const { user } = this.state;
+    const battleId = this.props.match.params.pk;
+    const battle = this.props.battle[battleId];
 
     if (battle) {
       const creatorTeam = battle.creator.pokemons;
       const opponentTeam = battle.opponent.pokemons;
-      const battleId = this.props.match.params.pk;
 
       return (
         <Container>
@@ -213,11 +215,21 @@ BattleDetails.propTypes = {
       pk: PropTypes.string,
     }),
   }).isRequired,
+  loadBattle: PropTypes.func.isRequired,
+  battle: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+  ]).isRequired,
+};
+
+BattleDetails.defaultProps = {
+  battle: {},
+  loadBattle: () => {},
 };
 
 PokemonLoading.propTypes = {
   content: PropTypes.string.isRequired,
-  battleId: PropTypes.string.isRequired,
+  battleId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   currentUserActive: PropTypes.bool.isRequired,
 };
 
@@ -285,7 +297,20 @@ PokemonInfo.propTypes = {
   })).isRequired,
 };
 
+const mapDispatchToProps = dispatch => ({
+  loadBattle: battle => dispatch(battleSetDetails(battle)),
+});
+
+const mapStateToProps = state => ({
+  battle: state.battle,
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(BattleDetails);
+
 export {
-  BattleDetails,
+  BattleDetails as NotConnectedBattleDetails,
   PokemonInfo,
 };
