@@ -1,3 +1,5 @@
+from django.db.models import Q
+
 from rest_framework import generics
 
 from battles.models import Battle
@@ -12,6 +14,11 @@ class BattleDetailsEndpoint(generics.RetrieveAPIView):
 
 
 class BattleListEndpoint(generics.ListAPIView):
-    queryset = Battle.objects.all()
     serializer_class = BattleListSerializer
     permission_classes = (IsInBattle, )
+
+    def get_queryset(self):
+        user = self.request.user
+        return Battle.objects.filter(
+            Q(creator=user) | Q(opponent=user)
+        )
