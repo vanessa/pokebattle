@@ -14,7 +14,6 @@ describe('BattleDetails', () => {
         username: 'test',
         id: 1,
       },
-      battleId: 1,
     };
     const propsParams = {
       battle: {
@@ -43,7 +42,6 @@ describe('BattleDetails', () => {
         username: 'test',
         id: 1,
       },
-      battleId: 1,
     };
     const propsParams = {
       battle: {

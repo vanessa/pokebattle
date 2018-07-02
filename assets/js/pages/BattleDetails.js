@@ -124,6 +124,13 @@ function TeamDetails(props) {
 }
 
 class BattleDetails extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: {},
+    };
+  }
+
   componentDidMount() {
     const battleId = this.props.match.params.pk;
     Api.getBattleDetails(battleId)
@@ -139,7 +146,7 @@ class BattleDetails extends React.Component {
   }
 
   getWinnerPosition() {
-    const { battleId } = this.state;
+    const battleId = this.props.match.params.pk;
     const battle = this.props.battle[battleId];
 
     if (!battle.winner) {
