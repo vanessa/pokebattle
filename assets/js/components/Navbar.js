@@ -49,7 +49,7 @@ class Navbar extends React.Component {
             {username &&
               `Hello, ${username}!`}
           </span>
-          <a href={Urls['auth:logout']()}>
+          <a href={Urls['auth:logout']()} className="logout-button">
             Logout
           </a>
         </div>

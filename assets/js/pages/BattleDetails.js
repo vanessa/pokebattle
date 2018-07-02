@@ -65,10 +65,10 @@ function PokemonInfoPlaceholder() {
 function PokemonInfo(props) {
   return (
     <div className="team-column">
-      {props.team.map(pokemon => (
+      {props.team.map((pokemon, index) => (
         <div
           key={pokemon.name}
-          className="battle-pokemon-card"
+          className={`battle-pokemon-card pokemon-${index}`}
         >
           <div
             className="pokemon-pic"

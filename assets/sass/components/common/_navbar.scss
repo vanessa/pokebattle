@@ -63,6 +63,11 @@
       transform: translateY(4px);
       margin-right: 5px;
     }
+
+    .logout-button {
+      color: $pg-pink;
+      font-weight: bold;
+    }
 }
 
 @media (max-width: $md-screen-size) {
