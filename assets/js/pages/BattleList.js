@@ -113,11 +113,12 @@ BattleLabel.propTypes = {
 };
 
 BattleList.propTypes = {
-  loadBattleList: PropTypes.func.isRequired,
+  loadBattleList: PropTypes.func,
   battles: PropTypes.arrayOf(PropTypes.object),
 };
 
 BattleList.defaultProps = {
+  loadBattleList: null,
   battles: null,
 };
 

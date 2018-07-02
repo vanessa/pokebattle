@@ -12,8 +12,8 @@ function App() {
         <Navbar />
         <Switch>
           <Route path="/battles/details/:pk" component={BattleDetails} />
-          <Route exact path="/battles" component={BattleList} />
-          <Route path="/battles/create" component={BattleCreate} />
+          <Route exact path="/battles/" component={BattleList} />
+          <Route path="/battles/create/" component={BattleCreate} />
           <Route render={() => <p>Not found!</p>} />
         </Switch>
       </div>

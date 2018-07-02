@@ -95,6 +95,7 @@
     "eslint-plugin-import": "^2.12.0",
     "eslint-plugin-jsx-a11y": "^5.1.0",
     "eslint-plugin-react": "^7.9.1",
+    "fs": "0.0.1-security",
     "jest": "^21.2.1",
     "jest-css-modules": "^1.1.0",
     "prettier-eslint": "^8.8.1",
