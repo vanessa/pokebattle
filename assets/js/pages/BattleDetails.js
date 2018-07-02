@@ -124,15 +124,8 @@ function TeamDetails(props) {
 }
 
 class BattleDetails extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      battleId: props.match.params.pk,
-    };
-  }
-
   componentDidMount() {
-    const { battleId } = this.state;
+    const battleId = this.props.match.params.pk;
     Api.getBattleDetails(battleId)
       .then((battle) => {
         this.props.loadBattle(battle);
@@ -157,7 +150,8 @@ class BattleDetails extends React.Component {
 
 
   render() {
-    const { user, battleId } = this.state;
+    const { user } = this.state;
+    const battleId = this.props.match.params.pk;
     const battle = this.props.battle[battleId];
 
     if (battle) {
