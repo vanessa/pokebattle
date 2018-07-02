@@ -115,7 +115,7 @@
   background: #fff;
   border-radius: 5px;
   padding: 10px;
-  box-shadow: 0 4px 15px transparentize(#000, .9);
+  box-shadow: 0 4px 15px transparentize(#000, .95);
 }
 
 .battles-grid-column .battle-item {
@@ -123,9 +123,35 @@
   align-items: center;
   justify-content: space-between;
   margin: 10px 0;
-  padding: 5px;
+  padding: 8px;
 
   &:nth-child(even) {
     background: #f0f0f0;
+  }
+
+  &:hover {
+    text-decoration: none;
+  }
+
+  // Battle labels
+  .label {
+    font-size: .7em;
+    background: $gray;
+    color: $white;
+    border-radius: 5px;
+    padding: 3px 5px;
+    font-weight: bold;
+
+    &.ongoing {
+      background: $orange;
+    }
+
+    &.processing {
+      background: dodgerblue;
+    }
+
+    &.battle-finished {
+      background: $green;
+    }
   }
 }

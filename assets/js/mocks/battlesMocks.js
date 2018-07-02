@@ -283,6 +283,7 @@ const battleList = [
     winner: null,
     date_created: '2018-06-27T18:06:43.099632Z',
     status: 'O',
+    status_label: 'ongoing',
   },
   {
     id: 18,

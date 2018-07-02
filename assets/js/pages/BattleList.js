@@ -11,8 +11,21 @@ const BattleLabel = ({ battle }) => {
   // Transform to string because for some reason it's not originally
   const StatusLabel = String(status_label);
 
+  let labelColor;
+
+  switch (status) {
+    case 'F':
+      labelColor = 'battle-finished';
+      break;
+    case 'P':
+      labelColor = 'processing';
+      break;
+    default:
+      labelColor = 'ongoing';
+  }
+
   const label = {
-    class: status === 'F' ? 'battle-finished' : 'ongoing',
+    class: `label ${labelColor}`,
     displayText: StatusLabel.charAt(0).toUpperCase() + StatusLabel.substring(1),
   };
 
