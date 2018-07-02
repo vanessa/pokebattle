@@ -13,9 +13,7 @@ const BattleLabel = ({ battle }) => {
 
   // Transform to string because for some reason it's not originally
   const StatusLabel = String(status_label);
-
   let labelColor;
-
   switch (status) {
     case 'F':
       labelColor = 'battle-finished';
@@ -43,20 +41,19 @@ const BattlesColumn = ({ title, battles }) => (
   <div className="battles-grid-column">
     <h3>{title}</h3>
     <div className="battle-list">
-      {!battles
-      ? <Loading />
-      : battles.map(battle => (
-        <Link
-          key={battle.id}
-          to={Urls['battles:details'](battle.id)}
-          className="battle-item"
-        >
-          <div className="battle-id">{battle.id}</div>
-          {battle.creator.username} vs {battle.opponent.username}
-          <BattleLabel
-            battle={battle}
-          />
-        </Link>
+      {
+        battles.map(battle => (
+          <Link
+            key={battle.id}
+            to={Urls['battles:details'](battle.id)}
+            className="battle-item"
+          >
+            <div className="battle-id">{battle.id}</div>
+            {battle.creator.username} vs {battle.opponent.username}
+            <BattleLabel
+              battle={battle}
+            />
+          </Link>
         ),
         )
       }
