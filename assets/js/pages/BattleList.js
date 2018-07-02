@@ -76,6 +76,7 @@ class BattleList extends React.Component {
     if (!battles) {
       return <Loading />;
     }
+
     const createdBattles = battles.filter(battle => battle.is_creator);
     const invitedBattles = battles.filter(battle => !battle.is_creator);
 
