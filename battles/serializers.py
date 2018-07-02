@@ -52,3 +52,11 @@ class BattleSerializer(serializers.ModelSerializer):
         if not obj.winner:
             return None
         return obj.winner.get_short_name()
+
+
+class BattleListSerializer(BattleSerializer):
+    is_creator = serializers.SerializerMethodField()
+
+    def get_is_creator(self, obj):
+        user = self.context['request'].user
+        return obj.creator == user
