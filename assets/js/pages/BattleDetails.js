@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import fetchAndSetBattleDetails from '../actions';
+import { fetchAndSetBattleDetails } from '../actions/battleDetails';
 import '../../css/transitions.css';
 import Loading from '../components/Loading';
 import Api from '../utils/api';
