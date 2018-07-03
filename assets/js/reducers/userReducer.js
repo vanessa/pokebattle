@@ -11,7 +11,7 @@ const user = (state = [], action) => {
         details: action.details,
       };
     case USER_DELETE_DETAILS:
-      return state.filter(details => details !== action.details);
+      return state.filter(({ id }) => id !== action.details.id);
     default:
       return state;
   }
