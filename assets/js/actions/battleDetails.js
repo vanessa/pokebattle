@@ -1,6 +1,6 @@
 import {
   BATTLE_SET_DETAILS,
-} from '../constants';
+} from '../constants/battle';
 import Api from '../utils/api';
 
 const battleSetDetails = battle => ({

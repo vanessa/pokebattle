@@ -1,6 +1,6 @@
 import {
   BATTLE_SET_LIST,
-} from '../constants';
+} from '../constants/battle';
 import Api from '../utils/api';
 
 const battleSetList = battleList => ({
