@@ -1,7 +1,7 @@
 import React from 'react';
 import { mount } from 'enzyme';
 import { NotConnectedBattleDetails } from '../BattleDetails';
-import battleMock from '../../utils/apiMocks';
+import { battleMock } from '../../utils/apiMocks';
 
 jest.mock('../../utils/urls');
 

@@ -26,6 +26,7 @@ class BattleSerializer(serializers.ModelSerializer):
     creator = serializers.SerializerMethodField()
     opponent = serializers.SerializerMethodField()
     winner = serializers.SerializerMethodField()
+    status_label = serializers.ReadOnlyField()
 
     class Meta:
         model = Battle
@@ -51,3 +52,11 @@ class BattleSerializer(serializers.ModelSerializer):
         if not obj.winner:
             return None
         return obj.winner.get_short_name()
+
+
+class BattleListSerializer(BattleSerializer):
+    is_creator = serializers.SerializerMethodField()
+
+    def get_is_creator(self, obj):
+        user = self.context['request'].user
+        return obj.creator == user

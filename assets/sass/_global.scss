@@ -3,7 +3,7 @@ body {
     font-family: $default-font-family;
 }
 
-input { 
+input {
     padding: 4px;
     box-sizing: border-box;
 }
@@ -14,4 +14,8 @@ input {
 
 .form-error {
     color: darken(red, 10%);
+}
+
+.centered-spinner {
+  margin: 100px auto;
 }
