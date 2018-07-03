@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Urls from '../utils/urls';
 
-const UserGreeting = ({ username }) => <span>Hello, <b>{username}</b>!</span>;
-
 const Navbar = ({ user }) => (
   <div className="navbar">
     <div className="header">
@@ -26,8 +24,10 @@ const Navbar = ({ user }) => (
         Invite someone
       </a>
       <span>
-        {user &&
-        <UserGreeting username={user.username} />}
+        {
+          user &&
+          <span>Hello, <b>{user.username}</b>!</span>
+        }
       </span>
       <a href={Urls['auth:logout']()}>
         Logout
@@ -45,10 +45,6 @@ Navbar.propTypes = {
 
 Navbar.defaultProps = {
   user: {},
-};
-
-UserGreeting.propTypes = {
-  username: PropTypes.string.isRequired,
 };
 
 const mapStateToProps = state => ({
