@@ -1,58 +1,55 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Urls from '../utils/urls';
-import Api from '../utils/api';
 
-class Navbar extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      username: '',
-    };
-  }
+const Navbar = ({ user }) => (
+  <div className="navbar">
+    <div className="header">
+      <a href={Urls.home()}>PokeBattle</a>
+    </div>
+    <div className="menu">
+      <NavLink
+        to={Urls['battles:list']()}
+      >
+        My battles
+      </NavLink>
+      <NavLink
+        to={Urls['battles:create-battle']()}
+      >
+        Create a battle
+      </NavLink>
+      <a href={Urls['battles:invite']()}>
+        Invite someone
+      </a>
+      <span>
+        {user.username &&
+        `Hello, ${user.username}!`}
+      </span>
+      <a href={Urls['auth:logout']()}>
+        Logout
+      </a>
+    </div>
+  </div>
+);
 
-  componentDidMount() {
-    Api.getUserInfo()
-      .then((response) => {
-        this.setState({
-          username: response.username,
-        });
-      });
-  }
+Navbar.propTypes = {
+  user: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+  ]),
+};
 
-  render() {
-    const { username } = this.state;
+Navbar.defaultProps = {
+  user: {},
+};
 
-    return (
-      <div className="navbar">
-        <div className="header">
-          <a href={Urls.home()}>PokeBattle</a>
-        </div>
-        <div className="menu">
-          <NavLink
-            to={Urls['battles:list']()}
-          >
-            My battles
-          </NavLink>
-          <NavLink
-            to={Urls['battles:create-battle']()}
-          >
-            Create a battle
-          </NavLink>
-          <a href={Urls['battles:invite']()}>
-            Invite someone
-          </a>
-          <span>
-            {username &&
-              `Hello, ${username}!`}
-          </span>
-          <a href={Urls['auth:logout']()}>
-            Logout
-          </a>
-        </div>
-      </div>
-    );
-  }
-}
+const mapStateToProps = state => ({
+  user: state.user.details,
+});
 
-export default Navbar;
+export default connect(
+  mapStateToProps,
+  null,
+)(Navbar);
