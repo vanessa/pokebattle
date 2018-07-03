@@ -1,3 +1,5 @@
-import battleSetDetails from './battleDetails';
+import { fetchAndSetBattleDetails } from './battleDetails';
 
-export default battleSetDetails;
+export {
+  fetchAndSetBattleDetails as default,
+};

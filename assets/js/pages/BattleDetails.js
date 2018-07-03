@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import battleSetDetails from '../actions';
+import fetchAndSetBattleDetails from '../actions';
 import '../../css/transitions.css';
 import Loading from '../components/Loading';
 import Api from '../utils/api';
@@ -133,10 +133,7 @@ class BattleDetails extends React.Component {
 
   componentDidMount() {
     const battleId = this.props.match.params.pk;
-    Api.getBattleDetails(battleId)
-      .then((battle) => {
-        this.props.loadBattle(battle);
-      });
+    this.props.loadBattle(battleId);
     Api.getUserInfo()
       .then((user) => {
         this.setState({
@@ -298,7 +295,7 @@ PokemonInfo.propTypes = {
 };
 
 const mapDispatchToProps = dispatch => ({
-  loadBattle: battle => dispatch(battleSetDetails(battle)),
+  loadBattle: battleId => dispatch(fetchAndSetBattleDetails(battleId)),
 });
 
 const mapStateToProps = state => ({
