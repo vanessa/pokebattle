@@ -158,51 +158,52 @@ class BattleDetails extends React.Component {
     const battleId = this.props.match.params.pk;
     const battle = this.props.battle[battleId];
 
-    if (battle) {
-      const creatorTeam = battle.creator.pokemons;
-      const opponentTeam = battle.opponent.pokemons;
-
-      return (
-        <Container>
-          <Title>Battle details</Title>
-          <BattleTitle>{battle.creator.username} vs. {battle.opponent.username}</BattleTitle>
-          {battle.winner &&
-            <WinnerContainer>
-              <div className="battle-winner-label">The winner is {battle.winner}</div>
-            </WinnerContainer>
-          }
-          <div
-            className={`battle-row ${this.getWinnerPosition()}`}
-          >
-            {!creatorTeam
-              ? <PokemonLoading
-                battleId={battleId}
-                currentUserActive={battle.creator.username === user.username}
-                content={`Waiting for ${battle.creator.username === user.username ? 'you' : battle.creator.username} to build the team`}
-              />
-              : <TeamDetails
-                battle={battle}
-                user={battle.creator}
-                currentUser={user}
-              />
-            }
-            {!opponentTeam
-              ? <PokemonLoading
-                battleId={battleId}
-                currentUserActive={battle.opponent.username === user.username}
-                content={`Waiting for ${battle.opponent.username === user.username ? 'you' : battle.opponent.username} to build the team`}
-              />
-              : <TeamDetails
-                battle={battle}
-                user={battle.opponent}
-                currentUser={user}
-              />
-            }
-          </div>
-        </Container>
-      );
+    if (!battle) {
+      return <Loading />;
     }
-    return <Loading />;
+
+    const creatorTeam = battle.creator.pokemons;
+    const opponentTeam = battle.opponent.pokemons;
+
+    return (
+      <Container>
+        <Title>Battle details</Title>
+        <BattleTitle>{battle.creator.username} vs. {battle.opponent.username}</BattleTitle>
+        {battle.winner &&
+          <WinnerContainer>
+            <div className="battle-winner-label">The winner is {battle.winner}</div>
+          </WinnerContainer>
+        }
+        <div
+          className={`battle-row ${this.getWinnerPosition()}`}
+        >
+          {!creatorTeam
+            ? <PokemonLoading
+              battleId={battleId}
+              currentUserActive={battle.creator.username === user.username}
+              content={`Waiting for ${battle.creator.username === user.username ? 'you' : battle.creator.username} to build the team`}
+            />
+            : <TeamDetails
+              battle={battle}
+              user={battle.creator}
+              currentUser={user}
+            />
+          }
+          {!opponentTeam
+            ? <PokemonLoading
+              battleId={battleId}
+              currentUserActive={battle.opponent.username === user.username}
+              content={`Waiting for ${battle.opponent.username === user.username ? 'you' : battle.opponent.username} to build the team`}
+            />
+            : <TeamDetails
+              battle={battle}
+              user={battle.opponent}
+              currentUser={user}
+            />
+          }
+        </div>
+      </Container>
+    );
   }
 }
 

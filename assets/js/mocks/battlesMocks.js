@@ -1,43 +1,4 @@
-const battleMock = {
-  id: 1,
-  creator: {
-    pokemons: [
-      {
-        id: 1,
-        name: 'bulbasaur',
-        sprite: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png',
-        attack: 49,
-        defense: 49,
-        hp: 45,
-      },
-      {
-        id: 2,
-        name: 'ivysaur',
-        sprite: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/2.png',
-        attack: 62,
-        defense: 63,
-        hp: 60,
-      },
-      {
-        id: 5,
-        name: 'charmeleon',
-        sprite: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/5.png',
-        attack: 64,
-        defense: 58,
-        hp: 58,
-      },
-    ],
-    username: 'vanessa',
-  },
-  opponent: {
-    username: 'vanessa.freitasb',
-  },
-  winner: null,
-  date_created: '2018-06-14T22:49:10.648928Z',
-  status: 'O',
-};
-
-const battleListMock = [
+const battleList = [
   {
     id: 7,
     creator: {
@@ -99,10 +60,9 @@ const battleListMock = [
       username: 'amanda',
     },
     winner: 'vanessa',
-    status_label: 'finished',
-    is_creator: true,
     date_created: '2018-05-29T18:24:30.108381Z',
     status: 'F',
+    status_label: 'finished',
   },
   {
     id: 13,
@@ -165,10 +125,9 @@ const battleListMock = [
       username: 'vanessa.freitasb',
     },
     winner: 'vanessa.freitasb',
-    status_label: 'finished',
-    is_creator: true,
     date_created: '2018-05-31T18:53:48.512791Z',
     status: 'F',
+    status_label: 'finished',
   },
   {
     id: 14,
@@ -205,10 +164,9 @@ const battleListMock = [
       username: 'vanessa.freitasb',
     },
     winner: null,
-    status_label: 'ongoing',
-    is_creator: true,
     date_created: '2018-06-14T22:49:10.648928Z',
     status: 'O',
+    status_label: 'ongoing',
   },
   {
     id: 15,
@@ -271,10 +229,9 @@ const battleListMock = [
       username: 'amanda',
     },
     winner: 'vanessa',
-    status_label: 'finished',
-    is_creator: true,
     date_created: '2018-06-19T21:45:13.225519Z',
-    status: 'F',
+    status: 'P',
+    status_label: 'processing',
   },
   {
     id: 16,
@@ -311,10 +268,9 @@ const battleListMock = [
       username: 'vanessa.freitasb',
     },
     winner: null,
-    status_label: 'ongoing',
-    is_creator: true,
     date_created: '2018-06-19T21:50:26.525315Z',
     status: 'O',
+    status_label: 'ongoing',
   },
   {
     id: 17,
@@ -325,10 +281,9 @@ const battleListMock = [
       username: 'amanda',
     },
     winner: null,
-    status_label: 'ongoing',
-    is_creator: true,
     date_created: '2018-06-27T18:06:43.099632Z',
     status: 'O',
+    status_label: 'ongoing',
   },
   {
     id: 18,
@@ -365,56 +320,10 @@ const battleListMock = [
       username: 'amanda',
     },
     winner: null,
-    status_label: 'ongoing',
-    is_creator: true,
     date_created: '2018-06-29T17:48:45.838525Z',
     status: 'O',
-  },
-  {
-    id: 19,
-    creator: {
-      username: 'vanessa',
-    },
-    opponent: {
-      username: 'amanda',
-    },
-    winner: null,
     status_label: 'ongoing',
-    is_creator: true,
-    date_created: '2018-06-30T05:58:41.635323Z',
-    status: 'O',
-  },
-  {
-    id: 20,
-    creator: {
-      username: 'amanda',
-    },
-    opponent: {
-      username: 'vanessa',
-    },
-    winner: null,
-    status_label: 'ongoing',
-    is_creator: false,
-    date_created: '2018-07-02T17:17:05.033376Z',
-    status: 'O',
-  },
-  {
-    id: 21,
-    creator: {
-      username: 'amanda',
-    },
-    opponent: {
-      username: 'vanessa',
-    },
-    winner: null,
-    status_label: 'ongoing',
-    is_creator: false,
-    date_created: '2018-07-02T17:17:15.917594Z',
-    status: 'O',
   },
 ];
 
-export {
-  battleMock,
-  battleListMock,
-};
+export default battleList;

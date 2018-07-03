@@ -1,5 +1,6 @@
 import {
   BATTLE_SET_DETAILS,
+  BATTLE_SET_LIST,
 } from '../constants';
 
 const battle = (state = [], action) => {
@@ -8,6 +9,11 @@ const battle = (state = [], action) => {
       return {
         ...state,
         [action.battle.id]: action.battle,
+      };
+    case BATTLE_SET_LIST:
+      return {
+        ...state,
+        battleList: action.battleList,
       };
     default:
       return state;
