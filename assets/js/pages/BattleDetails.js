@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import { fetchAndSetBattleDetails } from '../actions/battleDetails';
 import '../../css/transitions.css';
 import Loading from '../components/Loading';
-import Api from '../utils/api';
 import BattleHelpers from '../utils/battle';
 import Urls from '../utils/urls';
 
@@ -124,22 +123,9 @@ function TeamDetails(props) {
 }
 
 class BattleDetails extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      user: {},
-    };
-  }
-
   componentDidMount() {
     const battleId = this.props.match.params.pk;
     this.props.loadBattle(battleId);
-    Api.getUserInfo()
-      .then((user) => {
-        this.setState({
-          user,
-        });
-      });
   }
 
   getWinnerPosition() {
@@ -152,9 +138,8 @@ class BattleDetails extends React.Component {
     return battle.winner === battle.creator.username ? 'creator' : 'opponent';
   }
 
-
   render() {
-    const { user } = this.state;
+    const { user } = this.props;
     const battleId = this.props.match.params.pk;
     const battle = this.props.battle[battleId];
 
@@ -218,11 +203,16 @@ BattleDetails.propTypes = {
     PropTypes.object,
     PropTypes.array,
   ]).isRequired,
+  user: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+  ]).isRequired,
 };
 
 BattleDetails.defaultProps = {
   battle: {},
   loadBattle: () => {},
+  user: {},
 };
 
 PokemonLoading.propTypes = {
@@ -262,9 +252,14 @@ TeamDetails.propTypes = {
     username: PropTypes.string.isRequired,
   }).isRequired,
   currentUser: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    username: PropTypes.string.isRequired,
+    id: PropTypes.number,
+    username: PropTypes.string,
   }).isRequired,
+};
+
+TeamDetails.defaultProps = {
+  user: {},
+  currentUser: {},
 };
 
 PokemonInfo.propTypes = {
@@ -301,6 +296,7 @@ const mapDispatchToProps = dispatch => ({
 
 const mapStateToProps = state => ({
   battle: state.battle,
+  user: state.user.details,
 });
 
 export default connect(
