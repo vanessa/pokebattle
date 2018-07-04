@@ -211,7 +211,6 @@ BattleDetails.propTypes = {
 
 BattleDetails.defaultProps = {
   battle: {},
-  loadBattle: () => {},
   user: {},
 };
 

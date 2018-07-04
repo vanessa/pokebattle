@@ -1,16 +1,8 @@
-import {
-  USER_SET_DETAILS,
-  USER_DELETE_DETAILS,
-} from '../constants/user';
+import USER_SET_DETAILS from '../constants/user';
 import Api from '../utils/api';
 
 const userSetDetails = userDetails => ({
   type: USER_SET_DETAILS,
-  details: userDetails,
-});
-
-const userDeleteDetails = userDetails => ({
-  type: USER_DELETE_DETAILS,
   details: userDetails,
 });
 
@@ -25,6 +17,5 @@ const fetchAndSetUserDetails = () => (
 
 export {
   userSetDetails,
-  userDeleteDetails,
   fetchAndSetUserDetails,
 };

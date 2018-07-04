@@ -9,7 +9,9 @@ import App from './App';
 /* eslint-disable no-underscore-dangle */
 const store = createStore(
   pokebattleReducer, /* preloadedState, */
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+  (process.env.NODE_ENV !== 'production' &&
+   window.__REDUX_DEVTOOLS_EXTENSION__) &&
+   window.__REDUX_DEVTOOLS_EXTENSION__(),
   applyMiddleware(thunk),
 );
 /* eslint-enable */

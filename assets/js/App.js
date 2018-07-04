@@ -34,10 +34,6 @@ App.propTypes = {
   loadUserInfo: PropTypes.func.isRequired,
 };
 
-App.defaultProps = {
-  loadUserInfo: () => {},
-};
-
 const mapDispatchToProps = dispatch => ({
   loadUserInfo: () => dispatch(fetchAndSetUserDetails()),
 });

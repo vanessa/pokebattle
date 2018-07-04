@@ -37,10 +37,10 @@ const Navbar = ({ user }) => (
 );
 
 Navbar.propTypes = {
-  user: PropTypes.oneOfType([
-    PropTypes.object,
-    PropTypes.array,
-  ]),
+  user: PropTypes.shape({
+    id: PropTypes.number,
+    username: PropTypes.string,
+  }),
 };
 
 Navbar.defaultProps = {
