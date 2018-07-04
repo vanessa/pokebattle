@@ -1,7 +1,7 @@
 import {
   BATTLE_SET_DETAILS,
   BATTLE_SET_LIST,
-} from '../constants';
+} from '../constants/battle';
 
 const battle = (state = [], action) => {
   switch (action.type) {

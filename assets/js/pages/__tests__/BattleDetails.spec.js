@@ -9,12 +9,6 @@ describe('BattleDetails', () => {
   let Component;
 
   test('not finished battle doesn\'t show the winner label', () => {
-    const stateParams = {
-      user: {
-        username: 'test',
-        id: 1,
-      },
-    };
     const propsParams = {
       battle: {
         1: battleMock,
@@ -27,9 +21,9 @@ describe('BattleDetails', () => {
             pk: '1',
           },
         }}
+        loadBattle={() => {}}
       />
     ));
-    Component.setState(stateParams);
     Component.setProps(propsParams);
     expect(Component.props().battle[1].winner).toBeNull();
     expect(Component.contains('WinnerContainer')).toBeFalsy();
@@ -37,12 +31,6 @@ describe('BattleDetails', () => {
   });
 
   test('finished battle shows the winner label', () => {
-    const stateParams = {
-      user: {
-        username: 'test',
-        id: 1,
-      },
-    };
     const propsParams = {
       battle: {
         1: {
@@ -58,9 +46,9 @@ describe('BattleDetails', () => {
             pk: '1',
           },
         }}
+        loadBattle={() => {}}
       />
     ));
-    Component.setState(stateParams);
     Component.setProps(propsParams);
     expect(Component.props().battle[1].winner).toBe('vanessa');
     expect(Component.find('.battle-winner-label').text()).toEqual('The winner is vanessa');

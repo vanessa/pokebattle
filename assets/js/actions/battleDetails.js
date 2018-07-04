@@ -1,10 +1,23 @@
 import {
   BATTLE_SET_DETAILS,
-} from '../constants';
+} from '../constants/battle';
+import Api from '../utils/api';
 
 const battleSetDetails = battle => ({
   type: BATTLE_SET_DETAILS,
   battle,
 });
 
-export default battleSetDetails;
+const fetchAndSetBattleDetails = battleId => (
+  dispatch => (
+    Api.getBattleDetails(battleId).then(
+      battle => dispatch(battleSetDetails(battle)),
+      error => new Error(error),
+    )
+  )
+);
+
+export {
+  battleSetDetails,
+  fetchAndSetBattleDetails,
+};
