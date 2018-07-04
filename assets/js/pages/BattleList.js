@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Loading from '../components/Loading';
 import { fetchAndSetBattleList } from '../actions/battleList';
-import Urls from '../utils/urls';
 
 const BattleLabel = ({ battle }) => {
   // Had to use snake case here due to API response
@@ -44,7 +43,7 @@ const BattlesColumn = ({ title, battles }) => (
         battles.map(battle => (
           <Link
             key={battle.id}
-            to={Urls['battles:details'](battle.id)}
+            to={`/battles/details/${battle.id}`}
             className="battle-item"
           >
             <div className="battle-id">{battle.id}</div>
