@@ -8,7 +8,7 @@ const battle = (state = [], action) => {
     case BATTLE_SET_DETAILS:
       return {
         ...state,
-        [action.battle.id]: action.battle,
+        ...action.payload.entities,
       };
     case BATTLE_SET_LIST:
       return {
