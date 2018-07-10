@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Loading from '../components/Loading';
 import { fetchAndSetBattleList } from '../actions/battleList';
 import { clearCurrentBattle } from '../actions/battleDetails';
+import { selectHydratedBattleList } from '../selectors/battle';
 
 const BattleLabel = ({ battle }) => {
   // Had to use snake case here due to API response
@@ -48,7 +49,7 @@ const BattlesColumn = ({ title, battles }) => (
             className="battle-item"
           >
             <div className="battle-id">{battle.id}</div>
-            {battle.creator.trainer} vs {battle.opponent.trainer}
+            {battle.creator.trainer.username} vs {battle.opponent.trainer.username}
             <BattleLabel
               battle={battle}
             />
@@ -67,14 +68,14 @@ class BattleList extends React.Component {
   }
 
   render() {
-    const { battles, result } = this.props;
+    const { battles } = this.props;
 
     if (!battles) {
       return <Loading />;
     }
 
-    const createdBattles = result.map(index => battles[index]).filter(battle => battle.is_creator);
-    const invitedBattles = result.map(index => battles[index]).filter(battle => !battle.is_creator);
+    const createdBattles = battles.filter(battle => battle.is_creator);
+    const invitedBattles = battles.filter(battle => !battle.is_creator);
 
     return (
       <div className="battle-list-container">
@@ -118,14 +119,12 @@ BattleList.propTypes = {
     PropTypes.object,
     PropTypes.array,
   ]),
-  result: PropTypes.arrayOf(PropTypes.number),
 };
 
 BattleList.defaultProps = {
   loadBattleList: null,
   clearCurrentBattle: null,
   battles: null,
-  result: [],
 };
 
 const mapDispatchToProps = dispatch => ({
@@ -134,8 +133,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = state => ({
-  battles: state.battle.battles,
-  result: state.battle.result,
+  battles: selectHydratedBattleList(state.battle),
 });
 
 export default connect(
