@@ -15,6 +15,9 @@ const battle = new schema.Entity('battles', {
   winner: user,
 });
 
+const battleList = [battle];
+
 export {
-  battle, // eslint-disable-line import/prefer-default-export
+  battle,
+  battleList,
 };

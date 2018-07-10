@@ -1,19 +1,21 @@
+import { normalize } from 'normalizr';
 import {
   BATTLE_SET_LIST,
 } from '../constants/battle';
 import Api from '../utils/api';
+import { battleList as battleListSchema } from '../utils/schema';
 
-const battleSetList = battleList => ({
+const battleSetList = payload => ({
   type: BATTLE_SET_LIST,
-  battleList,
+  payload,
 });
 
 const fetchAndSetBattleList = () => (
   dispatch => (
-    Api.getBattleList().then(
-      list => dispatch(battleSetList(list)),
-      error => new Error(error),
-    )
+    Api.getBattleList()
+    .then(battleList => normalize(battleList, battleListSchema))
+    .then(normalizedBattleList => dispatch(battleSetList(normalizedBattleList)))
+    .catch(error => new Error(error))
   )
 );
 

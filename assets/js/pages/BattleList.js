@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Loading from '../components/Loading';
 import { fetchAndSetBattleList } from '../actions/battleList';
+import { clearCurrentBattle } from '../actions/battleDetails';
 
 const BattleLabel = ({ battle }) => {
   // Had to use snake case here due to API response
@@ -47,7 +48,7 @@ const BattlesColumn = ({ title, battles }) => (
             className="battle-item"
           >
             <div className="battle-id">{battle.id}</div>
-            {battle.creator.username} vs {battle.opponent.username}
+            {battle.creator.trainer} vs {battle.opponent.trainer}
             <BattleLabel
               battle={battle}
             />
@@ -62,17 +63,18 @@ const BattlesColumn = ({ title, battles }) => (
 class BattleList extends React.Component {
   componentDidMount() {
     this.props.loadBattleList();
+    this.props.clearCurrentBattle();
   }
 
   render() {
-    const { battles } = this.props;
+    const { battles, result } = this.props;
 
     if (!battles) {
       return <Loading />;
     }
 
-    const createdBattles = battles.filter(battle => battle.is_creator);
-    const invitedBattles = battles.filter(battle => !battle.is_creator);
+    const createdBattles = result.map(index => battles[index]).filter(battle => battle.is_creator);
+    const invitedBattles = result.map(index => battles[index]).filter(battle => !battle.is_creator);
 
     return (
       <div className="battle-list-container">
@@ -94,7 +96,10 @@ class BattleList extends React.Component {
 
 BattlesColumn.propTypes = {
   title: PropTypes.string,
-  battles: PropTypes.arrayOf(PropTypes.object),
+  battles: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+  ]),
 };
 
 BattlesColumn.defaultProps = {
@@ -108,20 +113,29 @@ BattleLabel.propTypes = {
 
 BattleList.propTypes = {
   loadBattleList: PropTypes.func,
-  battles: PropTypes.arrayOf(PropTypes.object),
+  clearCurrentBattle: PropTypes.func,
+  battles: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+  ]),
+  result: PropTypes.arrayOf(PropTypes.number),
 };
 
 BattleList.defaultProps = {
   loadBattleList: null,
+  clearCurrentBattle: null,
   battles: null,
+  result: [],
 };
 
 const mapDispatchToProps = dispatch => ({
   loadBattleList: () => dispatch(fetchAndSetBattleList()),
+  clearCurrentBattle: () => dispatch(clearCurrentBattle()),
 });
 
 const mapStateToProps = state => ({
-  battles: state.battle.battleList,
+  battles: state.battle.battles,
+  result: state.battle.result,
 });
 
 export default connect(

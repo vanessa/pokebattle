@@ -3,6 +3,7 @@ import React from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { fetchAndSetBattleDetails } from '../actions/battleDetails';
+import { selectHydratedBattle } from '../selectors/battle';
 import '../../css/transitions.css';
 import Loading from '../components/Loading';
 import BattleHelpers from '../utils/battle';
@@ -129,8 +130,7 @@ class BattleDetails extends React.Component {
   }
 
   getWinnerPosition() {
-    const battleId = this.props.match.params.pk;
-    const battle = this.props.battle[battleId];
+    const { battle } = this.props;
 
     if (!battle.winner) {
       return null;
@@ -139,11 +139,10 @@ class BattleDetails extends React.Component {
   }
 
   render() {
-    const { user } = this.props;
+    const { user, battle } = this.props;
     const battleId = this.props.match.params.pk;
-    const battle = this.props.battle[battleId];
 
-    if (!battle) {
+    if (!battle.id) {
       return <Loading />;
     }
 
@@ -153,10 +152,13 @@ class BattleDetails extends React.Component {
     return (
       <Container>
         <Title>Battle details</Title>
-        <BattleTitle>{battle.creator.username} vs. {battle.opponent.username}</BattleTitle>
+        <BattleTitle>
+          {battle.creator.trainer.username} vs.
+          {battle.opponent.trainer.username}
+        </BattleTitle>
         {battle.winner &&
           <WinnerContainer>
-            <div className="battle-winner-label">The winner is {battle.winner}</div>
+            <div className="battle-winner-label">The winner is {battle.winner.username}</div>
           </WinnerContainer>
         }
         <div
@@ -164,25 +166,25 @@ class BattleDetails extends React.Component {
         >
           {!creatorTeam
             ? <PokemonLoading
+              currentUserActive={battle.creator.trainer.username === user.username}
+              content={`Waiting for ${battle.creator.trainer.username === user.username ? 'you' : battle.creator.trainer.username} to build the team`}
               battleId={battleId}
-              currentUserActive={battle.creator.username === user.username}
-              content={`Waiting for ${battle.creator.username === user.username ? 'you' : battle.creator.username} to build the team`}
             />
             : <TeamDetails
               battle={battle}
-              user={battle.creator}
+              user={battle.creator.trainer}
               currentUser={user}
             />
           }
           {!opponentTeam
             ? <PokemonLoading
+              currentUserActive={battle.opponent.trainer.username === user.username}
+              content={`Waiting for ${battle.opponent.trainer.username === user.username ? 'you' : battle.opponent.trainer.username} to build the team`}
               battleId={battleId}
-              currentUserActive={battle.opponent.username === user.username}
-              content={`Waiting for ${battle.opponent.username === user.username ? 'you' : battle.opponent.username} to build the team`}
             />
             : <TeamDetails
               battle={battle}
-              user={battle.opponent}
+              user={battle.opponent.trainer}
               currentUser={user}
             />
           }
@@ -216,15 +218,18 @@ BattleDetails.defaultProps = {
 
 PokemonLoading.propTypes = {
   content: PropTypes.string.isRequired,
-  battleId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
   currentUserActive: PropTypes.bool.isRequired,
+  battleId: PropTypes.string.isRequired,
 };
 
 TeamDetails.propTypes = {
   battle: PropTypes.shape({
     id: PropTypes.number.isRequired,
     creator: PropTypes.shape({
-      username: PropTypes.string.isRequired,
+      trainer: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        username: PropTypes.string.isRequired,
+      }),
       pokemons: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.number,
         name: PropTypes.string,
@@ -235,7 +240,10 @@ TeamDetails.propTypes = {
       })),
     }),
     opponent: PropTypes.shape({
-      username: PropTypes.string.isRequired,
+      trainer: PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        username: PropTypes.string.isRequired,
+      }),
       pokemons: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.number,
         name: PropTypes.string,
@@ -294,7 +302,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = state => ({
-  battle: state.battle,
+  battle: selectHydratedBattle(state.battle.currentBattle, state.battle),
   user: state.user.details,
 });
 

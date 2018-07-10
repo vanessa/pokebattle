@@ -1,6 +1,7 @@
 import {
   BATTLE_SET_DETAILS,
   BATTLE_SET_LIST,
+  CLEAR_CURRENT_BATTLE,
 } from '../constants/battle';
 
 const battle = (state = [], action) => {
@@ -8,12 +9,18 @@ const battle = (state = [], action) => {
     case BATTLE_SET_DETAILS:
       return {
         ...state,
-        ...action.payload.entities,
+        currentBattle: { ...action.payload.entities.battles[action.payload.result] },
       };
     case BATTLE_SET_LIST:
       return {
         ...state,
-        battleList: action.battleList,
+        ...action.payload.entities,
+        result: action.payload.result,
+      };
+    case CLEAR_CURRENT_BATTLE:
+      return {
+        ...state,
+        currentBattle: {},
       };
     default:
       return state;
