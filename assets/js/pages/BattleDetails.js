@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import styled from 'styled-components';
 import { connect } from 'react-redux';
-import { fetchAndSetBattleDetails } from '../actions/battleDetails';
 import { selectHydratedBattle } from '../selectors/battle';
+import { fetchAndSetBattleList } from '../actions/battleList';
 import '../../css/transitions.css';
 import Loading from '../components/Loading';
 import BattleHelpers from '../utils/battle';
@@ -124,11 +124,6 @@ function TeamDetails(props) {
 }
 
 class BattleDetails extends React.Component {
-  componentDidMount() {
-    const battleId = this.props.match.params.pk;
-    this.props.loadBattle(battleId);
-  }
-
   getWinnerPosition() {
     const { battle } = this.props;
 
@@ -138,8 +133,17 @@ class BattleDetails extends React.Component {
     return battle.winner === battle.creator.username ? 'creator' : 'opponent';
   }
 
+  checkAndLoadBattle() {
+    const { store, loadBattles, match } = this.props;
+    if (!store.battles) {
+      return loadBattles();
+    }
+    return selectHydratedBattle(store.battles[match.params.pk], store);
+  }
+
   render() {
-    const { user, battle } = this.props;
+    const { user } = this.props;
+    const battle = this.checkAndLoadBattle();
     const battleId = this.props.match.params.pk;
 
     if (!battle.id) {
@@ -200,15 +204,19 @@ BattleDetails.propTypes = {
       pk: PropTypes.string,
     }),
   }).isRequired,
-  loadBattle: PropTypes.func.isRequired,
   battle: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.array,
-  ]).isRequired,
+  ]),
   user: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.array,
   ]).isRequired,
+  store: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+  ]).isRequired,
+  loadBattles: PropTypes.func.isRequired,
 };
 
 BattleDetails.defaultProps = {
@@ -297,13 +305,13 @@ PokemonInfo.propTypes = {
   })).isRequired,
 };
 
-const mapDispatchToProps = dispatch => ({
-  loadBattle: battleId => dispatch(fetchAndSetBattleDetails(battleId)),
+const mapStateToProps = state => ({
+  store: state.battle,
+  user: state.user.details,
 });
 
-const mapStateToProps = state => ({
-  battle: selectHydratedBattle(state.battle.currentBattle, state.battle),
-  user: state.user.details,
+const mapDispatchToProps = dispatch => ({
+  loadBattles: () => dispatch(fetchAndSetBattleList()),
 });
 
 export default connect(
