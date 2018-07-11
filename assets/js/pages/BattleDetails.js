@@ -146,7 +146,7 @@ class BattleDetails extends React.Component {
     const battle = this.checkAndLoadBattle();
     const battleId = this.props.match.params.pk;
 
-    if (!battle.id) {
+    if (!battle) {
       return <Loading />;
     }
 
