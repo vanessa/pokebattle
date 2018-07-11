@@ -12,7 +12,7 @@ class TestBattleDetailsEndpoint(TestCaseUtils):
         view_url = reverse('api-battles:battle-details', args=[battle.pk])
         response = self.auth_client.get(view_url)
         data = response.data
-        self.assertEqual(data['creator']['username'], battle.creator.get_short_name())
+        self.assertEqual(data['creator']['trainer']['username'], battle.creator.username)
         self.assertEqual(data['id'], battle.id)
         self.assertEqual(data['status'], battle.status)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
