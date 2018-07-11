@@ -10,7 +10,9 @@ describe('BattleList', () => {
 
   it('renders', () => {
     Component = renderer.create((
-      <NotConnectedBattleList />
+      <NotConnectedBattleList
+        loadBattleList={jest.fn()}
+      />
     ));
 
     tree = Component.toJSON();

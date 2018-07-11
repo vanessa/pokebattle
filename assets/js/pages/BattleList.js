@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Loading from '../components/Loading';
-import battleSetList from '../actions/battleList';
-import Urls from '../utils/urls';
-import Api from '../utils/api';
+import { fetchAndSetBattleList } from '../actions/battleList';
 
 const BattleLabel = ({ battle }) => {
   // Had to use snake case here due to API response
@@ -45,7 +43,7 @@ const BattlesColumn = ({ title, battles }) => (
         battles.map(battle => (
           <Link
             key={battle.id}
-            to={Urls['battles:details'](battle.id)}
+            to={`/battles/details/${battle.id}`}
             className="battle-item"
           >
             <div className="battle-id">{battle.id}</div>
@@ -63,8 +61,7 @@ const BattlesColumn = ({ title, battles }) => (
 
 class BattleList extends React.Component {
   componentDidMount() {
-    Api.getBattleList()
-    .then(list => this.props.loadBattleList(list));
+    this.props.loadBattleList();
   }
 
   render() {
@@ -120,7 +117,7 @@ BattleList.defaultProps = {
 };
 
 const mapDispatchToProps = dispatch => ({
-  loadBattleList: battle => dispatch(battleSetList(battle)),
+  loadBattleList: () => dispatch(fetchAndSetBattleList()),
 });
 
 const mapStateToProps = state => ({
