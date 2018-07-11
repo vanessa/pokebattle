@@ -14,45 +14,6 @@ const Title = styled.h1`
     font-weight: bold;
 `;
 
-const Container = styled.div`
-    padding: 15px;
-`;
-
-const BattleTitle = styled.h3`
-    text-align: center;
-`;
-
-const PokemonCard = styled.div`
-    width: 350px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #fff;
-    padding: 15px;
-    border-radius: 5px;
-    transition: box-shadow .1s ease-in-out;
-    cursor: pointer;
-    margin: 10px 50px;
-`;
-
-const PokemonName = styled.div`
-    font-size: 1.3em;
-    font-weight: bold;
-    text-align: center;
-    display: block;
-    position: relative;
-`;
-
-const PokemonPic = styled.img`
-    width: 90px;
-`;
-
-const PokemonStats = styled.ul`
-    list-style-type: none;
-    font-size: .8em;
-    padding: 0;
-`;
-
 const WinnerContainer = styled.div`
     justify-content: center;
     align-items: center;
@@ -101,15 +62,15 @@ function PokemonInfo(props) {
   return (
     <div className="team-column">
       {props.team.map(pokemon => (
-        <PokemonCard key={pokemon.name}>
-          <PokemonPic src={pokemon.sprite} />
-          <PokemonName>{pokemon.name}</PokemonName>
-          <PokemonStats>
+        <div className="pokemon-card" key={pokemon.name}>
+          <img alt={pokemon.name} className="picture" src={pokemon.sprite} />
+          <div className="name">{pokemon.name}</div>
+          <div className="stats">
             <li>Attack: {pokemon.attack}</li>
             <li>Defense: {pokemon.defense}</li>
             <li>HP: {pokemon.hp}</li>
-          </PokemonStats>
-        </PokemonCard>
+          </div>
+        </div>
       ))}
     </div>
   );
@@ -146,7 +107,7 @@ class BattleDetails extends React.Component {
     const battle = this.checkAndLoadBattle();
     const battleId = this.props.match.params.pk;
 
-    if (!battle) {
+    if (!battle.id) {
       return <Loading />;
     }
 
@@ -154,12 +115,12 @@ class BattleDetails extends React.Component {
     const opponentTeam = battle.opponent.pokemons;
 
     return (
-      <Container>
+      <div className="battle-container">
         <Title>Battle details</Title>
-        <BattleTitle>
+        <div className="battle-title">
           {battle.creator.trainer.username} vs.
           {battle.opponent.trainer.username}
-        </BattleTitle>
+        </div>
         {battle.winner &&
           <WinnerContainer>
             <div className="battle-winner-label">The winner is {battle.winner.username}</div>
@@ -193,7 +154,7 @@ class BattleDetails extends React.Component {
             />
           }
         </div>
-      </Container>
+      </div>
     );
   }
 }
