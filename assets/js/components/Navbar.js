@@ -11,16 +11,16 @@ const Navbar = ({ user }) => (
     </div>
     <div className="menu">
       <NavLink
-        to={Urls['battles:list']()}
+        to="/battles/"
       >
         My battles
       </NavLink>
       <NavLink
-        to={Urls['battles:create-battle']()}
+        to="/battles/create/"
       >
         Create a battle
       </NavLink>
-      <a href={Urls['battles:invite']()}>
+      <a href="/invite/">
         Invite someone
       </a>
       <span>
