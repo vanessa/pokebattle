@@ -30,7 +30,7 @@ class Navbar extends React.Component {
         </div>
         <div className="menu">
           <NavLink
-            to={Urls['battles:list']()}
+            to="/battles/"
           >
             My battles
           </NavLink>
@@ -39,7 +39,7 @@ class Navbar extends React.Component {
           >
             Create a battle
           </NavLink>
-          <a href={Urls['battles:invite']()}>
+          <a href={Urls.invite()}>
             Invite someone
           </a>
           <span>
