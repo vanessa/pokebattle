@@ -35,7 +35,7 @@ class Navbar extends React.Component {
             My battles
           </NavLink>
           <NavLink
-            to={Urls['battles:create-battle']()}
+            to="/battles/create"
           >
             Create a battle
           </NavLink>
