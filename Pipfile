@@ -47,7 +47,6 @@ django-extensions = "*"
 djangorestframework = "*"
 markdown = "*"
 django-filter = "*"
-django-waffle = "*"
 
 [requires]
 python_version = "3.6"
