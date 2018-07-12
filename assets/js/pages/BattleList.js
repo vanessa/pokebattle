@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Loading from '../components/Loading';
 import { fetchAndSetBattleList } from '../actions/battleList';
-import { clearCurrentBattle } from '../actions/battleDetails';
 import { selectHydratedBattleList } from '../selectors/battle';
 
 const BattleLabel = ({ battle }) => {
@@ -64,7 +63,6 @@ const BattlesColumn = ({ title, battles }) => (
 class BattleList extends React.Component {
   componentDidMount() {
     this.props.loadBattleList();
-    this.props.clearCurrentBattle();
   }
 
   render() {
@@ -114,7 +112,6 @@ BattleLabel.propTypes = {
 
 BattleList.propTypes = {
   loadBattleList: PropTypes.func,
-  clearCurrentBattle: PropTypes.func,
   battles: PropTypes.oneOfType([
     PropTypes.object,
     PropTypes.array,
@@ -123,13 +120,11 @@ BattleList.propTypes = {
 
 BattleList.defaultProps = {
   loadBattleList: null,
-  clearCurrentBattle: null,
   battles: null,
 };
 
 const mapDispatchToProps = dispatch => ({
   loadBattleList: () => dispatch(fetchAndSetBattleList()),
-  clearCurrentBattle: () => dispatch(clearCurrentBattle()),
 });
 
 const mapStateToProps = state => ({

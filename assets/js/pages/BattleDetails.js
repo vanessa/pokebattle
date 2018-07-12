@@ -85,6 +85,13 @@ function TeamDetails(props) {
 }
 
 class BattleDetails extends React.Component {
+  componentDidMount() {
+    const { store, loadBattles } = this.props;
+    if (!store.battles) {
+      loadBattles();
+    }
+  }
+
   getWinnerPosition() {
     const { battle } = this.props;
 
@@ -94,22 +101,15 @@ class BattleDetails extends React.Component {
     return battle.winner === battle.creator.username ? 'creator' : 'opponent';
   }
 
-  checkAndLoadBattle() {
-    const { store, loadBattles, match } = this.props;
-    if (!store.battles) {
-      return loadBattles();
-    }
-    return selectHydratedBattle(store.battles[match.params.pk], store);
-  }
-
   render() {
-    const { user } = this.props;
-    const battle = this.checkAndLoadBattle();
+    const { user, store, match } = this.props;
     const battleId = this.props.match.params.pk;
 
-    if (!battle.id) {
+    if (!store.battles) {
       return <Loading />;
     }
+
+    const battle = selectHydratedBattle(store.battles[match.params.pk], store);
 
     const creatorTeam = battle.creator.pokemons;
     const opponentTeam = battle.opponent.pokemons;
