@@ -67,9 +67,12 @@ BattleCreationInnerForm.propTypes = {
     opponent: PropTypes.string,
   }).isRequired,
   values: PropTypes.shape({
-    opponent: PropTypes.number,
+    // On initial state, it's a string. When set, it's a number.
+    opponent: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   }).isRequired,
-  touched: PropTypes.bool.isRequired,
+  touched: PropTypes.shape({
+    opponent: PropTypes.bool,
+  }).isRequired,
   isSubmitting: PropTypes.bool.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   setFieldValue: PropTypes.func.isRequired,
