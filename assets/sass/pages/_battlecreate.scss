@@ -10,5 +10,16 @@
   form {
     max-width: 600px;
     margin: 0 auto;
+
+    input[type="submit"] {
+      margin: 15px 0;
+
+      &:disabled {
+        opacity: .9;
+        cursor: not-allowed;
+
+        &:hover { background: $royal-blue; }
+      }
+    }
   }
 }

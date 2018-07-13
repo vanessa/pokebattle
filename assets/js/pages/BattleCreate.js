@@ -25,6 +25,7 @@ const BattleCreationInnerForm = (props) => {
 
   return (
     <form onSubmit={handleSubmit}>
+      <label htmlFor="opponent" >Select your opponent</label>
       <VirtualizedSelect
         id="opponent"
         className={`input ${errors.opponent && touched.opponent && 'is-invalid'}`}
@@ -35,9 +36,7 @@ const BattleCreationInnerForm = (props) => {
         placeholder="Find an opponent for you..."
       />
       {touched.email && errors.email && <div>{errors.email}</div>}
-      <button type="submit" disabled={isSubmitting}>
-        Create the battle
-      </button>
+      <input type="submit" disabled={isSubmitting} value="Create the battle" />
     </form>
   );
 };
