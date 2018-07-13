@@ -5,7 +5,7 @@ from django.views.generic import TemplateView
 
 import django_js_reverse.views
 
-from battles.views import InviteView, PokemonListAPIView
+from battles.views import InviteView
 
 
 urlpatterns = [
@@ -21,9 +21,9 @@ urlpatterns = [
     url(r'^invite/$', InviteView.as_view(), name='invite'),
 
     # API
-    url(r'^api/pokemon/$', PokemonListAPIView.as_view(), name='api-pokemon-list'),
     url(r'api/', include('battles.endpoints_urls', namespace='api-battles')),
     url(r'api/', include('users.endpoints_urls', namespace='api-users')),
+    url(r'api/', include('pokemons.endpoints_urls', namespace='api-pokemon')),
 ]
 
 if settings.DEBUG:

@@ -9,7 +9,7 @@
 
   form {
     max-width: 600px;
-    margin: 0 auto;
+    margin: 30px auto;
 
     .is-invalid {
       .Select-control {
@@ -17,9 +17,38 @@
       }
     }
 
+    label {
+      margin: 10px 0;
+    }
+
     .form-error {
       margin: 5px 0;
       font-size: .8em;
+    }
+
+    .pokemon-selector {
+      margin: 15px 0;
+    }
+
+    .pokemon-option {
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      justify-content: space-between;
+
+      &.is-focused {
+        background-color: mix(darken($white, 5%), transparentize($blue, .8));
+      }
+
+      .pokemon-name {
+        font-weight: bold;
+        font-size: 1.1em;
+      }
+
+      .pokemon-stats {
+        font-size: .9em;
+        color: #666;
+      }
     }
 
     input[type="submit"] {
