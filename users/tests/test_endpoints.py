@@ -32,11 +32,12 @@ class TestUserListEndpoint(TestCaseUtils):
         users = mommy.make('users.User', _quantity=3, _fill_optional=['username'])
         response = self.auth_client.get(self.view_url)
 
+        # Random pick someone
         picked_mommy_user = users[2]
         picked_response_user = response.data[2]
 
-        self.assertEqual(picked_mommy_user.username, picked_response_user['username'])
-        self.assertEqual(picked_mommy_user.id, picked_response_user['id'])
+        self.assertEqual(picked_mommy_user.username, picked_response_user['label'])
+        self.assertEqual(picked_mommy_user.id, picked_response_user['value'])
         self.assertResponse200(response)
 
     def test_not_authenticated_user_is_forbidden(self):
