@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Loading from '../components/Loading';
 import { fetchAndSetBattleList } from '../actions/battleList';
+import { selectHydratedBattleList } from '../selectors/battle';
 
 const BattleLabel = ({ battle }) => {
   // Had to use snake case here due to API response
@@ -47,7 +48,7 @@ const BattlesColumn = ({ title, battles }) => (
             className="battle-item"
           >
             <div className="battle-id">{battle.id}</div>
-            {battle.creator.username} vs {battle.opponent.username}
+            {battle.creator.trainer.username} vs {battle.opponent.trainer.username}
             <BattleLabel
               battle={battle}
             />
@@ -94,7 +95,10 @@ class BattleList extends React.Component {
 
 BattlesColumn.propTypes = {
   title: PropTypes.string,
-  battles: PropTypes.arrayOf(PropTypes.object),
+  battles: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+  ]),
 };
 
 BattlesColumn.defaultProps = {
@@ -108,7 +112,10 @@ BattleLabel.propTypes = {
 
 BattleList.propTypes = {
   loadBattleList: PropTypes.func,
-  battles: PropTypes.arrayOf(PropTypes.object),
+  battles: PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.array,
+  ]),
 };
 
 BattleList.defaultProps = {
@@ -121,7 +128,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const mapStateToProps = state => ({
-  battles: state.battle.battleList,
+  battles: selectHydratedBattleList(state.battle),
 });
 
 export default connect(
