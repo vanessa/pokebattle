@@ -1,18 +1,11 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { withFormik } from 'formik';
 import VirtualizedSelect from 'react-virtualized-select';
-
 import 'react-select/dist/react-select.css';
 import 'react-virtualized-select/styles.css';
-
-const imaginaryThings = [
-  { label: 'Thing 1', value: 1 },
-  { label: 'Thing 2', value: 2 },
-  { label: 'Thing 3', value: 3 },
-  { label: 'Thing 4', value: 4 },
-  { label: 'Thing 5', value: 5 },
-];
+import fetchAndLoadUsers from '../actions/users';
 
 const BattleCreationInnerForm = (props) => {
   const {
@@ -22,10 +15,12 @@ const BattleCreationInnerForm = (props) => {
     handleSubmit,
     isSubmitting,
     setFieldValue,
+    users,
   } = props;
 
   const handleSelect = (choice) => {
-    setFieldValue('opponent', choice.value);
+    const value = choice ? choice.value : null;
+    setFieldValue('opponent', value);
   };
 
   return (
@@ -34,9 +29,10 @@ const BattleCreationInnerForm = (props) => {
         id="opponent"
         className={`input ${errors.opponent && touched.opponent && 'is-invalid'}`}
         name="opponent"
-        options={imaginaryThings}
+        options={users}
         onChange={handleSelect}
         value={values.opponent}
+        placeholder="Find an opponent for you..."
       />
       {touched.email && errors.email && <div>{errors.email}</div>}
       <button type="submit" disabled={isSubmitting}>
@@ -55,12 +51,29 @@ const BattleCreationForm = withFormik({
   /* eslint-enable */
 })(BattleCreationInnerForm);
 
-const BattleCreate = () => (
-  <div className="battle-create-container">
-    <h2>Create a Battle</h2>
-    <BattleCreationForm />
-  </div>
-);
+class BattleCreate extends React.Component {
+  componentDidMount() {
+    this.props.loadUsers();
+  }
+
+  render() {
+    return (
+      <div className="battle-create-container">
+        <h2>Create a Battle</h2>
+        <BattleCreationForm users={this.props.users} />
+      </div>
+    );
+  }
+}
+
+BattleCreate.propTypes = {
+  loadUsers: PropTypes.func.isRequired,
+  users: PropTypes.arrayOf(PropTypes.object),
+};
+
+BattleCreate.defaultProps = {
+  users: [],
+};
 
 BattleCreationInnerForm.propTypes = {
   errors: PropTypes.shape({
@@ -76,6 +89,24 @@ BattleCreationInnerForm.propTypes = {
   isSubmitting: PropTypes.bool.isRequired,
   handleSubmit: PropTypes.func.isRequired,
   setFieldValue: PropTypes.func.isRequired,
+  users: PropTypes.arrayOf(PropTypes.object),
 };
 
-export default BattleCreate;
+BattleCreationInnerForm.defaultProps = {
+  // I can't use .isRequired in propTypes otherwise I'll get a error,
+  // since it's initially undefined until it loads the users list
+  users: [],
+};
+
+const mapStateToProps = state => ({
+  users: state.user.users,
+});
+
+const mapDispatchToProps = dispatch => ({
+  loadUsers: () => dispatch(fetchAndLoadUsers()),
+});
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(BattleCreate);

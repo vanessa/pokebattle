@@ -22,4 +22,11 @@ export default class Api {
       .then(response => response.data)
       .catch(err => new Error(err));
   }
+
+  static loadUsers() {
+    const url = Urls['api-users:users']();
+    return axios.get(url)
+      .then(response => response.data)
+      .catch(error => new Error(error));
+  }
 }

@@ -1,4 +1,4 @@
-import USER_SET_DETAILS from '../constants/user';
+import { USER_SET_DETAILS, LOAD_USERS } from '../constants/user';
 
 const user = (state = [], action) => {
   switch (action.type) {
@@ -6,6 +6,11 @@ const user = (state = [], action) => {
       return {
         ...state,
         details: action.details,
+      };
+    case LOAD_USERS:
+      return {
+        ...state,
+        users: action.payload,
       };
     default:
       return state;
