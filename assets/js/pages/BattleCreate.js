@@ -1,6 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import * as Yup from 'yup';
 import { withFormik } from 'formik';
 import VirtualizedSelect from 'react-virtualized-select';
 import 'react-select/dist/react-select.css';
@@ -35,7 +36,7 @@ const BattleCreationInnerForm = (props) => {
         value={values.opponent}
         placeholder="Find an opponent for you..."
       />
-      {touched.email && errors.email && <div>{errors.email}</div>}
+      {touched.opponent && errors.opponent && <div className="form-error">{errors.opponent}</div>}
       <input type="submit" disabled={isSubmitting} value="Create the battle" />
     </form>
   );
@@ -48,6 +49,9 @@ const BattleCreationForm = withFormik({
     console.log('Result', values); // wip
   },
   /* eslint-enable */
+  validationSchema: Yup.object().shape({
+    opponent: Yup.string().required('Unfortunately, this system isn\'t advanced enough to let you battle with a ghost... Yet. 👻'),
+  }),
 })(BattleCreationInnerForm);
 
 class BattleCreate extends React.Component {
@@ -59,7 +63,9 @@ class BattleCreate extends React.Component {
     return (
       <div className="battle-create-container">
         <h2>Create a Battle</h2>
-        <BattleCreationForm users={this.props.users} />
+        <BattleCreationForm
+          users={this.props.users}
+        />
       </div>
     );
   }

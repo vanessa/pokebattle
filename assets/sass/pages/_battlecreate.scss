@@ -11,6 +11,17 @@
     max-width: 600px;
     margin: 0 auto;
 
+    .is-invalid {
+      .Select-control {
+        border: 1px solid darken(red, 10%);
+      }
+    }
+
+    .form-error {
+      margin: 5px 0;
+      font-size: .8em;
+    }
+
     input[type="submit"] {
       margin: 15px 0;
 
