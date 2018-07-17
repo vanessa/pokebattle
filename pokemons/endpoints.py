@@ -5,6 +5,6 @@ from pokemons.serializers import PokemonSerializer
 
 
 class PokemonListEndpoint(generics.ListAPIView):
-    queryset = Pokemon.objects.all()
     serializer_class = PokemonSerializer
     permission_classes = (permissions.IsAuthenticated, )
+    queryset = Pokemon.objects.all()

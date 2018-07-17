@@ -26,7 +26,7 @@ const Navbar = ({ user }) => (
       <span>
         {
           user &&
-          <span>Hello, <b>{user.username}</b>!</span>
+          <span>Hello, <b>{user.label}</b>!</span>
         }
       </span>
       <a href={Urls['auth:logout']()}>
@@ -39,7 +39,7 @@ const Navbar = ({ user }) => (
 Navbar.propTypes = {
   user: PropTypes.shape({
     id: PropTypes.number,
-    username: PropTypes.string,
+    label: PropTypes.string,
   }),
 };
 

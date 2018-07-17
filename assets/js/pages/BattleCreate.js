@@ -10,6 +10,31 @@ import fetchAndLoadPokemonList from '../actions/pokemon';
 import fetchAndLoadUsers from '../actions/users';
 import { pokemonShape } from '../utils/propTypes';
 
+const SelectedPokemonCard = (props) => {
+  const { pokemon, setFieldValue, name } = props;
+
+  const clearSelection = () => {
+    setFieldValue(name, null);
+  };
+
+  return (
+    <div className="pokemon-chosen-card">
+      <img src={pokemon.sprite} alt={pokemon.label} />
+      <div className="pokemon-name">{pokemon.label}</div>
+      <div className="pokemon-stats">
+        A: {pokemon.attack} | D: {pokemon.defense} | HP: {pokemon.hp}
+      </div>
+      <div
+        className="clear-button"
+        role="presentation"
+        onClick={clearSelection}
+      >
+        Clear
+      </div>
+    </div>
+  );
+};
+
 const PokemonOption = (props) => {
   const {
     option,
@@ -21,13 +46,14 @@ const PokemonOption = (props) => {
   return (
     <div
       className={`pokemon-option ${option === focusedOption && 'is-focused'}`}
-      key={option.id}
+      style={{ display: 'flex', alignItems: 'center', height: 95, justifyContent: 'space-between' }}
+      key={option.value}
       role="presentation"
-      onClick={() => selectValue(option.id)}
+      onClick={() => selectValue(option)}
       onMouseEnter={() => focusOption(option)}
     >
-      <img src={option.sprite} alt={option.name} />
-      <span className="pokemon-name">{option.name}</span>
+      <img src={option.sprite} alt={option.label} />
+      <span className="pokemon-name">{option.label}</span>
       <span className="pokemon-stats">
         A: {option.attack} | D: {option.defense} | HP: {option.hp}
       </span>
@@ -39,28 +65,35 @@ const PokemonSelector = (props) => {
   const {
     name,
     errors,
-    touched,
     pokemon,
+    setFieldValue,
+    values,
   } = props;
 
   const handleSelect = (choice) => {
-    /* eslint-disable no-unused-vars,no-console */
-    const value = choice ? choice.value : null;
-    console.log(choice);  // wip
-    /* eslint-enable */
+    setFieldValue(name, choice);
   };
+
+  if (values[name]) {
+    return (
+      <SelectedPokemonCard
+        {...props}
+        pokemon={values[name]}
+      />
+    );
+  }
 
   return (
     <VirtualizedSelect
-      className={`pokemon-selector ${errors.pokemon && touched.pokemon && 'is-invalid'}`}
+      className={`pokemon-selector ${errors[name] && 'is-invalid'}`}
       name={name}
       id={name}
       onChange={handleSelect}
-      optionHeight={100}
-      optionRenderer={PokemonOption}
-      valueComponent={PokemonOption}
       options={pokemon}
-      valueKey="id"
+      optionHeight={95}
+      optionRenderer={PokemonOption}
+      value={values[name]}
+      valueKey="value"
     />
   );
 };
@@ -76,7 +109,7 @@ const BattleCreationInnerForm = (props) => {
     users,
   } = props;
 
-  const handleSelect = (choice) => {
+  const handleOpponentSelect = (choice) => {
     const value = choice ? choice.value : null;
     setFieldValue('opponent', value);
   };
@@ -89,7 +122,7 @@ const BattleCreationInnerForm = (props) => {
         name="opponent"
         className={`input ${errors.opponent && touched.opponent && 'is-invalid'}`}
         options={users}
-        onChange={handleSelect}
+        onChange={handleOpponentSelect}
         value={values.opponent}
         placeholder="Find an opponent for you..."
       />
@@ -108,7 +141,6 @@ const BattleCreationInnerForm = (props) => {
         {...props}
         name="thirdPokemon"
       />
-
       <input type="submit" disabled={isSubmitting} value="Create the battle" />
     </form>
   );
@@ -125,6 +157,15 @@ const BattleCreationForm = withFormik({
     opponent: Yup.string()
       .nullable()
       .required('Unfortunately, this system isn\'t advanced enough to let you battle with a ghost... Yet. 👻'),
+    firstPokemon: Yup.object()
+      .nullable()
+      .required('You must select at least 3 Pokemon to create a battle'),
+    secondPokemon: Yup.object()
+      .nullable()
+      .required('You must select at least 3 Pokemon to create a battle'),
+    thirdPokemon: Yup.object()
+      .nullable()
+      .required('You must select at least 3 Pokemon to create a battle'),
   }),
 })(BattleCreationInnerForm);
 
@@ -191,6 +232,12 @@ PokemonOption.propTypes = {
   focusOption: PropTypes.func.isRequired,
 };
 
+SelectedPokemonCard.propTypes = {
+  setFieldValue: PropTypes.func.isRequired,
+  pokemon: PropTypes.shape(pokemonShape).isRequired,
+  name: PropTypes.string.isRequired,
+};
+
 PokemonSelector.propTypes = {
   name: PropTypes.string.isRequired,
   errors: PropTypes.shape({
@@ -200,6 +247,8 @@ PokemonSelector.propTypes = {
     opponent: PropTypes.bool,
   }).isRequired,
   pokemon: PropTypes.arrayOf(PropTypes.shape(pokemonShape)),
+  setFieldValue: PropTypes.func.isRequired,
+  values: PropTypes.anyOfType([PropTypes.object, PropTypes.array]).isRequired,
 };
 
 PokemonSelector.defaultProps = {

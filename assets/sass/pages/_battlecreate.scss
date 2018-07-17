@@ -31,13 +31,11 @@
     }
 
     .pokemon-option {
-      display: flex;
-      align-items: center;
-      padding: 0 20px;
-      justify-content: space-between;
+
 
       &.is-focused {
         background-color: mix(darken($white, 5%), transparentize($blue, .8));
+        cursor: pointer;
       }
 
       .pokemon-name {
