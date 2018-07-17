@@ -248,7 +248,7 @@ PokemonSelector.propTypes = {
   }).isRequired,
   pokemon: PropTypes.arrayOf(PropTypes.shape(pokemonShape)),
   setFieldValue: PropTypes.func.isRequired,
-  values: PropTypes.anyOfType([PropTypes.object, PropTypes.array]).isRequired,
+  values: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
 };
 
 PokemonSelector.defaultProps = {
