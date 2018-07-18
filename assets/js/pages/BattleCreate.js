@@ -4,132 +4,14 @@ import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { withFormik } from 'formik';
 import VirtualizedSelect from 'react-virtualized-select';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import 'react-select/dist/react-select.css';
 import 'react-virtualized-select/styles.css';
 import { reorder } from '../utils';
+import Api from '../utils/api';
 import fetchAndLoadPokemonList from '../actions/pokemon';
 import fetchAndLoadUsers from '../actions/users';
-import { pokemonShape } from '../utils/propTypes';
-import TimesIcon from '../../images/icons/times.svg';
-
-function indexHelper(name) {
-  switch (name) {
-    // return the index
-    case 'firstPokemon':
-      return 0;
-    case 'secondPokemon':
-      return 1;
-    case 'thirdPokemon':
-      return 2;
-    default:
-      return null;
-  }
-}
-
-const SelectedPokemonCard = (props) => {
-  const { pokemon, setFieldValue, name, isDragging } = props;
-  const index = indexHelper(name);
-
-  const clearSelection = () => {
-    setFieldValue(`team.${index}`, null);
-  };
-
-  return (
-    <div className={`pokemon-chosen-card ${isDragging ? 'is-dragging' : ''}`}>
-      <img src={pokemon.sprite} alt={pokemon.label} />
-      <div className="pokemon-name">{pokemon.label}</div>
-      <div className="pokemon-stats">
-        A: {pokemon.attack} | D: {pokemon.defense} | HP: {pokemon.hp}
-      </div>
-      <div
-        className="clear-pokemon"
-        role="presentation"
-        onClick={clearSelection}
-      >
-        <img src={TimesIcon} alt="Clear selection" width="30" />
-      </div>
-    </div>
-  );
-};
-
-const PokemonOption = (props) => {
-  const {
-    option,
-    selectValue,
-    focusedOption,
-    focusOption,
-    style,
-  } = props;
-
-  return (
-    <div
-      className={`pokemon-option ${option === focusedOption && 'is-focused'}`}
-      style={style}
-      key={option.value}
-      role="presentation"
-      onClick={() => selectValue(option)}
-      onMouseEnter={() => focusOption(option)}
-    >
-      <img src={option.sprite} alt={option.label} />
-      <span className="pokemon-name">{option.label}</span>
-      <span className="pokemon-stats">
-        A: {option.attack} | D: {option.defense} | HP: {option.hp}
-      </span>
-    </div>
-  );
-};
-
-const PokemonSelector = (props) => {
-  const {
-    name,
-    errors,
-    pokemon,
-    setFieldValue,
-    values,
-  } = props;
-
-  const index = indexHelper(name);
-
-  const handleSelect = (choice) => {
-    setFieldValue(`team.${index}`, choice);
-  };
-
-  if (values.team[index]) {
-    return (
-      <Draggable key={name} draggableId={name} index={index}>
-        {(provided, snapshot) => (
-          <div
-            ref={provided.innerRef}
-            {...provided.draggableProps}
-            {...provided.dragHandleProps}
-          >
-            <SelectedPokemonCard
-              {...props}
-              pokemon={values.team[index]}
-              isDragging={snapshot.isDragging}
-            />
-            {provided.placeholder}
-          </div>
-        )}
-      </Draggable>
-    );
-  }
-
-  return (
-    <VirtualizedSelect
-      className={`pokemon-selector ${errors[name] && 'is-invalid'}`}
-      name={name}
-      id={name}
-      onChange={handleSelect}
-      options={pokemon}
-      optionHeight={95}
-      optionRenderer={PokemonOption}
-      value={values[name]}
-      valueKey="value"
-    />
-  );
-};
+import PokemonSelector from '../components/createBattle/Pokemon';
 
 const BattleCreationInnerForm = (props) => {
   const {
@@ -209,11 +91,10 @@ const BattleCreationForm = withFormik({
     opponent: opponent || '',
     team: [firstPokemon, secondPokemon, thirdPokemon],
   }),
-  /* eslint-disable no-unused-vars,no-console */
-  handleSubmit: (values, { props, setSubmitting, setErrors }) => {
-    console.log('Result', values); // wip
+  handleSubmit: (values, { setSubmitting }) => {
+    Api.createBattle(values)
+      .then(setSubmitting(false));
   },
-  /* eslint-enable */
   validationSchema: Yup.object().shape({
     opponent: Yup.string()
       .nullable()
@@ -274,38 +155,6 @@ BattleCreationInnerForm.defaultProps = {
   // I can't use .isRequired in propTypes otherwise I'll get a error,
   // since it's initially undefined until it loads the users list
   users: [],
-  pokemon: [],
-};
-
-PokemonOption.propTypes = {
-  option: PropTypes.shape(pokemonShape).isRequired,
-  selectValue: PropTypes.func.isRequired,
-  focusedOption: PropTypes.shape(pokemonShape).isRequired,
-  focusOption: PropTypes.func.isRequired,
-  style: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
-};
-
-SelectedPokemonCard.propTypes = {
-  setFieldValue: PropTypes.func.isRequired,
-  pokemon: PropTypes.shape(pokemonShape).isRequired,
-  name: PropTypes.string.isRequired,
-  isDragging: PropTypes.bool.isRequired,
-};
-
-PokemonSelector.propTypes = {
-  name: PropTypes.string.isRequired,
-  errors: PropTypes.shape({
-    opponent: PropTypes.string,
-  }).isRequired,
-  touched: PropTypes.shape({
-    opponent: PropTypes.bool,
-  }).isRequired,
-  pokemon: PropTypes.arrayOf(PropTypes.shape(pokemonShape)),
-  setFieldValue: PropTypes.func.isRequired,
-  values: PropTypes.oneOfType([PropTypes.object, PropTypes.array]).isRequired,
-};
-
-PokemonSelector.defaultProps = {
   pokemon: [],
 };
 
