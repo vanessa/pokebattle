@@ -64,3 +64,54 @@
     }
   }
 }
+
+.pokemon-chosen-card {
+  display: grid;
+  grid-template-columns: 100px 1fr 80px;
+  grid-template-rows: 1fr 1fr;
+  align-items: center;
+  width: 500px;
+  margin: 10px auto;
+  background: $white;
+  border-radius: 5px;
+  box-shadow: 0 3px 8px transparentize($black, .94);
+  transition: all .2s ease-in-out;
+
+  img {
+    grid-row: 1 / 3;
+  }
+
+  .pokemon-name {
+    grid-column: 2 / 3;
+    font-size: 1.3em;
+    font-weight: bold;
+    align-self: flex-end;
+  }
+
+  .pokemon-stats {
+    grid-row: 2;
+    font-size: .9em;
+    color: #333;
+    align-self: flex-start;
+  }
+
+  &.is-dragging {
+    opacity: .85;
+    transform: rotateZ(2deg);
+  }
+}
+
+.clear-pokemon {
+  cursor: pointer;
+  transform: rotate(0deg);
+  transition: transform ease-in-out .2s;
+  grid-row: span 3;
+}
+
+.clear-pokemon:hover {
+  transform: rotate(90deg);
+}
+
+.dragging-zone {
+  min-height: 340px;
+}

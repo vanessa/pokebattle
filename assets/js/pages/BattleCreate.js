@@ -4,16 +4,18 @@ import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { withFormik } from 'formik';
 import VirtualizedSelect from 'react-virtualized-select';
-import { DragDropContext } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import 'react-select/dist/react-select.css';
 import 'react-virtualized-select/styles.css';
 import { reorder } from '../utils';
 import fetchAndLoadPokemonList from '../actions/pokemon';
 import fetchAndLoadUsers from '../actions/users';
 import { pokemonShape } from '../utils/propTypes';
+import TimesIcon from '../../images/icons/times.svg';
 
 function indexHelper(name) {
   switch (name) {
+    // return the index
     case 'firstPokemon':
       return 0;
     case 'secondPokemon':
@@ -26,7 +28,7 @@ function indexHelper(name) {
 }
 
 const SelectedPokemonCard = (props) => {
-  const { pokemon, setFieldValue, name } = props;
+  const { pokemon, setFieldValue, name, isDragging } = props;
   const index = indexHelper(name);
 
   const clearSelection = () => {
@@ -34,18 +36,18 @@ const SelectedPokemonCard = (props) => {
   };
 
   return (
-    <div className="pokemon-chosen-card">
+    <div className={`pokemon-chosen-card ${isDragging ? 'is-dragging' : ''}`}>
       <img src={pokemon.sprite} alt={pokemon.label} />
       <div className="pokemon-name">{pokemon.label}</div>
       <div className="pokemon-stats">
         A: {pokemon.attack} | D: {pokemon.defense} | HP: {pokemon.hp}
       </div>
       <div
-        className="clear-button"
+        className="clear-pokemon"
         role="presentation"
         onClick={clearSelection}
       >
-        Clear
+        <img src={TimesIcon} alt="Clear selection" width="30" />
       </div>
     </div>
   );
@@ -95,10 +97,22 @@ const PokemonSelector = (props) => {
 
   if (values.team[index]) {
     return (
-      <SelectedPokemonCard
-        {...props}
-        pokemon={values.team[index]}
-      />
+      <Draggable key={name} draggableId={name} index={index}>
+        {(provided, snapshot) => (
+          <div
+            ref={provided.innerRef}
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+          >
+            <SelectedPokemonCard
+              {...props}
+              pokemon={values.team[index]}
+              isDragging={snapshot.isDragging}
+            />
+            {provided.placeholder}
+          </div>
+        )}
+      </Draggable>
     );
   }
 
@@ -163,18 +177,27 @@ const BattleCreationInnerForm = (props) => {
         {touched.opponent && errors.opponent && <div className="form-error">{errors.opponent}</div>}
 
         <label htmlFor="firstPokemon">Build your team</label>
-        <PokemonSelector
-          {...props}
-          name="firstPokemon"
-        />
-        <PokemonSelector
-          {...props}
-          name="secondPokemon"
-        />
-        <PokemonSelector
-          {...props}
-          name="thirdPokemon"
-        />
+        <Droppable droppableId="pokemonList">
+          {(provided, snapshot) => (
+            <div
+              ref={provided.innerRef}
+              className={snapshot.isDraggingOver ? 'dragging-zone' : ''}
+            >
+              <PokemonSelector
+                {...props}
+                name="firstPokemon"
+              />
+              <PokemonSelector
+                {...props}
+                name="secondPokemon"
+              />
+              <PokemonSelector
+                {...props}
+                name="thirdPokemon"
+              />
+            </div>
+          )}
+        </Droppable>
         <input type="submit" disabled={isSubmitting} value="Create the battle" />
       </form>
     </DragDropContext>
@@ -266,6 +289,7 @@ SelectedPokemonCard.propTypes = {
   setFieldValue: PropTypes.func.isRequired,
   pokemon: PropTypes.shape(pokemonShape).isRequired,
   name: PropTypes.string.isRequired,
+  isDragging: PropTypes.bool.isRequired,
 };
 
 PokemonSelector.propTypes = {
