@@ -60,3 +60,7 @@ class BattleListSerializer(BattleSerializer):
     def get_is_creator(self, obj):
         user = self.context['request'].user
         return obj.creator == user
+
+
+class BattleCreatorSerializer(serializers.ModelSerializer):
+    pass
