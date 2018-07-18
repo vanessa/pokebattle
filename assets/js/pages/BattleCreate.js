@@ -4,17 +4,33 @@ import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { withFormik } from 'formik';
 import VirtualizedSelect from 'react-virtualized-select';
+import { DragDropContext } from 'react-beautiful-dnd';
 import 'react-select/dist/react-select.css';
 import 'react-virtualized-select/styles.css';
+import { reorder } from '../utils';
 import fetchAndLoadPokemonList from '../actions/pokemon';
 import fetchAndLoadUsers from '../actions/users';
 import { pokemonShape } from '../utils/propTypes';
 
+function indexHelper(name) {
+  switch (name) {
+    case 'firstPokemon':
+      return 0;
+    case 'secondPokemon':
+      return 1;
+    case 'thirdPokemon':
+      return 2;
+    default:
+      return null;
+  }
+}
+
 const SelectedPokemonCard = (props) => {
   const { pokemon, setFieldValue, name } = props;
+  const index = indexHelper(name);
 
   const clearSelection = () => {
-    setFieldValue(name, null);
+    setFieldValue(`team.${index}`, null);
   };
 
   return (
@@ -71,15 +87,17 @@ const PokemonSelector = (props) => {
     values,
   } = props;
 
+  const index = indexHelper(name);
+
   const handleSelect = (choice) => {
-    setFieldValue(name, choice);
+    setFieldValue(`team.${index}`, choice);
   };
 
-  if (values[name]) {
+  if (values.team[index]) {
     return (
       <SelectedPokemonCard
         {...props}
-        pokemon={values[name]}
+        pokemon={values.team[index]}
       />
     );
   }
@@ -115,40 +133,59 @@ const BattleCreationInnerForm = (props) => {
     setFieldValue('opponent', value);
   };
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="opponent" >Select your opponent</label>
-      <VirtualizedSelect
-        id="opponent"
-        name="opponent"
-        className={`input ${errors.opponent && touched.opponent && 'is-invalid'}`}
-        options={users}
-        onChange={handleOpponentSelect}
-        value={values.opponent}
-        placeholder="Find an opponent for you..."
-      />
-      {touched.opponent && errors.opponent && <div className="form-error">{errors.opponent}</div>}
+  const onDragEnd = (result) => {
+    if (!result.destination) {
+      return;
+    }
 
-      <label htmlFor="firstPokemon">Build your team</label>
-      <PokemonSelector
-        {...props}
-        name="firstPokemon"
-      />
-      <PokemonSelector
-        {...props}
-        name="secondPokemon"
-      />
-      <PokemonSelector
-        {...props}
-        name="thirdPokemon"
-      />
-      <input type="submit" disabled={isSubmitting} value="Create the battle" />
-    </form>
+    const items = reorder(
+      values.team,
+      result.source.index,
+      result.destination.index,
+    );
+
+    setFieldValue('team', items);
+  };
+
+  return (
+    <DragDropContext onDragEnd={onDragEnd}>
+      <form onSubmit={handleSubmit}>
+        <label htmlFor="opponent" >Select your opponent</label>
+        <VirtualizedSelect
+          id="opponent"
+          name="opponent"
+          className={`input ${errors.opponent && touched.opponent && 'is-invalid'}`}
+          options={users}
+          onChange={handleOpponentSelect}
+          value={values.opponent}
+          placeholder="Find an opponent for you..."
+        />
+        {touched.opponent && errors.opponent && <div className="form-error">{errors.opponent}</div>}
+
+        <label htmlFor="firstPokemon">Build your team</label>
+        <PokemonSelector
+          {...props}
+          name="firstPokemon"
+        />
+        <PokemonSelector
+          {...props}
+          name="secondPokemon"
+        />
+        <PokemonSelector
+          {...props}
+          name="thirdPokemon"
+        />
+        <input type="submit" disabled={isSubmitting} value="Create the battle" />
+      </form>
+    </DragDropContext>
   );
 };
 
 const BattleCreationForm = withFormik({
-  mapPropsToValues: ({ opponent }) => ({ opponent: opponent || '' }),
+  mapPropsToValues: ({ opponent, firstPokemon, secondPokemon, thirdPokemon }) => ({
+    opponent: opponent || '',
+    team: [firstPokemon, secondPokemon, thirdPokemon],
+  }),
   /* eslint-disable no-unused-vars,no-console */
   handleSubmit: (values, { props, setSubmitting, setErrors }) => {
     console.log('Result', values); // wip
@@ -158,15 +195,6 @@ const BattleCreationForm = withFormik({
     opponent: Yup.string()
       .nullable()
       .required('Unfortunately, this system isn\'t advanced enough to let you battle with a ghost... Yet. 👻'),
-    firstPokemon: Yup.object()
-      .nullable()
-      .required('You must select at least 3 Pokemon to create a battle'),
-    secondPokemon: Yup.object()
-      .nullable()
-      .required('You must select at least 3 Pokemon to create a battle'),
-    thirdPokemon: Yup.object()
-      .nullable()
-      .required('You must select at least 3 Pokemon to create a battle'),
   }),
 })(BattleCreationInnerForm);
 
