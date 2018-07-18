@@ -41,12 +41,13 @@ const PokemonOption = (props) => {
     selectValue,
     focusedOption,
     focusOption,
+    style,
   } = props;
 
   return (
     <div
       className={`pokemon-option ${option === focusedOption && 'is-focused'}`}
-      style={{ display: 'flex', alignItems: 'center', height: 95, justifyContent: 'space-between' }}
+      style={style}
       key={option.value}
       role="presentation"
       onClick={() => selectValue(option)}
@@ -230,6 +231,7 @@ PokemonOption.propTypes = {
   selectValue: PropTypes.func.isRequired,
   focusedOption: PropTypes.shape(pokemonShape).isRequired,
   focusOption: PropTypes.func.isRequired,
+  style: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
 };
 
 SelectedPokemonCard.propTypes = {

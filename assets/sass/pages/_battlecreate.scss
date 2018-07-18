@@ -31,7 +31,10 @@
     }
 
     .pokemon-option {
-
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 5px;
 
       &.is-focused {
         background-color: mix(darken($white, 5%), transparentize($blue, .8));
