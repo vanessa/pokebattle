@@ -63,7 +63,7 @@ const BattleCreationInnerForm = (props) => {
           {(provided, snapshot) => (
             <div
               ref={provided.innerRef}
-              className={snapshot.isDraggingOver ? 'dragging-zone' : ''}
+              className={`dragging-zone ${snapshot.isDraggingOver ? 'is-dragging' : ''}`}
             >
               <PokemonSelector
                 {...props}
@@ -88,10 +88,11 @@ const BattleCreationInnerForm = (props) => {
 
 const BattleCreationForm = withFormik({
   mapPropsToValues: ({ opponent, firstPokemon, secondPokemon, thirdPokemon }) => ({
-    opponent: opponent || '',
-    team: [firstPokemon, secondPokemon, thirdPokemon],
+    opponent: opponent || null,
+    team: [firstPokemon || null, secondPokemon || null, thirdPokemon || null],
   }),
   handleSubmit: (values, { setSubmitting }) => {
+    console.log(values);  // eslint-disable-line
     Api.createBattle(values)
       .then(setSubmitting(false));
   },

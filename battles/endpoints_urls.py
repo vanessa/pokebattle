@@ -6,5 +6,5 @@ from .endpoints import BattleCreateEndpoint, BattleDetailsEndpoint, BattleListEn
 urlpatterns = [
     url(r'^battles/(?P<pk>[\w-]+)$', BattleDetailsEndpoint.as_view(), name='battle-details'),
     url(r'^battles/$', BattleListEndpoint.as_view(), name='battle-list'),
-    url(r'^battles/create/$', BattleCreateEndpoint.as_view(), name='create-battle')
+    url(r'^battles/create/$', BattleCreateEndpoint.as_view(), name='create-battle'),
 ]

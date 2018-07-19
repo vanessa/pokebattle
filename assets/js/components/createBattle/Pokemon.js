@@ -16,8 +16,8 @@ const SelectedPokemonCard = (props) => {
 
   return (
     <div className={`pokemon-chosen-card ${isDragging ? 'is-dragging' : ''}`}>
-      <img src={pokemon.sprite} alt={pokemon.label} />
-      <div className="pokemon-name">{pokemon.label}</div>
+      <img src={pokemon.sprite} alt={pokemon.name} />
+      <div className="pokemon-name">{pokemon.name}</div>
       <div className="pokemon-stats">
         A: {pokemon.attack} | D: {pokemon.defense} | HP: {pokemon.hp}
       </div>
@@ -45,13 +45,13 @@ const PokemonOption = (props) => {
     <div
       className={`pokemon-option ${option === focusedOption && 'is-focused'}`}
       style={style}
-      key={option.value}
+      key={option.id}
       role="presentation"
       onClick={() => selectValue(option)}
       onMouseEnter={() => focusOption(option)}
     >
-      <img src={option.sprite} alt={option.label} />
-      <span className="pokemon-name">{option.label}</span>
+      <img src={option.sprite} alt={option.name} />
+      <span className="pokemon-name">{option.name}</span>
       <span className="pokemon-stats">
         A: {option.attack} | D: {option.defense} | HP: {option.hp}
       </span>
@@ -105,7 +105,8 @@ const PokemonSelector = (props) => {
       optionHeight={95}
       optionRenderer={PokemonOption}
       value={values[name]}
-      valueKey="value"
+      valueKey="id"
+      labelKey="name"
     />
   );
 };

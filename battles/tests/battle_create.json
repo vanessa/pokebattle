@@ -1,0 +1,29 @@
+{
+    "opponent": 2,
+    "team": [
+        {
+            "id": 3,
+            "name": "venusaur",
+            "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/3.png",
+            "attack": 82,
+            "defense": 83,
+            "hp": 80
+        },
+        {
+            "id": 1,
+            "name": "bulbasaur",
+            "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/1.png",
+            "attack": 49,
+            "defense": 49,
+            "hp": 45
+        },
+        {
+            "id": 2,
+            "name": "charizard",
+            "sprite": "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/6.png",
+            "attack": 84,
+            "defense": 78,
+            "hp": 78
+        }
+    ]
+}
