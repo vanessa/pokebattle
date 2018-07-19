@@ -1,3 +1,5 @@
+
+
 export default class BattleHelpers {
   static userHasChosenTeam(battle, user) {
     const creatorOrOpponent = battle.creator.username === user.label ? 'creator' : 'opponent';
@@ -5,7 +7,7 @@ export default class BattleHelpers {
   }
 
   static getUserTeam(battle, user) {
-    const creatorOrOpponent = battle.creator.username === user.username ? 'creator' : 'opponent';
+    const creatorOrOpponent = battle.creator.trainer.username === user.username ? 'creator' : 'opponent';
     return battle[creatorOrOpponent].pokemons;
   }
 }

@@ -4,24 +4,22 @@ from battles.models import Battle, BattleTeam
 from pokemons.models import Pokemon
 from pokemons.serializers import PokemonSerializer
 from users.models import User
+from users.serializers import UserSerializer
 
 
 class BattleTeamSerializer(serializers.ModelSerializer):
     pokemons = PokemonSerializer(many=True)
-    username = serializers.SerializerMethodField()
+    trainer = UserSerializer()
 
     class Meta:
         model = BattleTeam
-        fields = ('pokemons', 'username')
-
-    def get_username(self, obj):
-        return obj.trainer.username
+        fields = ('pokemons', 'trainer')
 
 
 class BattleSerializer(serializers.ModelSerializer):
     creator = serializers.SerializerMethodField()
     opponent = serializers.SerializerMethodField()
-    winner = serializers.SerializerMethodField()
+    winner = UserSerializer()
     status_label = serializers.ReadOnlyField()
 
     class Meta:
@@ -32,22 +30,19 @@ class BattleSerializer(serializers.ModelSerializer):
         qs = BattleTeam.objects.filter(battle_related=obj, trainer=obj.creator).first()
         # If user hasn't chosen a team,
         # only their username is needed
+        user = UserSerializer(instance=obj.creator)
         if not qs:
-            return {'username': obj.creator.get_short_name()}
+            return {'trainer': user.data}
         serializer = BattleTeamSerializer(instance=qs)
         return serializer.data
 
     def get_opponent(self, obj):
         qs = BattleTeam.objects.filter(battle_related=obj, trainer=obj.opponent).first()
+        user = UserSerializer(instance=obj.opponent)
         if not qs:
-            return {'username': obj.opponent.get_short_name()}
+            return {'trainer': user.data}
         serializer = BattleTeamSerializer(instance=qs)
         return serializer.data
-
-    def get_winner(self, obj):
-        if not obj.winner:
-            return None
-        return obj.winner.get_short_name()
 
 
 class BattleListSerializer(BattleSerializer):

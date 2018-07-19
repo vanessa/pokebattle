@@ -130,7 +130,6 @@
 
 .pokemon-card {
   padding-right: 20px;
-  box-shadow: $default-box-shadow;
   border-radius: $default-border-radius;
   margin: 10px 0;
   cursor: pointer;
@@ -205,6 +204,15 @@
 // post-react
 // TODO: organize this!
 
+.battle-container {
+  padding: 15px;
+}
+
+.battle-title {
+  text-align: center;
+  font-size: 1.2em;
+}
+
 .placeholder-card {
   width: 350px;
   height: 100px;
@@ -273,6 +281,32 @@
 }
 
 .pokemon-card {
+  width: 350px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   background-color: #fff;
-  box-shadow: 0 0 transparent;
+  padding: 15px;
+  border-radius: 5px;
+  transition: box-shadow .1s ease-in-out;
+  cursor: pointer;
+  margin: 10px 50px;
+
+  .name {
+    font-size: 1.3em;
+    font-weight: bold;
+    text-align: center;
+    display: block;
+    position: relative;
+  }
+
+  .stats {
+    list-style-type: none;
+    font-size: .8em;
+    padding: 0;
+  }
+
+  .picture {
+    width: 90px;
+  }
 }
