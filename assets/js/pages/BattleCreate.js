@@ -1,5 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
 import { withFormik } from 'formik';
@@ -8,7 +9,7 @@ import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import 'react-select/dist/react-select.css';
 import 'react-virtualized-select/styles.css';
 import { reorder } from '../utils';
-import Api from '../utils/api';
+import createBattleAndRedirect from '../actions/battleCreate';
 import fetchAndLoadPokemonList from '../actions/pokemon';
 import fetchAndLoadUsers from '../actions/users';
 import PokemonSelector from '../components/createBattle/Pokemon';
@@ -80,7 +81,7 @@ const BattleCreationInnerForm = (props) => {
             </div>
           )}
         </Droppable>
-        <input type="submit" disabled={isSubmitting} value="Create the battle" />
+        <input type="submit" disabled={isSubmitting} value={isSubmitting ? 'Creating...' : 'Create the battle'} />
       </form>
     </DragDropContext>
   );
@@ -91,10 +92,8 @@ const BattleCreationForm = withFormik({
     opponent: opponent || null,
     team: [firstPokemon || null, secondPokemon || null, thirdPokemon || null],
   }),
-  handleSubmit: (values, { setSubmitting }) => {
-    console.log(values);  // eslint-disable-line
-    Api.createBattle(values)
-      .then(setSubmitting(false));
+  handleSubmit: (values, { props }) => {
+    props.submitHandler(values);
   },
   validationSchema: Yup.object().shape({
     opponent: Yup.string()
@@ -110,12 +109,19 @@ class BattleCreate extends React.Component {
   }
 
   render() {
+    const { battleRedirect } = this.props;
+
+    if (battleRedirect) {
+      return <Redirect to="/battles/" />;
+    }
+
     return (
       <div className="battle-create-container">
         <h2>Create a Battle</h2>
         <BattleCreationForm
           users={this.props.users}
           pokemon={this.props.pokemon}
+          submitHandler={this.props.createBattle}
         />
       </div>
     );
@@ -125,13 +131,16 @@ class BattleCreate extends React.Component {
 BattleCreate.propTypes = {
   loadUsers: PropTypes.func.isRequired,
   loadPokemon: PropTypes.func.isRequired,
+  createBattle: PropTypes.func.isRequired,
   users: PropTypes.arrayOf(PropTypes.object),
   pokemon: PropTypes.arrayOf(PropTypes.object),
+  battleRedirect: PropTypes.bool,
 };
 
 BattleCreate.defaultProps = {
   users: [],
   pokemon: [],
+  battleRedirect: false,
 };
 
 BattleCreationInnerForm.propTypes = {
@@ -162,11 +171,13 @@ BattleCreationInnerForm.defaultProps = {
 const mapStateToProps = state => ({
   users: state.user.users,
   pokemon: state.pokemon.list,
+  battleRedirect: state.battle.battleRedirect,
 });
 
 const mapDispatchToProps = dispatch => ({
   loadUsers: () => dispatch(fetchAndLoadUsers()),
   loadPokemon: () => dispatch(fetchAndLoadPokemonList()),
+  createBattle: battle => dispatch(createBattleAndRedirect(battle)),
 });
 
 export default connect(

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 import Loading from '../components/Loading';
 import { fetchAndSetBattleList } from '../actions/battleList';
+import { battleClearRedirect } from '../actions/battleCreate';
 
 const BattleLabel = ({ battle }) => {
   // Had to use snake case here due to API response
@@ -62,6 +63,8 @@ const BattlesColumn = ({ title, battles }) => (
 class BattleList extends React.Component {
   componentDidMount() {
     this.props.loadBattleList();
+    // Clear the redirection of the battle create
+    this.props.clearRedirection();
   }
 
   render() {
@@ -108,16 +111,19 @@ BattleLabel.propTypes = {
 
 BattleList.propTypes = {
   loadBattleList: PropTypes.func,
+  clearRedirection: PropTypes.func,
   battles: PropTypes.arrayOf(PropTypes.object),
 };
 
 BattleList.defaultProps = {
   loadBattleList: null,
+  clearRedirection: null,
   battles: null,
 };
 
 const mapDispatchToProps = dispatch => ({
   loadBattleList: () => dispatch(fetchAndSetBattleList()),
+  clearRedirection: () => dispatch(battleClearRedirect()),
 });
 
 const mapStateToProps = state => ({
