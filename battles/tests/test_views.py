@@ -36,9 +36,12 @@ class TestCreateBattleView(TestCaseUtils):
         )
 
     def test_if_redirects_non_logged(self):
-        response = self.client.get(self.view_url)
-        self.assertRedirects(
-            response, expected_url='/login/?next=/battles/')
+        response = self.client.get(self.view_url, follow=True)
+        redirection_url = response.request.get('PATH_INFO')
+        next_page = response.context_data.get('next')
+        self.assertResponse200(response)
+        self.assertEqual(next_page, '/battles/')
+        self.assertEqual(redirection_url, '/login/')
 
     def test_battle_was_created_in_db(self):
         response = self.client.post(self.view_url, self.battle_params)
@@ -177,9 +180,12 @@ class TestInviteView(TestCaseUtils):
         self.assertEqual(response.status_code, 200)
 
     def test_view_redirects_non_logged_user(self):
-        response = self.client.get(self.view_url)
-        self.assertEqual(response.status_code, 302)
-        self.assertRedirects(response, expected_url='/login/?next=/invite/')
+        response = self.client.get(self.view_url, follow=True)
+        redirection_url = response.request.get('PATH_INFO')
+        next_page = response.context_data.get('next')
+        self.assertResponse200(response)
+        self.assertEqual(next_page, '/invite/')
+        self.assertEqual(redirection_url, '/login/')
 
     def test_invite_was_created_in_db(self):
         params = {

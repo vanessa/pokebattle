@@ -12,7 +12,7 @@ describe('BattleList', () => {
     Component = renderer.create((
       <NotConnectedBattleList
         loadBattleList={jest.fn()}
-        clearCurrentBattle={jest.fn()}
+        clearRedirection={jest.fn()}
       />
     ));
 
