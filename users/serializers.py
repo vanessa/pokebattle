@@ -4,6 +4,9 @@ from users.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
+    value = serializers.ReadOnlyField(source='id')
+    label = serializers.ReadOnlyField(source='username')
+
     class Meta:
         model = User
-        fields = ('id', 'username', )
+        fields = ('value', 'label', )

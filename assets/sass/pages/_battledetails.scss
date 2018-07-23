@@ -257,8 +257,15 @@
 }
 
 .battle-row.creator {
-  // The battle creator will always be in the first column
+  // The battle creator will always be the first column
   .team-column:first-of-type > div {
+    background: mix(#fff, palegreen, 70%);
+  }
+}
+
+.battle-row.opponent {
+  // The battle opponent will always be the last column
+  .team-column:last-of-type > div {
     background: mix(#fff, palegreen, 70%);
   }
 }

@@ -1,10 +1,10 @@
 from django.db.models import Q
 
-from rest_framework import generics
+from rest_framework import generics, parsers, permissions
 
 from battles.models import Battle
 from battles.permissions import IsInBattle
-from battles.serializers import BattleListSerializer, BattleSerializer
+from battles.serializers import BattleCreationSerializer, BattleListSerializer, BattleSerializer
 
 
 class BattleDetailsEndpoint(generics.RetrieveAPIView):
@@ -22,3 +22,9 @@ class BattleListEndpoint(generics.ListAPIView):
         return Battle.objects.filter(
             Q(creator=user) | Q(opponent=user)
         )
+
+
+class BattleCreateEndpoint(generics.CreateAPIView):
+    serializer_class = BattleCreationSerializer
+    permission_classes = (permissions.IsAuthenticated, )
+    parser_classes = (parsers.JSONParser, )

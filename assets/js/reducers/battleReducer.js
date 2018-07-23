@@ -1,5 +1,7 @@
 import {
   BATTLE_SET_LIST,
+  BATTLE_CREATED_REDIRECT,
+  BATTLE_CLEAR_REDIRECT,
 } from '../constants/battle';
 
 const battle = (state = [], action) => {
@@ -9,6 +11,16 @@ const battle = (state = [], action) => {
         ...state,
         ...action.payload.entities,
         result: action.payload.result,
+      };
+    case BATTLE_CREATED_REDIRECT:
+      return {
+        ...state,
+        battleRedirect: true,
+      };
+    case BATTLE_CLEAR_REDIRECT:
+      return {
+        ...state,
+        battleRedirect: false,
       };
     default:
       return state;

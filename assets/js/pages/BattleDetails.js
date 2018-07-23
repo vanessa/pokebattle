@@ -131,9 +131,9 @@ class BattleDetails extends React.Component {
         >
           {!creatorTeam
             ? <PokemonLoading
-              currentUserActive={battle.creator.trainer.username === user.username}
-              content={`Waiting for ${battle.creator.trainer.username === user.username ? 'you' : battle.creator.trainer.username} to build the team`}
               battleId={battleId}
+              currentUserActive={battle.creator.username === user.label}
+              content={`Waiting for ${battle.creator.username === user.label ? 'you' : battle.creator.username} to build the team`}
             />
             : <TeamDetails
               battle={battle}
@@ -143,9 +143,9 @@ class BattleDetails extends React.Component {
           }
           {!opponentTeam
             ? <PokemonLoading
-              currentUserActive={battle.opponent.trainer.username === user.username}
-              content={`Waiting for ${battle.opponent.trainer.username === user.username ? 'you' : battle.opponent.trainer.username} to build the team`}
               battleId={battleId}
+              currentUserActive={battle.opponent.username === user.label}
+              content={`Waiting for ${battle.opponent.username === user.label ? 'you' : battle.opponent.username} to build the team`}
             />
             : <TeamDetails
               battle={battle}

@@ -1,4 +1,4 @@
-import USER_SET_DETAILS from '../constants/user';
+import { USER_SET_DETAILS } from '../constants/user';
 import Api from '../utils/api';
 
 const userSetDetails = userDetails => ({

@@ -136,7 +136,7 @@ class ChoosePokemonTeamView(LoginRequiredMixin, UserIsPartOfBattleMixin, generic
 class InviteView(LoginRequiredMixin, generic.CreateView):
     form_class = InviteForm
     template_name = 'battles/invite.html'
-    success_url = reverse_lazy('battles:invite')
+    success_url = reverse_lazy('invite')
 
     def get_initial(self):
         return {'inviter': self.request.user}

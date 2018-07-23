@@ -2,7 +2,7 @@
 
 export default class BattleHelpers {
   static userHasChosenTeam(battle, user) {
-    const creatorOrOpponent = battle.creator.trainer.username === user.username ? 'creator' : 'opponent';
+    const creatorOrOpponent = battle.creator.username === user.label ? 'creator' : 'opponent';
     return Array.isArray(battle[creatorOrOpponent].pokemons);
   }
 
